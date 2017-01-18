@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NomiTomo</string>
+    <string name="friend">friend</string>
+    <string name="map">map</string>
+    <string name="setting">setting</string>
+    <string name="group">tork</string>
+    <string name="hello_blank_fragment">tester</string>
+
+    <string name="title_activity_maps">Map</string>
+</resources>

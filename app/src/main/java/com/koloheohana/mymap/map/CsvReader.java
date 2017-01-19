@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
 
@@ -80,8 +81,13 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
                 String[] shop_y = shop_date[zahyou_y].split("\"");
 
                 TestXY _coordinate = new TestXY(shop_x[1],shop_y[1]);
-                ShopList.ALLLIST.add(new ShopDate(0,shop_date[6],shop_date[5],shop_date[4], category,shop_date[10],_coordinate.X,_coordinate.Y));
-
+                ShopDate sd = new ShopDate(0,shop_date[6],shop_date[5],shop_date[4], category,shop_date[10],_coordinate.X,_coordinate.Y);
+                ShopList.ALLLIST.add(sd);
+                ShopList.SHOP_MAP_LATLNG.put(sd.LATLNG,sd);
+                if(sd.getShopName().equals("カシヤン")){
+                    System.out.println("カシヤン"+sd.getCATEGORY());
+                    System.out.println("カシヤン"+sd.getADDRRES());
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

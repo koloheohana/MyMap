@@ -6,6 +6,9 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ME = this;
+
+
+
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         mPager = (ViewPager) findViewById(R.id.viewpager);
         mPager.setAdapter(mfp);
-        /*
-        viewpager操作時アクション
-         */
+
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -59,12 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-        /*
-        ファイルオープンテスト
-         */
-        /*CsvReader.parse(this);*/
-        final CsvReader read = new CsvReader();
-        read.execute();
+
     }
     public void file_save(StringBuffer sb ,String file_name){
         String message = "";

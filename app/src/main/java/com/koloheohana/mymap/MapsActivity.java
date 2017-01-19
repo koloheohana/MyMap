@@ -22,7 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ import com.koloheohana.mymap.dialog.ShopDialog;
 import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
+import com.koloheohana.mymap.map.ShopSearch;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,14 +63,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap map;
     private GoogleApiClient glocationClient;
     private Marker click_marker;
-
+    public static MapsActivity MAP_ME = new MapsActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MAP_ME = this;
+        /*CsvReader.parse(this);*/
+        final CsvReader read = new CsvReader();
+        read.execute();
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        ShopSearch.setAdapter();
         mapFragment.getMapAsync(this);
         if (isLocationEnabled()) {
             if (BuildConfig.DEBUG) {
@@ -203,7 +212,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (BuildConfig.DEBUG) {
+/*
             Log.d(TAG, "mLatitude:" + mLatitude + ", mLongitude: " + mLongitude + ", mAltitude: " + mAltitude);
+*/
         }
         LatLng sydney = new LatLng(mLatitude, mLongitude);
         if (home_marker != null) {
@@ -289,18 +300,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println(x+"と"+y+"にマーカーをセットしました");
 */
     }
-    public void setMarker(double x, double y, final ShopDate sd){
-        LatLng sydney = new LatLng(x, y);
-        mMap.addMarker(new MarkerOptions().position(sydney).icon(BitmapDescriptorFactory.defaultMarker(sd.testMarker())).title(sd.getShopName()).snippet(sd.getCATEGORY()));
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                ShopDialog pd = new ShopDialog(sd);
-                pd.show(getSupportFragmentManager(),"TEST");
-                return false;
-            }
-        });
-    }
+    ArrayList<Marker> list = new ArrayList<Marker>();
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -319,14 +320,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        String str;
 
-        for(int i = 15000; i <= 15300; i ++){
-            setMarker(ShopList.ALLLIST.get(i).getX(),ShopList.ALLLIST.get(i).getY(),ShopList.ALLLIST.get(i));
-        }
-        for(int i = 30000; i <= 30300; i ++){
-            setMarker(ShopList.ALLLIST.get(i).getX(),ShopList.ALLLIST.get(i).getY(),ShopList.ALLLIST.get(i));
-        }
 /*        mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener(){
             @Override
             public void onMyLocationChange(Location loc) {
@@ -339,16 +333,71 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 */
 
     }
+    public void setMarker(ArrayList<ShopDate> list){
+        System.out.println("件数"+list.size());
+        int i = 0;
+        for(ShopDate sd:list){
+            setMarker(list.get(i));
+            i++;
+            if(i >= 300){
+                break;
+            }
+        }
+    }
+    public void setMarker(final ShopDate sd){
+        LatLng sydney = new LatLng(sd.getX(), sd.getY());
+        Marker mk = mMap.addMarker(new MarkerOptions().position(sydney).icon
+                (BitmapDescriptorFactory.defaultMarker(sd.testMarker())).title(sd.getShopName()).snippet(sd.getCATEGORY()));
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
+                ShopDialog sd = new ShopDialog(S_D);
+                sd.show(getSupportFragmentManager(),S_D.getShopName());
+                long start = System.currentTimeMillis();
+                ShopList.SHOP_MAP_LATLNG.get(S_D.getLATLNG());
+                long end = System.currentTimeMillis();
+                System.out.println("hashmapのタイム："+(end-start));
+                long start2 = System.currentTimeMillis();
+                for(ShopDate _sd:ShopList.ALLLIST){
+                    if(_sd.getShopName().equals(S_D.getShopName())){
+                        long end2 = System.currentTimeMillis();
+                        System.out.println("ArrayListのタイム："+(end2-start2));
+                        break;
+                    }
+                }
+            }
+        });
+        list.add(mk);
+
+    }
+    public void clearMarker(){
+        for(int i = 0; i < list.size();i++){
+            list.get(i).remove();
+        }
+
+    }
     private void setPopupWindow() {
                 GroupDialog gd = new GroupDialog();
                 gd.show(getSupportFragmentManager(),"set");
     }
     public void myTomo(View view) {
-        zoomMap(now_lati, now_long);
+        long start = System.currentTimeMillis();
+        for(LatLng ll:ShopList.SHOP_MAP_LATLNG.keySet()){
+            ShopList.SHOP_MAP_LATLNG.get(ll);
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("hashmapのタイム："+(end-start));
+        long start2 = System.currentTimeMillis();
+        for(ShopDate sd:ShopList.ALLLIST){
+
+        }
+        long end2 = System.currentTimeMillis();
+        System.out.println("ArrayListのタイム："+(end2-start2));
 /*
-        finish();
+        zoomMap(now_lati, now_long);
 */
     }
 
-    
+
 }

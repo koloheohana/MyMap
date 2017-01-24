@@ -20,7 +20,6 @@ public class ShopDate {
             CATEGORY_NAME = name;
         }
         SHOP_CATEGORY(){
-
         }
         public static ArrayList<String> getCategoryNameList(){
             ArrayList<String> list = new ArrayList<String>();
@@ -41,8 +40,10 @@ public class ShopDate {
         int count= 0;
         for(int i = 0;i <= CATEGORY_NUMBER.length;i++) {
             count++;
-            if(CATEGORY.equals(CATEGORY_NUMBER[i])){
-                return (count+1) * 10;
+            for(String str:CATEGORY){
+                if(str.equals(CATEGORY_NUMBER[i])){
+                    return (count+1) * 10;
+                }
             }
         }
         return 0;
@@ -52,7 +53,8 @@ public class ShopDate {
     String NAME;
     String TEL;
     String URL;
-    String CATEGORY;
+    ArrayList<String> CATEGORY = new ArrayList<String>();
+    String FIRST_CATEGORY;
 
     public String getPOSTAL() {
         return POSTAL;
@@ -76,28 +78,31 @@ public class ShopDate {
         POSTAL = postal;
         NAME = _name;
         TEL = _tel;
-        CATEGORY = category;
+        CATEGORY.add(category);
+        FIRST_CATEGORY = category;
         COORDINATE_X = _COORDINATE_X;
         COORDINATE_Y = _COORDINATE_Y;
         LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
     }
-    public void check(){
-        System.out.println(0+NAME+""+TEL+""+CATEGORY+""+COORDINATE_Y+"と"+COORDINATE_X);
-    }
-    public ShopDate(int _id,String _addrres,String _name,String _url){
-        ID = _id;
-        ADDRRES = _addrres;
-        NAME = _name;
-        URL = _url;
-    }
+
     public Double getX(){
         return COORDINATE_X;
     }
     public Double getY(){
         return COORDINATE_Y;
     }
-    public String getCATEGORY(){
+    public ArrayList<String> getCATEGORY(){
         return CATEGORY;
+    }
+    public String getCategoryNames(){
+        StringBuffer sb = new StringBuffer();
+        for(String _name : CATEGORY){
+            if(sb.length()!=0){
+                sb.append("|");
+            }
+            sb.append(_name);
+        }
+        return sb.toString();
     }
     public String getShopName(){
         return NAME;

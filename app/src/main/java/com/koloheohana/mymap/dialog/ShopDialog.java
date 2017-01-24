@@ -39,7 +39,7 @@ public class ShopDialog extends DialogFragment{
         //テキストの設置
         LinearLayout ll = (LinearLayout)dialog.findViewById(R.id.shop_date_text);
         TextView category = new TextView(MapsActivity.MAP_ME);
-        category.setText(SD.getCATEGORY());
+        category.setText(SD.getCategoryNames());
         ll.addView(category);
         TextView postal = new TextView(MapsActivity.MAP_ME);
         postal.setText(SD.getPOSTAL());

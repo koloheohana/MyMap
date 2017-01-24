@@ -82,16 +82,12 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
 
                 TestXY _coordinate = new TestXY(shop_x[1],shop_y[1]);
                 ShopDate sd = new ShopDate(0,shop_date[6],shop_date[5],shop_date[4], category,shop_date[10],_coordinate.X,_coordinate.Y);
-                ShopList.ALLLIST.add(sd);
-                ShopList.SHOP_MAP_LATLNG.put(sd.LATLNG,sd);
-                if(sd.getShopName().equals("カシヤン")){
-                    System.out.println("カシヤン"+sd.getCATEGORY());
-                    System.out.println("カシヤン"+sd.getADDRRES());
-                }
+                ShopList.setShopList(sd);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 /*
         System.out.println(ShopList.ALLLIST.size());
 */

@@ -11,5 +11,16 @@ import java.util.HashMap;
 public class ShopList {
     public static ArrayList<ShopDate> ALLLIST = new ArrayList<ShopDate>();
     public static HashMap<LatLng,ShopDate> SHOP_MAP_LATLNG = new HashMap<LatLng, ShopDate>();
+    public static void setShopList(ShopDate sd){
+        if(SHOP_MAP_LATLNG.containsKey(sd.getLATLNG())){
+            ShopDate _sd = SHOP_MAP_LATLNG.get(sd.getLATLNG());
+            if(_sd.CATEGORY.indexOf(sd.FIRST_CATEGORY) == -1){
+                _sd.CATEGORY.add(sd.FIRST_CATEGORY);
+            }
+            return;
+        }
+        ALLLIST.add(sd);
+        SHOP_MAP_LATLNG.put(sd.getLATLNG(),sd);
+    }
 
 }

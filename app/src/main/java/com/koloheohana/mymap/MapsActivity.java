@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,9 +65,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient glocationClient;
     private Marker click_marker;
     public static MapsActivity MAP_ME = new MapsActivity();
+    public static boolean FIRST_CREATE;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FIRST_CREATE = true;
         MAP_ME = this;
         /*CsvReader.parse(this);*/
         final CsvReader read = new CsvReader();
@@ -227,7 +230,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             first = false;
         }
     }
-
+    public LatLng getLatLngNow(){
+        return new LatLng(now_lati,now_long);
+    }
     public double now_lati = 0;
     public double now_long = 0;
 
@@ -293,13 +298,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         System.out.println(x+"と"+y+"にマーカーをセットしました");
 */
     }
-    public void setMarker(double x,double y,String _name){
-        LatLng sydney = new LatLng(x, y);
-        mMap.addMarker(new MarkerOptions().position(sydney).title(_name));
-/*
-        System.out.println(x+"と"+y+"にマーカーをセットしました");
-*/
-    }
+
     ArrayList<Marker> list = new ArrayList<Marker>();
 
     @Override
@@ -333,13 +332,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 */
 
     }
-    public void setMarker(ArrayList<ShopDate> list){
-        System.out.println("件数"+list.size());
-        int i = 0;
+    private void setMarker(ArrayList<ShopDate> list){
+        int count = 0;
+        int max_value = 300;
         for(ShopDate sd:list){
-            setMarker(list.get(i));
-            i++;
-            if(i >= 300){
+            setMarker(sd);
+            count++;
+            if(count >= max_value){
+                Toast to = Toast.makeText(this,"表示件数が"+max_value+"を超えた為、それ以上の表示が出来ませんでした",Toast.LENGTH_LONG);
+                to.setGravity(Gravity.CENTER|Gravity.BOTTOM,0,1);
+                to.show();
                 break;
             }
         }
@@ -347,35 +349,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void setMarker(final ShopDate sd){
         LatLng sydney = new LatLng(sd.getX(), sd.getY());
         Marker mk = mMap.addMarker(new MarkerOptions().position(sydney).icon
-                (BitmapDescriptorFactory.defaultMarker(sd.testMarker())).title(sd.getShopName()).snippet(sd.getCATEGORY()));
+                (BitmapDescriptorFactory.defaultMarker(sd.testMarker())).title(sd.getShopName()).snippet(sd.getCategoryNames()));
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
                 ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
                 ShopDialog sd = new ShopDialog(S_D);
                 sd.show(getSupportFragmentManager(),S_D.getShopName());
-                long start = System.currentTimeMillis();
-                ShopList.SHOP_MAP_LATLNG.get(S_D.getLATLNG());
-                long end = System.currentTimeMillis();
-                System.out.println("hashmapのタイム："+(end-start));
-                long start2 = System.currentTimeMillis();
-                for(ShopDate _sd:ShopList.ALLLIST){
-                    if(_sd.getShopName().equals(S_D.getShopName())){
-                        long end2 = System.currentTimeMillis();
-                        System.out.println("ArrayListのタイム："+(end2-start2));
-                        break;
-                    }
-                }
             }
         });
         list.add(mk);
-
     }
     public void clearMarker(){
         for(int i = 0; i < list.size();i++){
             list.get(i).remove();
         }
-
+    }
+    public void setMarker(ArrayList<ShopDate> _list, boolean clear){
+        if(clear){
+            clearMarker();
+        }
+        setMarker(_list);
     }
     private void setPopupWindow() {
                 GroupDialog gd = new GroupDialog();
@@ -394,10 +388,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         long end2 = System.currentTimeMillis();
         System.out.println("ArrayListのタイム："+(end2-start2));
-/*
         zoomMap(now_lati, now_long);
-*/
     }
-
-
 }

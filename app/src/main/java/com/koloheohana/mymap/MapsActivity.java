@@ -53,6 +53,7 @@ import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.map.ShopSearch;
+import com.koloheohana.mymap.user_date.MyBookmark;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             connectGooglePlayServices();
         }
-
+        MyBookmark.read();
     }
 
     public static final String TAG = "LocationService";
@@ -126,7 +127,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * GooglePlayServicesに接続する
      */
     protected void connectGooglePlayServices() {
-
         mLocationRequest = LocationRequest.create();
         // 10秒おきに位置情報を取得する
         mLocationRequest.setInterval(10000);
@@ -389,5 +389,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         long end2 = System.currentTimeMillis();
         System.out.println("ArrayListのタイム："+(end2-start2));
         zoomMap(now_lati, now_long);
+    }
+    public void mapSearchButton(View view){
+        ShopSearch.searchShop();
     }
 }

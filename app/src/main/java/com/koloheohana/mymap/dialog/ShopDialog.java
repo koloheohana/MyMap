@@ -11,10 +11,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
+import com.koloheohana.mymap.user_date.MyBookmark;
 
 /**
  * Created by User on 2016/08/24.
@@ -56,11 +58,14 @@ public class ShopDialog extends DialogFragment{
         Button button = (Button)dialog.findViewById(R.id.positive_button);
         button.setEnabled(true);
         button.setBackgroundColor(0xaa808080);
-        button.setText("HPへ飛ぶ");
+        button.setText("お気に入り登録");
         dialog.findViewById(R.id.positive_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("飛ぶ");
+                System.out.println("お気に入り登録");
+                MyBookmark.set(SD);
+                Toast toast = Toast.makeText(MapsActivity.MAP_ME,"ブックマーク",Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
         // Close ボタンのリスナ

@@ -6,17 +6,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
-import com.koloheohana.mymap.map.CsvReader;
-import com.koloheohana.mymap.map.MapActivity;
-
-import org.w3c.dom.Text;
+import com.koloheohana.mymap.date.SaveDateController;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -24,7 +18,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 
 public class MainActivity extends AppCompatActivity {
     public ViewPager mPager;
@@ -36,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ME = this;
-
-
 
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         mPager = (ViewPager) findViewById(R.id.viewpager);
@@ -63,19 +57,16 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-
     }
-    public void file_save(StringBuffer sb ,String file_name){
+
+    public void file_save(){
         String message = "";
         String fileName = "test.txt";
-        String inputText = sb.toString();
 
         try {
-            FileOutputStream outStream = openFileOutput("data/data/test.txt", MODE_PRIVATE);
-            OutputStreamWriter writer = new OutputStreamWriter(outStream);
-            writer.write(inputText);
-            writer.flush();
-            writer.close();
+            OutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(outStream);
+            writer.append("tester");
 
             message = "File saved.";
         } catch (FileNotFoundException e) {
@@ -87,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
+        file_open();
 /*        try {
             out = openFileOutput("text.txt",MODE_PRIVATE);
             out.write(sb.toString().getBytes());
@@ -123,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void myFriend(View view) {
+        file_save();
 //        TextView tv = (TextView)MainActivity.ME.findViewById(R.id.flags);
 //        if(tv == null) {
 //            System.out.println("nnnnnnnnnnnnnuuuuuuuuuuuulllllllaaaaaaaaaaaaaaaaal");

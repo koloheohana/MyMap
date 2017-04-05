@@ -68,6 +68,7 @@ public class StartMenuTab extends Fragment {
                     MainActivity.ME.mPager.setCurrentItem(2);
                     return;
                 case 3:
+                    MainActivity.ME.file_save();
                     return;
                 case 4:
                     return;

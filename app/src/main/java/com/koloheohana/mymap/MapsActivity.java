@@ -20,11 +20,14 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +91,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             connectGooglePlayServices();
         }
-        MyBookmark.read();
     }
 
     public static final String TAG = "LocationService";
@@ -242,7 +244,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
     }
-
+    private void zoomMap(ShopDate sd){
+        zoomMap(sd.getLATLNG().latitude,sd.getLATLNG().longitude);
+    }
     private void zoomMap(double lat, double lon) {
         double south = lat * (1 - 0.00005);
         double west = lon * (1 - 0.00005);
@@ -336,7 +340,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int count = 0;
         int max_value = 300;
         for(ShopDate sd:list){
-            setMarker(sd);
+            setMarker(sd,false);
             count++;
             if(count >= max_value){
                 Toast to = Toast.makeText(this,"表示件数が"+max_value+"を超えた為、それ以上の表示が出来ませんでした",Toast.LENGTH_LONG);
@@ -346,7 +350,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
-    public void setMarker(final ShopDate sd){
+    public void setMarker(ShopDate sd,boolean zoom,boolean clear){
+        if(clear){
+            clearMarker();
+        }
+        setMarker(sd,zoom);
+    }
+    public void setMarker(final ShopDate sd,boolean zoom){
         LatLng sydney = new LatLng(sd.getX(), sd.getY());
         Marker mk = mMap.addMarker(new MarkerOptions().position(sydney).icon
                 (BitmapDescriptorFactory.defaultMarker(sd.testMarker())).title(sd.getShopName()).snippet(sd.getCategoryNames()));
@@ -359,6 +369,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         list.add(mk);
+        if(zoom){
+            zoomMap(sd);
+        }
     }
     public void clearMarker(){
         for(int i = 0; i < list.size();i++){
@@ -374,6 +387,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void setPopupWindow() {
                 GroupDialog gd = new GroupDialog();
                 gd.show(getSupportFragmentManager(),"set");
+    }
+    public void bookmarkButton(View view){
+        PopupMenu pm = new PopupMenu(getApplicationContext(),view);
+        MenuInflater inflater = pm.getMenuInflater();
+        inflater.inflate(R.menu.list_popup,pm.getMenu());
     }
     public void myTomo(View view) {
         long start = System.currentTimeMillis();

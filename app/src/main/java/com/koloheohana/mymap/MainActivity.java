@@ -60,24 +60,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void file_save(){
-        String message = "";
-        String fileName = "test.txt";
-
         try {
-            OutputStream outStream = openFileOutput("test.txt", MODE_PRIVATE);
-            PrintWriter writer = new PrintWriter(outStream);
-            writer.append("tester");
-
-            message = "File saved.";
-        } catch (FileNotFoundException e) {
-            message = e.getMessage();
-            e.printStackTrace();
+            OutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outStream,"UTF-8"));
+            writer.append("testeeees");
+            writer.flush();
+            writer.close();
         } catch (IOException e) {
-            message = e.getMessage();
             e.printStackTrace();
         }
-
-        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
         file_open();
 /*        try {
             out = openFileOutput("text.txt",MODE_PRIVATE);
@@ -90,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
         try {
             FileInputStream in = openFileInput("test.txt");
             BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String str = "";
             String tmp;
             while ((tmp = reader.readLine()) != null) {
-                str = str + tmp + "\n";
+                System.out.println(tmp);
             }
-            System.out.println("file"+str);
             reader.close();
         }catch (IOException e){
             e.printStackTrace();

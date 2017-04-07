@@ -1,16 +1,19 @@
 package com.koloheohana.mymap.map;
 
 import android.provider.Settings;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.user_date.MyBookmark;
+import com.koloheohana.mymap.user_date.ReadDate;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class ShopSearch {
     public static void setAdapter(){
         setCategorySpinner();
         setSearchRange();
+        setBookmarkSpinner();
     }
     public static void searchBookmark(){
 
@@ -41,7 +45,7 @@ public class ShopSearch {
             return;
         }
         for(ShopDate sd:list){
-            MapsActivity.MAP_ME.setMarker(sd);
+            MapsActivity.MAP_ME.setMarker(sd,false);
             System.out.println("ゲット"+sd.getShopName());
         }
     }
@@ -100,6 +104,7 @@ public class ShopSearch {
         return shop_list;
     }
     private static void setBookmarkSpinner(){
+        ReadDate.read();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ME, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // アイテムを追加します
@@ -121,8 +126,7 @@ public class ShopSearch {
                     return;
                 }
                 // 選択されたアイテムを取得します
-                String item = (String) spinner.getSelectedItem();
-                ME.setMarker(MyBookmark.getList().get(position+1));
+                ME.setMarker(MyBookmark.getList().get(position-1),true,true);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -158,6 +162,7 @@ public class ShopSearch {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+
     }
     public static ArrayList<ShopDate> getCategoryList(ArrayList<ShopDate> _list,String str){
         ArrayList<ShopDate> list = new ArrayList<ShopDate>();

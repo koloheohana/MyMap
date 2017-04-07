@@ -19,9 +19,10 @@ import java.util.ArrayList;
 public class SaveDateController {
     public static void write(String file_name,String str){
         try {
-            OutputStream out = MainActivity.ME.openFileOutput("test.txt",MainActivity.ME.MODE_PRIVATE);
+            OutputStream out = MainActivity.ME.openFileOutput(file_name,MainActivity.ME.MODE_APPEND);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
             writer.append(str);
+            writer.flush();
             writer.close();
         }catch (IOException e){
             e.printStackTrace();
@@ -29,7 +30,7 @@ public class SaveDateController {
     }
     public static String read(String file_name){
         try{
-            InputStream in = MainActivity.ME.openFileInput("test.txt");
+            InputStream in = MainActivity.ME.openFileInput(file_name);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
             String s;
             while((s = reader.readLine()) != null){
@@ -43,7 +44,7 @@ public class SaveDateController {
         }
     }
     public static void bookmarkWriter(ShopDate sd){
-        String str = sd.getShopName()+","+sd.getADDRRES();
+        String str = sd.getShopName()+","+sd.getADDRRES()+"\n";
         write(SaveFile.BOOKMARK,str);
         read(SaveFile.BOOKMARK);
     }

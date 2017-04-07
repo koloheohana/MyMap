@@ -1,11 +1,9 @@
 package com.koloheohana.mymap.user_date;
 
 import com.koloheohana.mymap.date.SaveDateController;
-import com.koloheohana.mymap.date.SaveFile;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +11,14 @@ import java.util.ArrayList;
  */
 public class MyBookmark {
     private static ArrayList<ShopDate> bookmark_list = new ArrayList<>();
+    public static boolean READ_ON =false;
     public static void set(ShopDate sd){
+        if(!READ_ON){
+            read();
+        }
+        if(isSetBookmark(sd)){
+           return;
+        }
         bookmark_list.add(sd);
         SaveDateController.bookmarkWriter(sd);
     }
@@ -32,11 +37,11 @@ public class MyBookmark {
     public static ArrayList<ShopDate> getList(){
         return bookmark_list;
     }
-    public static boolean setBookmark(ShopDate sd){
+    public static boolean isSetBookmark(ShopDate sd){
         if(bookmark_list.contains(sd)){
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 }

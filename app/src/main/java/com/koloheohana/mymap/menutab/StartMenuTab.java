@@ -18,6 +18,8 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
+import com.koloheohana.mymap.date.SaveDateController;
+import com.koloheohana.mymap.date.SaveFile;
 import com.koloheohana.mymap.map.CsvReader;
 
 /**
@@ -53,7 +55,7 @@ public class StartMenuTab extends Fragment {
         private LayoutInflater mLayoutInflater;
         private String[] mHueArray = {
                 "地図", "グループ", "トーク", "登録",
-                "店情報", "お気に入り", "設定"
+                "店情報", "お気に入り", "初期化"
         };
         public void chengeMenu(int position){
             switch (position){
@@ -76,8 +78,10 @@ public class StartMenuTab extends Fragment {
 
                     return;
                 case 6:
+                    SaveDateController.removeFile(SaveFile.BOOKMARK);
                     return;
                 case 7:
+                    SaveDateController.removeFile(SaveFile.BOOKMARK);
                     return;
             }
         }

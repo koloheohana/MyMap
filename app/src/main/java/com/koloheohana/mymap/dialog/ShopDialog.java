@@ -1,8 +1,10 @@
 package com.koloheohana.mymap.dialog;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.koloheohana.mymap.user_date.MyBookmark;
  */
 public class ShopDialog extends DialogFragment{
     private final ShopDate SD;
+    private final boolean TEST_SWITCH = false;
+    private int ENABLE_FALSE_COLOR = 0xaa808080;
     public ShopDialog(ShopDate sd){
         SD = sd;
     }
@@ -57,15 +61,45 @@ public class ShopDialog extends DialogFragment{
         // OK ボタンのリスナ
         Button button = (Button)dialog.findViewById(R.id.positive_button);
         button.setEnabled(true);
-        button.setBackgroundColor(0xaa808080);
-        button.setText("お気に入り登録");
+
+        String bookmark ="お気に入り登録";
+        if(MyBookmark.getList().contains(SD)){
+            bookmark = "お気に入りを解除する";
+        }
+        button.setText(bookmark);
         dialog.findViewById(R.id.positive_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("お気に入り登録");
-                MyBookmark.set(SD);
-                Toast toast = Toast.makeText(MapsActivity.MAP_ME,"ブックマーク",Toast.LENGTH_SHORT);
-                toast.show();
+                if(MyBookmark.getList().contains(SD)){
+                    MyBookmark.release(SD);
+                    Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入りを解除しました",Toast.LENGTH_SHORT);
+                    toast.show();
+                }else {
+                    MyBookmark.set(SD);
+                    Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入り登録しました",Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+        Button button2 = (Button)dialog.findViewById(R.id.tel_button);
+        button2.setEnabled(TEST_SWITCH);
+        button2.setBackgroundColor(0xaa808080);
+        dialog.findViewById(R.id.tel_button).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String tel = SD.getTEL();
+                if(tel.isEmpty()){
+                    return;
+                }
+                String[] TEL = tel.split("-");
+                Intent intentcall = new Intent();
+                intentcall.setAction(Intent.ACTION_CALL);
+                StringBuffer sb = new StringBuffer();
+                for(String str:TEL){
+                    sb.append(str);
+                }
+                intentcall.setData(Uri.parse("tel:" + sb.toString()));
+                startActivity(intentcall);
             }
         });
         // Close ボタンのリスナ

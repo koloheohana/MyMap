@@ -3,8 +3,11 @@ package com.koloheohana.mymap.date;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.map.ShopDate;
+import com.koloheohana.mymap.user_date.MyBookmark;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +25,17 @@ public class SaveDateController {
             OutputStream out = MainActivity.ME.openFileOutput(file_name,MainActivity.ME.MODE_APPEND);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
             writer.append(str);
+            writer.flush();
+            writer.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public static void newFile(String file_name,String str){
+        try {
+            OutputStream out = MainActivity.ME.openFileOutput(file_name,MainActivity.ME.MODE_PRIVATE);
+            PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
+            writer.write(str);
             writer.flush();
             writer.close();
         }catch (IOException e){
@@ -47,6 +61,28 @@ public class SaveDateController {
         String str = sd.getShopName()+","+sd.getADDRRES()+"\n";
         write(SaveFile.BOOKMARK,str);
         read(SaveFile.BOOKMARK);
+    }
+    public static void bookmarkRemove(ShopDate sd){
+        try{
+            InputStream in = MainActivity.ME.openFileInput(SaveFile.BOOKMARK);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+            String s;
+            StringBuffer sb = new StringBuffer();
+            while((s = reader.readLine()) != null){
+                String[] split = s.split(",");
+                if(sd.getShopName().equals(split[0]) && sd.getADDRRES().equals(split[1])){
+                    continue;
+                }
+                sb.append(s+"\n");
+            }
+            newFile(SaveFile.BOOKMARK,sb.toString());
+            reader.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public static void removeFile(String file_name){
+        MainActivity.ME.deleteFile(SaveFile.BOOKMARK);
     }
     public static ArrayList<String[]> bookmarkReader(){
         ArrayList<String[]> list = new ArrayList<>();

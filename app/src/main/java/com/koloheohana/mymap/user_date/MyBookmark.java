@@ -1,5 +1,7 @@
 package com.koloheohana.mymap.user_date;
 
+import android.widget.PopupMenu;
+
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
@@ -13,14 +15,15 @@ public class MyBookmark {
     private static ArrayList<ShopDate> bookmark_list = new ArrayList<>();
     public static boolean READ_ON =false;
     public static void set(ShopDate sd){
-        if(!READ_ON){
-            read();
-        }
         if(isSetBookmark(sd)){
            return;
         }
         bookmark_list.add(sd);
         SaveDateController.bookmarkWriter(sd);
+    }
+    public static void release(ShopDate sd){
+        bookmark_list.remove(sd);
+        SaveDateController.bookmarkRemove(sd);
     }
     public static void read(){
         ArrayList<String[]> list = SaveDateController.bookmarkReader();
@@ -32,6 +35,14 @@ public class MyBookmark {
                     }
                 }
             }
+        }
+    }
+    public static void setBookmarkButton(PopupMenu pm){
+        int count = 0;
+        for(ShopDate sd:getList()){
+            System.out.println(sd.getShopName());
+            pm.getMenu().add(1,count,count,sd.getShopName());
+            count++;
         }
     }
     public static ArrayList<ShopDate> getList(){

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -390,8 +391,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     public void bookmarkButton(View view){
         PopupMenu pm = new PopupMenu(getApplicationContext(),view);
-        MenuInflater inflater = pm.getMenuInflater();
-        inflater.inflate(R.menu.list_popup,pm.getMenu());
+        MyBookmark.setBookmarkButton(pm);
+        pm.show();
+        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ShopDate S_D = MyBookmark.getList().get(item.getOrder());
+                setMarker(S_D,true);
+                ShopDialog sd = new ShopDialog(S_D);
+                sd.show(getSupportFragmentManager(),S_D.getShopName());
+                return false;
+            }
+
+        });
     }
     public void myTomo(View view) {
         long start = System.currentTimeMillis();
@@ -409,6 +421,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         zoomMap(now_lati, now_long);
     }
     public void mapSearchButton(View view){
-        ShopSearch.searchShop();
+        ShopSearch.searchShop(view);
     }
 }

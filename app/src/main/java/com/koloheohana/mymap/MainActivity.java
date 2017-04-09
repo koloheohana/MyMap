@@ -46,12 +46,11 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 TextView tv = (TextView)findViewById(R.id.nowGroupText);
                 tv.setText(mfp.getTitle(position));
-                System.out.println("セレクト");
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                System.out.println("チェンジ");
             }
         });
         // 上部にタブをセットする

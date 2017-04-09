@@ -18,7 +18,7 @@ import com.koloheohana.mymap.menutab.StartMenuTab;
 public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"メイン", "グループ", "トーク"};
+    private String tabTitles[] = new String[]{"TOP", "グループ", "トーク"};
     private Context context;
 
     public MainFragmentPagerAdapter(FragmentManager fm, Context context) {

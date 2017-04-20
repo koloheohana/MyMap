@@ -22,5 +22,12 @@ public class ShopList {
         ALLLIST.add(sd);
         SHOP_MAP_LATLNG.put(sd.getLATLNG(),sd);
     }
-
+    public static ShopDate getShopDate(String shop_name,String shop_addrres){
+        for(ShopDate sd:ALLLIST){
+            if(sd.getADDRRES().matches(shop_addrres)&&sd.getShopName().matches(shop_name)){
+                return sd;
+            }
+        }
+        return null;
+    }
 }

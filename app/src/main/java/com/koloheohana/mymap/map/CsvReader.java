@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.user_date.ShopMemo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -87,13 +88,7 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-/*
-        System.out.println(ShopList.ALLLIST.size());
-*/
-/*
-        MainActivity.ME.file_save(buf,"test");
-*/
+        ShopMemo.read();
     }
     public static String split_double(String s){
         String[] str = s.split("\"");

@@ -69,8 +69,14 @@ public class ShopDate {
     LatLng LATLNG;
     Double COORDINATE_X;
     Double COORDINATE_Y;
+    ArrayList<Memo> memo_list = new ArrayList<Memo>();
+    public ArrayList<Memo> getMemo(){
+        return memo_list;
+    }
+    public void addMemo(Memo memo){
+        memo_list.add(memo);
+    }
     Image[] IMAGE;
-
     public ShopDate(int _id,String _addrres,String postal,String _name,String category,String _tel,double _COORDINATE_X,double _COORDINATE_Y){
         ID = _id;
         SHOP_ID++;
@@ -84,7 +90,6 @@ public class ShopDate {
         COORDINATE_Y = _COORDINATE_Y;
         LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
     }
-
     public Double getX(){
         return COORDINATE_X;
     }

@@ -41,7 +41,6 @@ public class UserAdapter extends ArrayAdapter<User> {
         return view;
     }
 }
-
 class ViewHolder {
     ImageView iv;
     TextView name;

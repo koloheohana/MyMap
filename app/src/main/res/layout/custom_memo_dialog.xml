@@ -27,29 +27,13 @@
             android:textSize="18sp" />
 
         <!-- メッセージ -->
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
-            android:id="@+id/shop_date_text"
+            android:id="@+id/shop_memo_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:orientation="vertical">
-            <!--            <TextView
-                            android:id="@+id/message3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="20dp"
-                            android:lineSpacingExtra="6dp"
-                            android:text="test"
-                            android:textSize="16sp"
-                            android:textColor="#333333" />-->
-
         </LinearLayout>
 
         <LinearLayout
@@ -59,10 +43,15 @@
 
             android:background="@drawable/bg_dialog"
             android:gravity="center_horizontal"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="10dp"
             android:layout_margin="10dp">
-
+            <EditText
+                android:id="@+id/edit_memo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:padding="5dp" />
             <Button
                 android:id="@+id/positive_button"
                 android:layout_width="wrap_content"
@@ -70,38 +59,10 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bt_dialog_positive"
                 android:padding="5dp"
-                android:text="トーク"
+                android:text="保存する"
                 android:textColor="@android:color/white" />
-
-            <Button
-                android:id="@+id/tel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bt_dialog_positive"
-                android:padding="5dp"
-                android:text="電話をかける"
-                android:textColor="@android:color/white"></Button>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
 
-            android:background="@drawable/bg_dialog"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="10dp"
-            android:layout_margin="10dp">
-
-            <Button
-                android:id="@+id/memo_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bt_dialog_positive"
-                android:padding="5dp"
-                android:text="メモ"
-                android:textColor="@android:color/white"></Button>
-        </LinearLayout>
 
     </LinearLayout>
 

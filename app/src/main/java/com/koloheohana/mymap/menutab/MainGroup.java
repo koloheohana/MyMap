@@ -118,7 +118,6 @@ public class MainGroup extends Fragment {
 
 
 
-    //データベースから取得する項目　ここまで
     public GridView create(View view) {
         GridView myList = (GridView) view.findViewById(R.id.gridview);
         UserAdapter adapter = new UserAdapter(MainActivity.ME, 0, UserDate.user_list);

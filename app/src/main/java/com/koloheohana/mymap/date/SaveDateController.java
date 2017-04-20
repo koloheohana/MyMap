@@ -84,6 +84,24 @@ public class SaveDateController {
     public static void removeFile(String file_name){
         MainActivity.ME.deleteFile(SaveFile.BOOKMARK);
     }
+    public static void removeLine(String file_name,String str){
+        try{
+            InputStream in = MainActivity.ME.openFileInput(file_name);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+            String s;
+            StringBuffer sb = new StringBuffer();
+            while((s = reader.readLine()) != null){
+                if(str.matches(str)){
+                    continue;
+                }
+                sb.append(s+"\n");
+            }
+            newFile(SaveFile.BOOKMARK,sb.toString());
+            reader.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     public static ArrayList<String[]> bookmarkReader(){
         ArrayList<String[]> list = new ArrayList<>();
         try{
@@ -100,4 +118,21 @@ public class SaveDateController {
         }
         return list;
     }
+    public static ArrayList<String[]> MemoRead(){
+        ArrayList<String[]> list = new ArrayList<>();
+        try{
+            InputStream in = MainActivity.ME.openFileInput(SaveFile.SHOP_MEMO);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+            String s;
+            while((s = reader.readLine()) != null){
+                String[] split = s.split(",");
+                list.add(split);
+            }
+            reader.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
 }

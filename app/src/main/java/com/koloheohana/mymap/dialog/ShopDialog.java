@@ -19,6 +19,7 @@ import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.MyBookmark;
+import com.koloheohana.mymap.user_date.ShopMemo;
 
 /**
  * Created by User on 2016/08/24.
@@ -100,6 +101,17 @@ public class ShopDialog extends DialogFragment{
                 }
                 intentcall.setData(Uri.parse("tel:" + sb.toString()));
                 startActivity(intentcall);
+            }
+        });
+        Button button3 = (Button)dialog.findViewById(R.id.memo_button);
+        if(!SD.getMEMO().isEmpty()){
+            button3.setText("メモを読む");
+        }
+        dialog.findViewById(R.id.memo_button).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                MapMemoDialog mmd = new MapMemoDialog(SD);
+                mmd.show(getFragmentManager(),"");
             }
         });
         // Close ボタンのリスナ

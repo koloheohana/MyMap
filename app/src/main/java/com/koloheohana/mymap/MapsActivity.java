@@ -1,8 +1,10 @@
 package com.koloheohana.mymap;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -50,6 +53,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.koloheohana.mymap.adapter.MyBookMarkAdapter;
+import com.koloheohana.mymap.dialog.CBookmarkDialog;
 import com.koloheohana.mymap.dialog.GroupDialog;
 import com.koloheohana.mymap.dialog.ProfDialog;
 import com.koloheohana.mymap.dialog.ShopDialog;
@@ -390,7 +395,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 gd.show(getSupportFragmentManager(),"set");
     }
     public void bookmarkButton(View view){
-        PopupMenu pm = new PopupMenu(getApplicationContext(),view);
+        CBookmarkDialog cbd = new CBookmarkDialog(this);
+        cbd.show();
+/*        PopupMenu pm = new PopupMenu(getApplicationContext(),view);
         MyBookmark.setBookmarkButton(pm);
         pm.show();
         pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
@@ -403,7 +410,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
 
-        });
+        });*/
     }
     public void myTomo(View view) {
         long start = System.currentTimeMillis();

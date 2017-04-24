@@ -75,7 +75,7 @@ public class ReadFileSns {
             int ID;
             String TORK;
             Clocks clock;
-2        }
+        }
     }
     public void writeTorkFile(int user_id){
         String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;

@@ -12,5 +12,7 @@ import java.io.PrintWriter;
  * Created by User on 2016/08/24.
  */
 public class UserFile {
+    public void testCreate(){
 
+    }
 }

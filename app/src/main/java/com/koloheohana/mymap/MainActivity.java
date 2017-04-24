@@ -11,6 +11,10 @@ import android.widget.Toast;
 
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
+import com.koloheohana.mymap.map.CsvReader;
+import com.koloheohana.mymap.map.ShopList;
+import com.koloheohana.mymap.sns.ReadFileSns;
+import com.koloheohana.mymap.user_date.ReadDate;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -56,39 +60,13 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
+        if(ShopList.ALLLIST.isEmpty()) {
+/*            final CsvReader read = new CsvReader();
+            read.execute();*/
+            ReadDate.read();
+        }
     }
 
-    public void file_save(){
-        try {
-            OutputStream outStream = openFileOutput("test.txt", MODE_APPEND);
-            PrintWriter writer = new PrintWriter(new OutputStreamWriter(outStream,"UTF-8"));
-            writer.append("testeeees");
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        file_open();
-/*        try {
-            out = openFileOutput("text.txt",MODE_PRIVATE);
-            out.write(sb.toString().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-    public void file_open(){
-        try {
-            FileInputStream in = openFileInput("test.txt");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String tmp;
-            while ((tmp = reader.readLine()) != null) {
-                System.out.println(tmp);
-            }
-            reader.close();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-    }
 
     public void myMap(View view) {
         Intent intent = new Intent(this,MapsActivity.class);
@@ -103,15 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void myFriend(View view) {
-        file_save();
-//        TextView tv = (TextView)MainActivity.ME.findViewById(R.id.flags);
-//        if(tv == null) {
-//            System.out.println("nnnnnnnnnnnnnuuuuuuuuuuuulllllllaaaaaaaaaaaaaaaaal");
-//            System.out.println(tv);
-//        }else{
-//            System.out.println("cheeeeeeeeeeeeeeeeeeeeeeeck");
-//            System.out.println(tv);
-//        }
+
     }
 
     public void println(String str){

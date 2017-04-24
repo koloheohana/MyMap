@@ -25,7 +25,6 @@ public class Clocks {
         YEAR = Integer.valueOf(time[0]);
         MONTH = Integer.valueOf(time[1]);
         DAY = Integer.valueOf(time[2]);
-            System.out.println(CALENDER.get(Calendar.HOUR));
         HOUR = CALENDER.get(Calendar.HOUR);
         MINUTE = CALENDER.get(Calendar.MINUTE);
         SECOND = CALENDER.get(Calendar.SECOND);

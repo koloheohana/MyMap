@@ -5,6 +5,8 @@ import android.media.MediaRouter;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -73,6 +75,14 @@ public class ShopDate {
     public ArrayList<Memo> getMemo(){
         return memo_list;
     }
+    public String getMemoString(){
+        StringBuffer sb = new StringBuffer();
+        for(Memo memo: memo_list){
+            sb.append(memo.MEMO+"\n");
+            sb.append(memo.convertJapanese()+"\n");
+        }
+        return sb.toString();
+    }
     public void addMemo(Memo memo){
         memo_list.add(memo);
     }
@@ -108,6 +118,16 @@ public class ShopDate {
             sb.append(_name);
         }
         return sb.toString();
+    }
+    public String getEncodeAddrres(){
+        String encode;
+        try {
+            encode = URLEncoder.encode(ADDRRES,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return encode;
     }
     public String getShopName(){
         return NAME;

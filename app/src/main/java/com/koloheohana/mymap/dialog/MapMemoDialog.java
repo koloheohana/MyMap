@@ -1,7 +1,6 @@
 package com.koloheohana.mymap.dialog;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,19 +11,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.koloheohana.mymap.Clocks;
-import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.MainTork;
-import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.ShopMemo;
-
-import org.w3c.dom.Text;
-
-import java.sql.Time;
-import java.text.DateFormat;
-import java.util.Calendar;
 
 /**
  * Created by User on 2017/04/14.

@@ -42,16 +42,17 @@ public class SaveDateController {
             e.printStackTrace();
         }
     }
-    public static String read(String file_name){
+    public static ArrayList<String> read(String file_name){
         try{
             InputStream in = MainActivity.ME.openFileInput(file_name);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
             String s;
+            ArrayList<String> list = new ArrayList<String>();
             while((s = reader.readLine()) != null){
-                System.out.println(s);
+                list.add(s);
             }
             reader.close();
-            return null;
+            return list;
         }catch (IOException e){
             e.printStackTrace();
             return null;

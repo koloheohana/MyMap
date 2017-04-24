@@ -4,28 +4,43 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.menutab.Tork;
+import com.koloheohana.mymap.sns.OneTork;
+
+import java.util.ArrayList;
 
 /**
  * Created by User on 2016/08/24.
  */
 public class User {
+    private int id;
     private Bitmap icon;
+
     private String name;
-    private String loc;
-    public User getUser(int _icon,String name ,String loc){
+    private String mutter;
+    public ArrayList<OneTork> TORK = new ArrayList<OneTork>();
+    public User(int _id ,int _icon,String name ,String mutter){
+        id = _id;
         setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), _icon));
         setName(name);
-        setLoc(loc);
+        setLoc(mutter);
+        for(int i = 0 ; i <= 20;i++) {
+            TORK.add(new OneTork(String.valueOf(i)));
+        }
+    }
+    public User getUser(){
         return this;
     }
     public String getLoc() {
-        return loc;
+        return mutter;
     }
 
     public void setLoc(String loc) {
-        this.loc = loc;
+        this.mutter = loc;
     }
-
+    public int getId(){
+        return this.id;
+    }
     public Bitmap getIcon() {
         return icon;
     }

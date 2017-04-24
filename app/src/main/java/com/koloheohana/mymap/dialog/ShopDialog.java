@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.ShareCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -104,7 +105,7 @@ public class ShopDialog extends DialogFragment{
             }
         });
         Button button3 = (Button)dialog.findViewById(R.id.memo_button);
-        if(!SD.getMEMO().isEmpty()){
+        if(!SD.getMemo().isEmpty()){
             button3.setText("メモを読む");
         }
         dialog.findViewById(R.id.memo_button).setOnClickListener(new View.OnClickListener(){
@@ -112,6 +113,16 @@ public class ShopDialog extends DialogFragment{
             public void onClick(View v) {
                 MapMemoDialog mmd = new MapMemoDialog(SD);
                 mmd.show(getFragmentManager(),"");
+            }
+        });
+        Button button4 = (Button)dialog.findViewById(R.id.share_button);
+        dialog.findViewById(R.id.share_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareDialog shareDialog = new ShareDialog(SD);
+                shareDialog.show(MapsActivity.MAP_ME.getSupportFragmentManager(),"共有");
+
+
             }
         });
         // Close ボタンのリスナ

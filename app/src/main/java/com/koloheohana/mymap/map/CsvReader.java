@@ -88,7 +88,6 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ShopMemo.read();
     }
     public static String split_double(String s){
         String[] str = s.split("\"");

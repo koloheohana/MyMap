@@ -27,13 +27,20 @@
             android:textSize="18sp" />
 
         <!-- メッセージ -->
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
-            android:id="@+id/shop_memo_text"
+            android:id="@+id/dialog_yes_no_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:orientation="vertical">
+
         </LinearLayout>
 
         <LinearLayout
@@ -43,24 +50,28 @@
 
             android:background="@drawable/bg_dialog"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:padding="10dp"
             android:layout_margin="10dp">
-            <EditText
-                android:id="@+id/edit_memo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:padding="5dp" />
+
             <Button
-                android:id="@+id/positive_button"
+                android:id="@+id/share_nomitomo_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bt_dialog_positive"
                 android:padding="5dp"
-                android:text="保存する"
+                android:text="YES"
                 android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/share_ather_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bt_dialog_positive"
+                android:padding="5dp"
+                android:text="NO"
+                android:textColor="@android:color/white"></Button>
         </LinearLayout>
     </LinearLayout>
 

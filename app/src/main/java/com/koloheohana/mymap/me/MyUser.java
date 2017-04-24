@@ -10,30 +10,26 @@ import java.util.ArrayList;
 /**
  * Created by User on 2016/08/24.
  */
-public class MyUser {
+public class MyUser extends User{
+
+    public MyUser() {
+        super(0,ICON,NAME,LOCS);
+    }
+    //設定ファイルからの読み込み
     private static String NAME = "マイネーム";
     private static int ICON = R.mipmap.ic_launcher;
     private static String LOCS ="平針";
-    public ArrayList<User> PROF = new ArrayList<User>();
-    public String getMyName(){
-        return NAME;
-    }
-    public User MY_USER;
-    public int getMyIcon(){
-        return ICON;
-    }
-    public String getMyLocs(){
-        return LOCS;
-    }
-    public static ArrayList<User> getUser(){
+
+    public static MyUser ME =new MyUser();
+
+    /**
+     * MainGroupの仕組みが変
+     * @return 自身のみ
+     */
+    public ArrayList<User> getListUser(){
         ArrayList<User> list = new ArrayList<User>();
-        list.add(new User().getUser(ICON,NAME,LOCS));
+        list.add(ME);
         return list;
     }
-    public MyUser(){
-        MY_USER.getUser(ICON,NAME,LOCS);
-        PROF.add(MY_USER);
-        System.out.println(NAME);
-        System.out.println(LOCS);
-    }
+
 }

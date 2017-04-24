@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     android:orientation= "vertical"
     tools:context="com.koloheohana.mymap.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/profList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/place_autocomplete_prediction_primary_text" />
     <ListView
         android:id="@+id/myListView"
         android:layout_width="match_parent"

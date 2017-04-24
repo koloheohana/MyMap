@@ -28,9 +28,9 @@ public class ShopSearch {
     private static double KM[] = {3, 1, 0.5, 0.1};
 
     public static void setAdapter() {
+
         setCategorySpinner();
         setSearchRange();
-        MyBookmark.read();
     }
 
     public static void searchShop(View view) {
@@ -95,6 +95,7 @@ public class ShopSearch {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ME, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.add("範囲選択");
+
         for (double d : KM) {
             adapter.add(String.valueOf(d) + "㎞");
         }
@@ -106,7 +107,6 @@ public class ShopSearch {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
-                Spinner spinner = (Spinner) parent;
                 POSITION = position;
                 if (POSITION == 0) {
                     return;
@@ -121,7 +121,6 @@ public class ShopSearch {
             }
         });
     }
-
     public static ArrayList<ShopDate> getSearchRange(int position) {
         LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
         Double[] RANGE = Calculation.rangeCal(lan, KM[position]);
@@ -134,7 +133,18 @@ public class ShopSearch {
         }
         return shop_list;
     }
-
+    public static void setMarker(int kiro){
+        LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
+        Double[] RANGE = Calculation.rangeCal(lan, kiro);
+        ArrayList<ShopDate> shop_list = new ArrayList<ShopDate>();
+        for (LatLng _lat : ShopList.SHOP_MAP_LATLNG.keySet()) {
+            if (RANGE[0] <= _lat.latitude && RANGE[1] >= _lat.latitude &&
+                    RANGE[2] <= _lat.longitude && RANGE[3] >= _lat.longitude) {
+                shop_list.add(ShopList.SHOP_MAP_LATLNG.get(_lat));
+            }
+        }
+        MapsActivity.MAP_ME.setMarker(shop_list,true);
+    }
     public static ArrayList<ShopDate> getSearchRangeKiro(int kiro) {
         LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
         Double[] RANGE = Calculation.rangeCal(lan, kiro);
@@ -181,6 +191,7 @@ public class ShopSearch {
     private static void setCategorySpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ME, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        System.out.println("test");
         // カテゴリアイテムを追加します
         adapter.add("ジャンル選択");
         for (String str : ShopDate.SHOP_CATEGORY.getCategoryNameList()) {

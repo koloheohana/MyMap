@@ -41,7 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainTork">
+        <activity android:name=".sns.MainTork">
             android:windowSoftInputMode="adjustResize"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

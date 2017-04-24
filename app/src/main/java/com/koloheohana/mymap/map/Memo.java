@@ -4,6 +4,7 @@ package com.koloheohana.mymap.map;
  * Created by User on 2017/04/20.
  */
 public class Memo {
+    public String[] MEMOS;
     public String SHOP_NAME;
     public String SHOP_ADDRRES;
     public String MEMO;
@@ -28,6 +29,8 @@ public class Memo {
         SECOND = seconde;
     }
     public Memo(String[] str){
+
+        MEMOS = str;
         SHOP_NAME = str[0];
         SHOP_ADDRRES = str[1];
         MEMO = str[2];
@@ -37,5 +40,9 @@ public class Memo {
         HOUR = Integer.valueOf(str[6]);
         MINUTE = Integer.valueOf(str[7]);
         SECOND = Integer.valueOf(str[8]);
+    }
+    public String convertJapanese(){
+        StringBuffer sb = new StringBuffer();
+        return sb.toString();
     }
 }

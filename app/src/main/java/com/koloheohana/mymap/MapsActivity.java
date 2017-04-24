@@ -55,7 +55,7 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.koloheohana.mymap.adapter.MyBookMarkAdapter;
 import com.koloheohana.mymap.dialog.CBookmarkDialog;
-import com.koloheohana.mymap.dialog.GroupDialog;
+import com.koloheohana.mymap.dialog.MemoCustomDialog;
 import com.koloheohana.mymap.dialog.ProfDialog;
 import com.koloheohana.mymap.dialog.ShopDialog;
 import com.koloheohana.mymap.map.CsvReader;
@@ -63,6 +63,8 @@ import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.map.ShopSearch;
 import com.koloheohana.mymap.user_date.MyBookmark;
+import com.koloheohana.mymap.user_date.ReadDate;
+import com.koloheohana.mymap.user_date.ShopMemo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,15 +77,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleApiClient glocationClient;
     private Marker click_marker;
     public static MapsActivity MAP_ME = new MapsActivity();
-    public static boolean FIRST_CREATE;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FIRST_CREATE = true;
         MAP_ME = this;
         /*CsvReader.parse(this);*/
-        final CsvReader read = new CsvReader();
-        read.execute();
 
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -390,10 +389,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         setMarker(_list);
     }
-    private void setPopupWindow() {
-                GroupDialog gd = new GroupDialog();
-                gd.show(getSupportFragmentManager(),"set");
-    }
+
     public void bookmarkButton(View view){
         CBookmarkDialog cbd = new CBookmarkDialog(this);
         cbd.show();
@@ -412,8 +408,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         });*/
     }
+    public void memoButton(View view){
+        MemoCustomDialog mcd = new MemoCustomDialog(this);
+        mcd.show();
+    }
     public void myTomo(View view) {
-        long start = System.currentTimeMillis();
+        ShopSearch.setAdapter();
+/*        long start = System.currentTimeMillis();
         for(LatLng ll:ShopList.SHOP_MAP_LATLNG.keySet()){
             ShopList.SHOP_MAP_LATLNG.get(ll);
         }
@@ -424,7 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
         long end2 = System.currentTimeMillis();
-        System.out.println("ArrayListのタイム："+(end2-start2));
+        System.out.println("ArrayListのタイム："+(end2-start2));*/
         zoomMap(now_lati, now_long);
     }
     public void mapSearchButton(View view){

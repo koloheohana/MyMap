@@ -1,7 +1,6 @@
 package com.koloheohana.mymap.dialog;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.MainTork;
 import com.koloheohana.mymap.R;
 
 /**

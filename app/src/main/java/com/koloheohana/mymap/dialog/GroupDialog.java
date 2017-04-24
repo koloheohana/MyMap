@@ -1,7 +1,6 @@
 package com.koloheohana.mymap.dialog;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,9 +12,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.MainTork;
+import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.menutab.MainGroup;
 
 public class GroupDialog extends DialogFragment{
 
@@ -32,7 +30,7 @@ public class GroupDialog extends DialogFragment{
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        System.out.println("checcccck");
+
         Dialog dialog = new Dialog(getActivity());
         // タイトル非表示
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -47,7 +45,6 @@ public class GroupDialog extends DialogFragment{
         dialog.findViewById(R.id.positive_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainTork.TORK_NAME = USER_NOW;
                 Intent it = new Intent(MainActivity.ME, MainTork.class);
                 startActivity(it);
                 dismiss();

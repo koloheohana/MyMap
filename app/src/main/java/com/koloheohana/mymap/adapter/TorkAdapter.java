@@ -23,8 +23,10 @@ import java.util.ArrayList;
 public class TorkAdapter extends ArrayAdapter<OneTork> {
     private android.view.LayoutInflater LayoutInflater;
     OneTork TORK;
-    public TorkAdapter(Context c, int i, ArrayList<OneTork> list) {
-        super(c, i, list);
+    User USER;
+    public TorkAdapter(Context c, int i,User user) {
+        super(c, i, user.TORK);
+        USER = user;
         this.LayoutInflater = (android.view.LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -43,7 +45,7 @@ public class TorkAdapter extends ArrayAdapter<OneTork> {
 
         TORK = (OneTork)getItem(pos);
         System.out.println("check"+pos);
-        vh.name.setText("test");
+        vh.name.setText(USER.getName());
         vh.text.setText(TORK.getTork());
         return view;
     }

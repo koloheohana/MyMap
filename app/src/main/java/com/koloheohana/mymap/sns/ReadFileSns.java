@@ -1,5 +1,6 @@
 package com.koloheohana.mymap.sns;
 
+import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;
@@ -58,5 +59,38 @@ public class ReadFileSns {
         }
         System.out.println(sb.toString());
         SaveDateController.newFile(FILE_NAME,sb.toString());
+    }
+
+    public void readTorkFile(int user_id){
+        String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
+        File file = new File(file_name);
+        if (file.exists()){
+            SaveDateController.newFile(file_name,"");
+            System.out.println("ファイルは存在します");
+        }else{
+            System.out.println("ファイルは存在しません");
+        }
+        ArrayList<String> tork_list = SaveDateController.read(file_name);
+        for(String str:tork_list){
+            int ID;
+            String TORK;
+            Clocks clock;
+2        }
+    }
+    public void writeTorkFile(int user_id){
+        String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
+        File file = new File(file_name);
+        if (file.exists()){
+            SaveDateController.newFile(file_name,"");
+            System.out.println("ファイルは存在します");
+        }else{
+            System.out.println("ファイルは存在しません");
+        }
+        StringBuffer sb = new StringBuffer();
+        User user = UserList.getUserById(user_id);
+        for(OneTork otk:user.TORK){
+            sb.append(otk.getStringFileConverter());
+        }
+        SaveDateController.write(file_name,sb.toString());
     }
 }

@@ -3,6 +3,7 @@ package com.koloheohana.mymap.user_date;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.sns.OneTork;
@@ -25,8 +26,17 @@ public class User {
         setName(name);
         setLoc(mutter);
         for(int i = 0 ; i <= 20;i++) {
-            TORK.add(new OneTork(String.valueOf(i)));
+            if(i == 10){
+                TORK.add(new OneTork(String.valueOf(i)+"\ncreate",new Clocks(MainActivity.ME),this));
+            }
+            TORK.add(new OneTork(String.valueOf(i),new Clocks(MainActivity.ME),this));
         }
+    }
+    public void addTork(OneTork tork){
+        TORK.add(tork);
+    }
+    public void removeTork(OneTork tork){
+        TORK.remove(tork);
     }
     public User getUser(){
         return this;

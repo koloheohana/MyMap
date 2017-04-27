@@ -1,6 +1,7 @@
 package com.koloheohana.mymap.sns;
 
 import com.koloheohana.mymap.Clocks;
+import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;
@@ -61,30 +62,36 @@ public class ReadFileSns {
         SaveDateController.newFile(FILE_NAME,sb.toString());
     }
 
-    public void readTorkFile(int user_id){
-        String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
-        File file = new File(file_name);
-        if (file.exists()){
-            SaveDateController.newFile(file_name,"");
-            System.out.println("ファイルは存在します");
-        }else{
-            System.out.println("ファイルは存在しません");
-        }
-        ArrayList<String> tork_list = SaveDateController.read(file_name);
-        for(String str:tork_list){
-            int ID;
-            String TORK;
-            Clocks clock;
+    public static void readTorkFile(){
+        for(User user : UserList.ALL_USER_LIST) {
+            int user_id = user.getId();
+            String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
+            File file = new File(file_name);
+            if (file.exists()) {
+                System.out.println(file_name + "ファイルは存在します");
+            } else {
+                SaveDateController.newFile(file_name, "");
+                System.out.println(file_name + "ファイルは存在しません");
+            }
+            ArrayList<String> tork_list = SaveDateController.read(file_name);
+            for (String str : tork_list) {
+                String[] torks = str.split("＼");
+                String[] time = torks[1].split(":");
+                String TORK = torks[2].split(":")[1];
+                Clocks clock = new Clocks(time);
+                OneTork one_tork = new OneTork(TORK, clock, user);
+                user.addTork(one_tork);
+            }
         }
     }
-    public void writeTorkFile(int user_id){
+    public static void writeTorkFile(int user_id){
         String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
         File file = new File(file_name);
         if (file.exists()){
             SaveDateController.newFile(file_name,"");
-            System.out.println("ファイルは存在します");
+            System.out.println(file_name+"ファイルは存在します");
         }else{
-            System.out.println("ファイルは存在しません");
+            System.out.println(file_name+"ファイルは存在しません");
         }
         StringBuffer sb = new StringBuffer();
         User user = UserList.getUserById(user_id);

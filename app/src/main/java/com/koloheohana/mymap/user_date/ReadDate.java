@@ -10,5 +10,6 @@ public class ReadDate {
         MyBookmark.read();
         ShopMemo.read();
         ReadFileSns.read();
+        ReadFileSns.readTorkFile();
     }
 }

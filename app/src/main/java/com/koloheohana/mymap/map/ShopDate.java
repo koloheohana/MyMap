@@ -5,6 +5,7 @@ import android.media.MediaRouter;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by User on 2016/09/11.
  */
-public class ShopDate {
+public class ShopDate implements Serializable{
     public enum SHOP_CATEGORY{
         飲み屋,居酒屋,レストラン,和食,肉料理,喫茶店カフェ("喫茶店・カフェ"),そばうどん("そば・うどん"),スイーツ,魚料理,
         ラーメン,中華中国料理("中華・中国料理"),すし,イタリアンフレンチ("イタリアン・フレンチ"),たこ焼きお好み焼き("たこ焼き・お好み焼き"),ファーストフード,

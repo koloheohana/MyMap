@@ -30,7 +30,16 @@ public class Clocks {
         SECOND = CALENDER.get(Calendar.SECOND);
 
     }
-
+    public Clocks(String[] time){
+        CALENDER = Calendar.getInstance();
+        DATE_FORMAT = android.text.format.DateFormat.getDateFormat(MainActivity.ME.getApplicationContext());
+        YEAR = Integer.valueOf(time[0]);
+        MONTH = Integer.valueOf(time[1]);
+        DAY = Integer.valueOf(time[2]);
+        HOUR = Integer.valueOf(time[3]);
+        MINUTE = Integer.valueOf(time[4]);
+        SECOND = Integer.valueOf(time[5]);
+    }
     public String getStringSandTheString(String str){
         String time =YEAR+str+MONTH+str+DAY+str+HOUR+str+MINUTE+str+SECOND;
         return time;

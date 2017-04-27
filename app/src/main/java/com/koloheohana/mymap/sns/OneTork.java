@@ -3,10 +3,12 @@ package com.koloheohana.mymap.sns;
 import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.user_date.User;
 
+import java.io.Serializable;
+
 /**
  * Created by User on 2017/04/24.
  */
-public class OneTork {
+public class OneTork implements Serializable{
     String TORK;
     User USER;
     int ID;
@@ -19,7 +21,7 @@ public class OneTork {
     }
     public String getStringFileConverter(){
         StringBuffer sb = new StringBuffer();
-        sb.append("ID:"+ID+"＼"+"CLOCK:"+CLOCK+"＼"+"TORK:"+TORK+"\n");
+        sb.append("ID:"+ID+"＼"+"CLOCK:"+CLOCK.getStringSandTheString(":")+"＼"+"TORK:"+TORK+"\n");
         return sb.toString();
     }
 

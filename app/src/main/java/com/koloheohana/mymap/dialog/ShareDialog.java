@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
+import com.koloheohana.mymap.sns.MainTork;
 
 public class ShareDialog extends DialogFragment{
     ShopDate SD;
@@ -40,6 +41,8 @@ public class ShareDialog extends DialogFragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TorkShareDialog tsd = new TorkShareDialog(MapsActivity.MAP_ME,SD);
+                tsd.show();
                 dismiss();
             }
         });
@@ -52,9 +55,6 @@ public class ShareDialog extends DialogFragment{
                 ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(MapsActivity.MAP_ME);
                 builder.setChooserTitle("食事のお誘いです");
                 builder.setSubject("飲み友アプリ");
-/*
-                builder.setText("通信テストです"+"\n"+SD.getShopName()+"\n"+SD.getADDRRES()+"\n"+SD.getTEL()+"\n"+"https://www.google.co.jp/maps?q="+SD.getEncodeAddrres());
-*/
                 builder.setText("通信テストです"+"\n"+SD.getShopName()+"\n"+SD.getADDRRES()+"\n"+SD.getTEL()+"\n"+"https://www.google.co.jp/maps?q="+SD.getLATLNG().latitude+","+SD.getLATLNG().longitude);
                 builder.setType("text/plain");
                 builder.startChooser();

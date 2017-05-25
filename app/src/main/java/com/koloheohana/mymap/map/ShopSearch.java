@@ -13,9 +13,11 @@ import android.widget.Spinner;
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.ShopDialog;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ReadDate;
+import com.koloheohana.mymap.util.GetScreenShot;
 
 import java.util.ArrayList;
 
@@ -57,6 +59,7 @@ public class ShopSearch {
         pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
                 ShopDate S_D = ShopSearch.getShopDate(item.getTitle().toString(),item.getTitleCondensed().toString());
                 MapsActivity.MAP_ME.setMarker(S_D, true);
                 ShopDialog sd = new ShopDialog(S_D);

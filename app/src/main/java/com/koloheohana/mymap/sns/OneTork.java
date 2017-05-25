@@ -1,8 +1,15 @@
 package com.koloheohana.mymap.sns;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import com.koloheohana.mymap.Clocks;
+import com.koloheohana.mymap.date.SaveDateController;
+import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.User;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -13,19 +20,56 @@ public class OneTork implements Serializable{
     User USER;
     int ID;
     Clocks CLOCK;
-    public OneTork(String tork, Clocks clocks,User user){
-        TORK = tork;
+    ShopDate SHOP_DATA;
+    Uri GALLARY_URI;
+    Uri MAP_URI;
+    String FILE_NAME;
+    public OneTork(String tork, Clocks clocks,User user,Uri gallaryUri,ShopDate sd,Uri mapUri){
+        if(tork.isEmpty()){
+            if(gallaryUri != null){
+                GALLARY_URI = gallaryUri;
+                TORK = gallaryUri.toString();
+            }else if(mapUri != null){
+                MAP_URI = mapUri;
+                TORK = mapUri.toString();
+            }
+        }else {
+            TORK = tork;
+        }
         CLOCK = clocks;
         USER = user;
-        ID = user.getId();
+        ID = user.TORK.size()+1;
+        SHOP_DATA = sd;
+    }
+
+    public String getFILE_NAME(){
+        return FILE_NAME;
+    }
+    public ShopDate getShopData(){
+        return SHOP_DATA;
+    }
+    public Uri getUri(){
+        if(GALLARY_URI != null){
+            return GALLARY_URI;
+        }else{
+            return MAP_URI;
+        }
     }
     public String getStringFileConverter(){
         StringBuffer sb = new StringBuffer();
-        sb.append("ID:"+ID+"＼"+"CLOCK:"+CLOCK.getStringSandTheString(":")+"＼"+"TORK:"+TORK+"\n");
+        sb.append(ID+"＼"+"ID∥"+USER.getId()+"＼"+"CLOCK∥"+CLOCK.getStringSandTheString("∥")+"＼"+"TORK∥"+TORK+"\n");
         return sb.toString();
     }
-
     public String getTork(){
         return TORK;
+    }
+
+}
+class TorkShareMap{
+    Bitmap BIT;
+    ShopDate SD;
+    public TorkShareMap(Bitmap bit,ShopDate sd){
+        BIT = bit;
+        SD = sd;
     }
 }

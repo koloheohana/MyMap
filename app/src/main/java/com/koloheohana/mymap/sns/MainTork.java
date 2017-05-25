@@ -1,49 +1,42 @@
 package com.koloheohana.mymap.sns;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
+import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.Clocks;
-import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.adapter.MyBookMarkAdapter;
 import com.koloheohana.mymap.adapter.TorkAdapter;
-import com.koloheohana.mymap.adapter.TorkShareAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
-import com.koloheohana.mymap.date.SaveFile;
 import com.koloheohana.mymap.map.ShopDataIntent;
 import com.koloheohana.mymap.map.ShopDate;
-import com.koloheohana.mymap.me.MyUser;
-import com.koloheohana.mymap.menutab.Tork;
-import com.koloheohana.mymap.user_date.MyBookmark;
+import com.koloheohana.mymap.map.ShopList;
+
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.CustomListView;
 
-import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 2016/07/02.
@@ -53,6 +46,11 @@ public class MainTork extends AppCompatActivity {
     public static int ID;
     public static User user;
     public static MainTork ME;
+    private TorkAdapter TA;
+    private InputMethodManager inputMethodManager;
+    private LinearLayout mainLayout;
+    public float viewWidth;
+
     //+ID+.txt
     private static String file_name;
 
@@ -61,15 +59,43 @@ public class MainTork extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tork_activity);
         ME = this;
-        TextView tv = (TextView)findViewById(R.id.nowGroupText);
-        user = UserList.getUserById(ID);
-        createTork();
-        tv.setText(user.getName());
+        mainLayout = (LinearLayout)findViewById(R.id.tork_main_layout);
+        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(mainLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        // ウィンドウマネージャのインスタンス取得
+        WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
+        // ディスプレイのインスタンス生成
+        Display disp = wm.getDefaultDisplay();
+        viewWidth = disp.getWidth();
+
         Intent intent = getIntent();
         ShopDataIntent sd = (ShopDataIntent)intent.getSerializableExtra("ShopData");
+        TextView tv = (TextView) findViewById(R.id.nowGroupText);
         if(sd != null) {
-            addTork(sd.SHOP_NAME);
+            user = UserList.getUserById(sd.USER_ID);
+            ID = sd.USER_ID;
+            createTork();
+            ShopDate _sd = ShopList.getShopDate(sd.SHOP_NAME,sd.SHOP_ADDRRES);
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme("http");
+            builder.authority("www.serendip.ws");
+            builder.path("/hoge/foo");
+            builder.appendQueryParameter("key1", "val1");
+            builder.appendQueryParameter("key2", "Encodeされたテキスト");
+            builder.fragment("fragment(フラグメント)");
+            addTork(_sd,null,SaveDateController.,builder.build());
+        }else {
+            user = UserList.getUserById(ID);
+            createTork();
         }
+        tv.setText(user.getName());
+    }
+    //URLリンクに移動する
+    public void createMapTork(ShopDate sd){
+        String _URL = "https://www.google.co.jp/#q="+sd.getShopName();
+        Uri uri = Uri.parse(_URL);
+        Intent i = new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(i);
     }
     public StringBuffer sb = new StringBuffer();
 
@@ -79,7 +105,11 @@ public class MainTork extends AppCompatActivity {
      */
     public void edit_tork(View view){
         EditText ed =(EditText)findViewById(R.id.tork_text);
-        addTork(ed.getText().toString());
+        String tork = ed.getText().toString();
+        if(tork.isEmpty()){
+            return;
+        }
+        addTork(tork);
         EditText tork_text = (EditText)findViewById(R.id.tork_text);
         tork_text.setText(null);
     }
@@ -90,26 +120,44 @@ public class MainTork extends AppCompatActivity {
      * @param _tork トーク内容
      */
     private void addTork(String _tork){
-        OneTork tork =  new OneTork(_tork,new Clocks(this),MyUser.ME);
+        OneTork tork =  new OneTork(_tork,new Clocks(this),user,null,null,null);
+        addTork(tork);
+    }
+    private void addTork(OneTork tork){
+        ReadFileSns.writeTorkFile(user.getId(),tork);
         user.addTork(tork);
         CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
         int last = list.getCount();
         list.setSelection(last-1);
         list.deferNotifyDataSetChanged();
+        TA.notifyDataSetChanged();
     }
-
-    private void createTork(){
-
+    private void addTork(ShopDate sd,Uri camera,Uri map){
+        OneTork tork =  new OneTork(null,new Clocks(this),user,camera,sd,map);
+        addTork(tork);
+    }
+    public void removeTork(OneTork ot){
+        user.removeTork(ot);
+        ReadFileSns.removeTorkFile(user.getId(),ot);
         CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
+        int last = list.getCount();
+        list.setSelection(last-1);
+        list.deferNotifyDataSetChanged();
+        TA.notifyDataSetChanged();
+    }
+    private void createTork(){
+        CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
+        TA = new TorkAdapter(this,R.layout.tork_list_item,user);
+/*
         TorkAdapter ta = new TorkAdapter(this,0,user);
-        list.setAdapter(ta);
+*/
+        list.setAdapter(TA);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CustomListView clv = (CustomListView)parent;
                 OneTork one = (OneTork)clv.getItemAtPosition(position);
-                TorkAdapter TA = (TorkAdapter)clv.getAdapter();
                 SampleDialogFragment sdf = new SampleDialogFragment(ME,one);
                 sdf.show();
             }
@@ -131,28 +179,74 @@ public class MainTork extends AppCompatActivity {
         builder.setType("text/plain");
         builder.startChooser();
     }
+    public void openGallery(View view){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,REQUEST_GALLERY);
+    }
+    private static final int REQUEST_GALLERY = 0;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+        if (requestCode == REQUEST_GALLERY && resultCode == Activity.RESULT_OK) {
+                addTork(null,resultData.getData(),null);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        inputMethodManager.hideSoftInputFromWindow(mainLayout.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+        mainLayout.requestFocus();
+        return false;
+    }
 }
 class SampleDialogFragment extends AlertDialog {
     OneTork OT;
     public SampleDialogFragment(final Context context,OneTork ot){
         super(context);
         OT = ot;
-        TorkShareAdapter adapter = new TorkShareAdapter(context.getApplicationContext(), 0, UserList.ALL_USER_LIST);
+        ArrayList<String> list = new ArrayList<>();
+        list.add("このトークを削除する");
+        list.add("このトークをコピーする");
+        TorkDialogAdapter adapter = new TorkDialogAdapter(context.getApplicationContext(), 0, list);
         final ListView listView = new ListView(context);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User sd = (User)listView.getItemAtPosition(position);
-                System.out.println(sd.getName());
-                System.out.println(OT.getTork());
-
+                switch (position){
+                    case 0:
+                        MainTork.ME.removeTork(OT);
+                        break;
+                    case 1:
+                        break;
+                }
                 dismiss();
             }
-
         });
 
-        setTitle("共有先一覧");
+        setTitle(OT.getTork());
         setView(listView);
+    }
+    class TorkDialogAdapter extends ArrayAdapter<String> {
+        private LayoutInflater inflater;
+
+        public TorkDialogAdapter(Context context, int resource, List<String> objects) {
+            super(context, resource, objects);
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            String item = (String)getItem(position);
+            if (null == v) v = inflater.inflate(R.layout.util_list_item, null);
+
+            TextView intTextView = (TextView) v.findViewById(R.id.util_text);
+            intTextView.setText(item);
+
+            return v;
+        }
     }
 }

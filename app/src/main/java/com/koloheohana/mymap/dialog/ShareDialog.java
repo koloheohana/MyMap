@@ -71,6 +71,4 @@ public class ShareDialog extends DialogFragment{
         });
         return dialog;
     }
-
-
 }

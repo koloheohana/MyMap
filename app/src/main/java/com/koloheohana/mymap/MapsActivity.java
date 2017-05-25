@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
@@ -29,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
@@ -54,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.koloheohana.mymap.adapter.MyBookMarkAdapter;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.CBookmarkDialog;
 import com.koloheohana.mymap.dialog.MemoCustomDialog;
 import com.koloheohana.mymap.dialog.ProfDialog;
@@ -65,9 +69,11 @@ import com.koloheohana.mymap.map.ShopSearch;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ReadDate;
 import com.koloheohana.mymap.user_date.ShopMemo;
+import com.koloheohana.mymap.util.GetScreenShot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -178,7 +184,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }*/
-
     @Override
     public void onConnected(Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -369,6 +374,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
+                if(S_D ==null){
+                    return;
+                }
                 ShopDialog sd = new ShopDialog(S_D);
                 sd.show(getSupportFragmentManager(),S_D.getShopName());
             }
@@ -377,6 +385,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(zoom){
             zoomMap(sd);
         }
+    }
+    public void setSnapShotPre(){
+        // TODO Auto-generated method stub
+        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                // TODO Auto-generated method stub
+                // スナップショット画像の縮小
+                Matrix mat = new Matrix();
+                mat.postScale(0.3f, 0.3f);
+                Bitmap cnv = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
+                SaveDateController.bitmapSave(MAP_ME,cnv);
+            }
+        });
     }
     public void clearMarker(){
         for(int i = 0; i < list.size();i++){

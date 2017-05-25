@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class MyUser extends User{
 
     public MyUser() {
-        super(0,ICON,NAME,LOCS);
+        super(-1,ICON,NAME,LOCS);
     }
     //設定ファイルからの読み込み
     private static String NAME = "マイネーム";

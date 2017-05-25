@@ -10,12 +10,14 @@ import android.widget.ListView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.adapter.TorkShareAdapter;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.ShopDataIntent;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
+import com.koloheohana.mymap.util.GetScreenShot;
 
 import java.io.Serializable;
 
@@ -27,14 +29,16 @@ public class TorkShareDialog extends AlertDialog {
     public TorkShareDialog(final Context context, final ShopDate sd){
         super(context);
         SD = sd;
-        TorkShareAdapter adapter = new TorkShareAdapter(context.getApplicationContext(), 0, UserList.ALL_USER_LIST);
+        final TorkShareAdapter adapter = new TorkShareAdapter(context.getApplicationContext(), 0, UserList.ALL_USER_LIST);
         final ListView listView = new ListView(context);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User user = adapter.getItem(position);
+                MapsActivity.MAP_ME.setSnapShotPre();
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
-                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName()));
+                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId()));
                 intent.setAction(Intent.ACTION_VIEW);
                 MapsActivity.MAP_ME.startActivity(intent);
                 dismiss();

@@ -5,6 +5,7 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;
+import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
 
@@ -17,16 +18,13 @@ import java.util.ArrayList;
 public class ReadFileSns {
     public static String FILE_NAME = SaveFile.FRIEND_DATE;
     public static void read(){
-
         ArrayList<String> list = SaveDateController.read(FILE_NAME);
         for(String str:list) {
-            System.out.println(str);
-            String[] users = str.split("/");
-            System.out.println(users[0]);
-            int id = Integer.valueOf(users[0].split(":")[1]);
-            String name = users[1].split(":")[1];
-            String mutter = users[2].split(":")[1];
-            int icon = Integer.valueOf(users[3].split(":")[1]);
+            String[] users = str.split("＼");
+            int id = Integer.valueOf(users[0].split("∥")[1]);
+            String name = users[1].split("∥")[1];
+            String mutter = users[2].split("∥")[1];
+            int icon = Integer.valueOf(users[3].split("∥")[1]);
             UserList.add(new User(id,icon,name,mutter));
         }
     }
@@ -53,51 +51,45 @@ public class ReadFileSns {
     public static void testCreate(){
         StringBuffer sb = new StringBuffer();
         for(int i = 0; i < NAMES.length;i++){
-            sb.append("ID:"+i+"/");
-            sb.append("名前:"+NAMES[i]+"/");
-            sb.append("場所:"+LOCS[i]+"/");
-            sb.append("画像:"+String.valueOf(ICONS[i])+"\n");
+            sb.append("ID∥"+i+"＼");
+            sb.append("名前∥"+NAMES[i]+"＼");
+            sb.append("場所∥"+LOCS[i]+"＼");
+            sb.append("画像∥"+String.valueOf(ICONS[i])+"\n");
         }
-        System.out.println(sb.toString());
         SaveDateController.newFile(FILE_NAME,sb.toString());
     }
-
+    public static void fileClear(){
+        for(User user : UserList.ALL_USER_LIST) {
+            int user_id = user.getId();
+            String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
+            SaveDateController.newFile(file_name,"");
+        }
+    }
     public static void readTorkFile(){
         for(User user : UserList.ALL_USER_LIST) {
             int user_id = user.getId();
             String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
-            File file = new File(file_name);
-            if (file.exists()) {
-                System.out.println(file_name + "ファイルは存在します");
-            } else {
-                SaveDateController.newFile(file_name, "");
-                System.out.println(file_name + "ファイルは存在しません");
-            }
             ArrayList<String> tork_list = SaveDateController.read(file_name);
             for (String str : tork_list) {
                 String[] torks = str.split("＼");
-                String[] time = torks[1].split(":");
-                String TORK = torks[2].split(":")[1];
+                String[] time = torks[2].split("∥");
+                String TORK = torks[3].split("∥")[1];
                 Clocks clock = new Clocks(time);
-                OneTork one_tork = new OneTork(TORK, clock, user);
+                OneTork one_tork = new OneTork(TORK, clock, user,null,null,null);
                 user.addTork(one_tork);
             }
         }
     }
-    public static void writeTorkFile(int user_id){
+    public static void writeTorkFile(int user_id,OneTork tork){
         String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
-        File file = new File(file_name);
-        if (file.exists()){
-            SaveDateController.newFile(file_name,"");
-            System.out.println(file_name+"ファイルは存在します");
-        }else{
-            System.out.println(file_name+"ファイルは存在しません");
-        }
         StringBuffer sb = new StringBuffer();
-        User user = UserList.getUserById(user_id);
-        for(OneTork otk:user.TORK){
-            sb.append(otk.getStringFileConverter());
-        }
+        sb.append(tork.getStringFileConverter());
         SaveDateController.write(file_name,sb.toString());
+    }
+    public static void removeTorkFile(int user_id,OneTork tork){
+        String file_name = SaveFile.TORK_ID+user_id+SaveFile.FORMAT;
+        StringBuffer sb = new StringBuffer();
+        sb.append(tork.getStringFileConverter());
+        SaveDateController.removeLine(file_name,sb.toString());
     }
 }

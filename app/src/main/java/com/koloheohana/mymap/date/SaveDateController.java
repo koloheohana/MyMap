@@ -1,19 +1,31 @@
 package com.koloheohana.mymap.date;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Base64;
+
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.MyBookmark;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +34,9 @@ import java.util.ArrayList;
 public class SaveDateController {
     public static void write(String file_name,String str){
         try {
+            System.out.println(file_name+":この内容で書き込みをします");
+            System.out.println(str);
+
             OutputStream out = MainActivity.ME.openFileOutput(file_name,MainActivity.ME.MODE_APPEND);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
             writer.append(str);
@@ -90,14 +105,18 @@ public class SaveDateController {
             InputStream in = MainActivity.ME.openFileInput(file_name);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
             String s;
+            String TORK_ID = str.split("＼")[2];
+            String TORK_ID_S;
             StringBuffer sb = new StringBuffer();
             while((s = reader.readLine()) != null){
-                if(str.matches(str)){
+                TORK_ID_S = s.split("＼")[2];
+
+                if(TORK_ID.matches(TORK_ID_S)){
                     continue;
                 }
-                sb.append(s+"\n");
+                sb.append(s).append("\n");
             }
-            newFile(SaveFile.BOOKMARK,sb.toString());
+            newFile(file_name,sb.toString());
             reader.close();
         }catch (IOException e){
             e.printStackTrace();
@@ -135,5 +154,43 @@ public class SaveDateController {
         }
         return list;
     }
+    public static void bitmapSave(Context context,Bitmap map){
+        Bitmap b = map;//保存したいBitmap
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        b.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        String bitmapStr = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 
+        SharedPreferences pref = context.getSharedPreferences("hoge",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("hoge", bitmapStr);
+        editor.commit();
+    }
+    public static Uri saveBitmapFile(Context context, Bitmap image, String file_name){
+        FileOutputStream out = null;
+        Uri uri = null;
+        try {
+            // openFileOutputはContextのメソッドなのでActivity内ならばthisでOK
+            out = context.openFileOutput(file_name+".png", Context.MODE_PRIVATE);
+            image.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+
+            File file = new File(file_name+".png");
+            uri = Uri.fromFile(file);
+            FileInputStream in = context.openFileInput(file_name+".png");
+            Bitmap bitmap = BitmapFactory.decodeStream(in);
+            System.out.println("Uri="+uri.toString());
+            System.out.println("bitmap="+bitmap);
+            return uri;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
+    public static Bitmap getBitMapPre(Context con){
+        SharedPreferences pref = con.getSharedPreferences("hoge",Context.MODE_PRIVATE);
+        String s = pref.getString("hoge","");
+        byte[] b = Base64.decode(s, Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(b, 0, b.length);
+        return bmp;
+    }
 }

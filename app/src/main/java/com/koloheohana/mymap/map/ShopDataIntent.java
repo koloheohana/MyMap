@@ -1,5 +1,8 @@
 package com.koloheohana.mymap.map;
 
+import android.graphics.Bitmap;
+import android.view.View;
+
 import java.io.Serializable;
 
 /**
@@ -7,8 +10,11 @@ import java.io.Serializable;
  */
 public class ShopDataIntent implements Serializable {
     public String SHOP_NAME;
-    public ShopDate sd;
-    public ShopDataIntent(String str) {
+    public String SHOP_ADDRRES;
+    public int USER_ID;
+    public ShopDataIntent(String str, String shop_addrres, int user_id) {
         SHOP_NAME = str;
+        SHOP_ADDRRES = shop_addrres;
+        USER_ID = user_id;
     }
 }

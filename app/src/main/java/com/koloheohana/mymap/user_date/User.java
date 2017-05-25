@@ -25,12 +25,16 @@ public class User {
         setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), _icon));
         setName(name);
         setLoc(mutter);
-        for(int i = 0 ; i <= 20;i++) {
+        readTorkFile();
+/*        for(int i = 0 ; i <= 20;i++) {
             if(i == 10){
-                TORK.add(new OneTork(String.valueOf(i)+"\ncreate",new Clocks(MainActivity.ME),this));
+                TORK.add(new OneTork(String.valueOf(i)+"\ncreate",new Clocks(MainActivity.ME),this,null,null,null));
             }
-            TORK.add(new OneTork(String.valueOf(i),new Clocks(MainActivity.ME),this));
-        }
+            TORK.add(new OneTork(String.valueOf(i),new Clocks(MainActivity.ME),this,null,null,null));
+        }*/
+    }
+    public void readTorkFile(){
+
     }
     public void addTork(OneTork tork){
         TORK.add(tork);
@@ -47,6 +51,9 @@ public class User {
 
     public void setLoc(String loc) {
         this.mutter = loc;
+    }
+    public int getUserId(){
+        return this.id;
     }
     public int getId(){
         return this.id;

@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ShopMemo;
+import com.koloheohana.mymap.util.GetScreenShot;
 
 /**
  * Created by User on 2016/08/24.
@@ -34,6 +36,7 @@ public class ShopDialog extends DialogFragment{
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
         Dialog dialog = new Dialog(getActivity());
         // タイトル非表示
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);

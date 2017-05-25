@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class TorkShareAdapter extends ArrayAdapter<User> {
     private LayoutInflater inflater;
-
     public TorkShareAdapter(Context context, int resource, List<User> objects) {
         super(context, resource, objects);
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

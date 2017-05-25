@@ -15,13 +15,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/tork_name"
             android:textSize="8dp"
             android:layout_marginLeft="10dp"
             android:layout_width="match_parent"
             android:layout_height="10dp" />
+
         <TextView
             android:id="@+id/tork_text_box"
             android:layout_width="match_parent"

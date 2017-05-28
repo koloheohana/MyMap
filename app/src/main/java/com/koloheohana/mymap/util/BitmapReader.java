@@ -3,16 +3,17 @@ package com.koloheohana.mymap.util;
 import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.media.ExifInterface;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 import com.koloheohana.mymap.sns.MainTork;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -93,15 +95,23 @@ public class BitmapReader {
         }
         return null;
     }
-    /*
+/*    *//*
         bitmapを扱う時はここ
-     */
+     *//*
     public static Bitmap getBitmap(Context context,Uri uri){
-
+        System.out.println("getBitmap:URI="+uri.getPath());
         Bitmap bitmap = null;
+        String fileName = null;
+        if(uri.toString().startsWith("file")){
+            fileName = new File(uri.getPath()).getName();
+        }
         try {
             InputStream in;
-            in = context.getContentResolver().openInputStream(uri);
+            if(uri.toString().startsWith("file")){
+                in= context.openFileInput(fileName);
+            }else {
+                in = context.getContentResolver().openInputStream(uri);
+            }
             BitmapFactory.Options imageOptions = new BitmapFactory.Options();
             imageOptions.inJustDecodeBounds = true;
             imageOptions.inPreferredConfig = Bitmap.Config.RGB_565;
@@ -109,8 +119,74 @@ public class BitmapReader {
             in.close();
 
             //仮設定　本来はスマホに合わせる
+            int imageSizeMax = 200;
+            if(uri.toString().startsWith("file")){
+                in= context.openFileInput(fileName);
+            }else {
+                in = context.getContentResolver().openInputStream(uri);
+            }            float imageScaleWidth = (float)imageOptions.outWidth /imageSizeMax;
+            float imageScaleHeight = (float)imageOptions.outHeight / imageSizeMax;
+
+            // もしも、縮小できるサイズならば、縮小して読み込む
+            if (imageScaleWidth > 2 && imageScaleHeight > 2) {
+                BitmapFactory.Options imageOptions2 = new BitmapFactory.Options();
+
+                // 縦横、小さい方に縮小するスケールを合わせる
+                int imageScale = (int)Math.floor((imageScaleWidth > imageScaleHeight ? imageScaleHeight : imageScaleWidth));
+
+                // inSampleSizeには2のべき上が入るべきなので、imageScaleに最も近く、かつそれ以下の2のべき上の数を探す
+                for (int i = 2; i <= imageScale; i *= 2) {
+                    imageOptions2.inSampleSize = i;
+                }
+
+                bitmap = BitmapFactory.decodeStream(in, null, imageOptions2);
+                Log.v("image", "Sample Size: 1/" + imageOptions2.inSampleSize);
+            } else {
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+
+            in.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }*/
+    /*
+    bitmapを扱う時はここ
+ */
+    public static Bitmap getBitmap(Context context,Uri uri,boolean reduction){
+        Bitmap bitmap = null;
+        String fileName = null;
+
+        if(uri.toString().startsWith("file")){
+            fileName = new File(uri.getPath()).getName();
+        }
+        try {
+            InputStream in;
+            if(uri.toString().startsWith("file")){
+                in= context.openFileInput(fileName);
+            }else {
+                in = context.getContentResolver().openInputStream(uri);
+            }
+            if(!reduction){
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+
+            BitmapFactory.Options imageOptions = new BitmapFactory.Options();
+            imageOptions.inJustDecodeBounds = true;
+            imageOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+            BitmapFactory.decodeStream(in,null,imageOptions);
+            Log.v("bitmap","imageSize:"+imageOptions.outWidth+"x"+imageOptions.outHeight);
+            in.close();
+
+            //仮設定　本来はスマホに合わせる
             int imageSizeMax = 500;
-            in = context.getContentResolver().openInputStream(uri);
+            if(uri.toString().startsWith("file")){
+                in= context.openFileInput(fileName);
+            }else {
+                in = context.getContentResolver().openInputStream(uri);
+            }
             float imageScaleWidth = (float)imageOptions.outWidth /imageSizeMax;
             float imageScaleHeight = (float)imageOptions.outHeight / imageSizeMax;
 
@@ -139,20 +215,99 @@ public class BitmapReader {
         }
         return bitmap;
     }
-    public static void setSizeAndDirection(Context context,ImageView imgView, Bitmap bitmap, Uri uri) {
-        String fileName = getPathFromUri(context,uri);
-        if(bitmap == null){
-            bitmap = getBitmap(context,uri);
-        }
+/*    public static int getDirection(String filePath){
+        ExifInterface exifInterface = null;
         try {
-            ExifInterface exifInterface = null;
-            exifInterface = new ExifInterface(fileName);
-            int orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
+            exifInterface = new ExifInterface(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));
+        return orientation;
 
+    }
+    public static int getDirection(Context context,Uri uri){
+        return getDirection(getPathFromUri(context,uri));
+    }
+    */
+    public static int getIntDirection(Context context,Uri uri){
+        Cursor crs = context.getContentResolver().query(uri,new String[]{MediaStore.Images.ImageColumns.ORIENTATION},null,null,null);
+        int direction = 0;
+        if(crs.getCount() != 1){
+            System.out.println("not file load");
+            return direction;
+        }
+        crs.moveToFirst();
+        direction = crs.getInt(0);
+        System.out.println("direction:"+direction);
+        crs.close();
+        return direction;
+    }
+
+    public static Bitmap rotateAndResize(Context context,Uri uri){
+        String filePath = getPathFromUri(context,uri);
+        int direction = getIntDirection(context,uri);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // データのみ取得
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath,options);
+
+        Bitmap loadBitmap = resize(filePath,options);
+        Bitmap rotateBitmap = setDirection(loadBitmap,options,direction);
+        return rotateBitmap;
+    }
+    public static Bitmap resize(Context context,Uri uri){
+        String filePath = getPathFromUri(context,uri);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        // データのみ取得
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath,options);
+        return resize(filePath,options);
+    }
+    public static Bitmap resize(String filePath,BitmapFactory.Options options){
+        //サイズ
+        int intScaleWidth = options.outWidth / 1920;
+        int intScaleHeight = options.outHeight / 1920;
+        int intScale;
+        //大きい方のScaleを採用
+        if(intScaleWidth >= intScaleHeight){
+            intScale = intScaleWidth;
+        }else{
+            intScale = intScaleHeight;
+        }
+        if(intScale < 1){
+            intScale = 1;
+        }
+        //画像読み込み可能にする
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = intScale;
+
+        Bitmap loadImage = BitmapFactory.decodeFile(filePath,options);
+
+        return loadImage;
+    }
+
+    public static Bitmap setDirection(Bitmap loadBitmap,BitmapFactory.Options options,int direction){
+        Matrix matRotate = new Matrix();
+        //　回転させる
+        matRotate.postRotate(direction);
+        Bitmap rotateBitmap = Bitmap.createBitmap(loadBitmap,0,0,options.outWidth,options.outHeight,matRotate,true);
+        loadBitmap = null;
+        return rotateBitmap;
+    }
+
+    public static void setSizeAndDirection(Context context,ImageView imgView, Uri uri,boolean resize) {
+        String fileName = getPathFromUri(context,uri);
+        Bitmap bitmap = getBitmap(context,uri,resize);
+        System.out.println("サイズ："+bitmap.getByteCount());
+        try {
+/*            ExifInterface exifInterface = null;
+            exifInterface = new ExifInterface(fileName);
+            int orientation = Integer.parseInt(exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));*/
+            int orientation = 0;
             imgView.setScaleType(ImageView.ScaleType.MATRIX);
             imgView.setImageBitmap(bitmap);
-
-            // 画像の幅、高さを取得
+                       // 画像の幅、高さを取得
             int wOrg = bitmap.getWidth();
             int hOrg = bitmap.getHeight();
             imgView.getLayoutParams();
@@ -229,7 +384,7 @@ public class BitmapReader {
             imgView.setLayoutParams(lp);
             imgView.setImageMatrix(mat);
             imgView.invalidate();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

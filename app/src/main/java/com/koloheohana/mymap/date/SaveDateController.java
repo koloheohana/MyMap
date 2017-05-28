@@ -177,9 +177,7 @@ public class SaveDateController {
             File file = new File(file_name+".png");
             uri = Uri.fromFile(file);
             FileInputStream in = context.openFileInput(file_name+".png");
-            Bitmap bitmap = BitmapFactory.decodeStream(in);
-            System.out.println("Uri="+uri.toString());
-            System.out.println("bitmap="+bitmap);
+
             return uri;
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,9 +1,13 @@
 package com.koloheohana.mymap.sns;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AlertDialog;
@@ -33,8 +37,10 @@ import com.koloheohana.mymap.map.ShopList;
 
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
+import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.CustomListView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,95 +65,98 @@ public class MainTork extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tork_activity);
         ME = this;
-        mainLayout = (LinearLayout)findViewById(R.id.tork_main_layout);
-        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        mainLayout = (LinearLayout) findViewById(R.id.tork_main_layout);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mainLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         // ウィンドウマネージャのインスタンス取得
-        WindowManager wm = (WindowManager)getSystemService(WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         // ディスプレイのインスタンス生成
         Display disp = wm.getDefaultDisplay();
         viewWidth = disp.getWidth();
 
         Intent intent = getIntent();
-        ShopDataIntent sd = (ShopDataIntent)intent.getSerializableExtra("ShopData");
+        ShopDataIntent sd = (ShopDataIntent) intent.getSerializableExtra("ShopData");
         TextView tv = (TextView) findViewById(R.id.nowGroupText);
-        if(sd != null) {
+        if (sd != null) {
             user = UserList.getUserById(sd.USER_ID);
             ID = sd.USER_ID;
             createTork();
-            ShopDate _sd = ShopList.getShopDate(sd.SHOP_NAME,sd.SHOP_ADDRRES);
-            Uri.Builder builder = new Uri.Builder();
-            builder.scheme("http");
-            builder.authority("www.serendip.ws");
-            builder.path("/hoge/foo");
-            builder.appendQueryParameter("key1", "val1");
-            builder.appendQueryParameter("key2", "Encodeされたテキスト");
-            builder.fragment("fragment(フラグメント)");
-            addTork(_sd,null,SaveDateController.,builder.build());
-        }else {
+            ShopDate _sd = ShopList.getShopDate(sd.SHOP_NAME, sd.SHOP_ADDRRES);
+            Uri uri = Uri.fromFile(new File(sd.file_name));
+
+            addTork(_sd, null, uri);
+        } else {
             user = UserList.getUserById(ID);
             createTork();
         }
         tv.setText(user.getName());
     }
+
     //URLリンクに移動する
-    public void createMapTork(ShopDate sd){
-        String _URL = "https://www.google.co.jp/#q="+sd.getShopName();
+    public void createMapTork(ShopDate sd) {
+        String _URL = "https://www.google.co.jp/#q=" + sd.getShopName();
         Uri uri = Uri.parse(_URL);
-        Intent i = new Intent(Intent.ACTION_VIEW,uri);
+        Intent i = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(i);
     }
+
     public StringBuffer sb = new StringBuffer();
 
     /**
      * onClick
+     *
      * @param view
      */
-    public void edit_tork(View view){
-        EditText ed =(EditText)findViewById(R.id.tork_text);
+    public void edit_tork(View view) {
+        EditText ed = (EditText) findViewById(R.id.tork_text);
         String tork = ed.getText().toString();
-        if(tork.isEmpty()){
+        if (tork.isEmpty()) {
             return;
         }
         addTork(tork);
-        EditText tork_text = (EditText)findViewById(R.id.tork_text);
+        EditText tork_text = (EditText) findViewById(R.id.tork_text);
         tork_text.setText(null);
     }
 
 
     /**
      * トーク書き込み
+     *
      * @param _tork トーク内容
      */
-    private void addTork(String _tork){
-        OneTork tork =  new OneTork(_tork,new Clocks(this),user,null,null,null);
+    private void addTork(String _tork) {
+        OneTork tork = new OneTork(_tork, new Clocks(this), user, null, null, null);
         addTork(tork);
     }
-    private void addTork(OneTork tork){
-        ReadFileSns.writeTorkFile(user.getId(),tork);
+
+    private void addTork(OneTork tork) {
+        ReadFileSns.writeTorkFile(user.getId(), tork);
         user.addTork(tork);
-        CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
+        CustomListView list = (CustomListView) findViewById(R.id.tork_list_view);
         int last = list.getCount();
-        list.setSelection(last-1);
+        list.setSelection(last - 1);
         list.deferNotifyDataSetChanged();
         TA.notifyDataSetChanged();
     }
-    private void addTork(ShopDate sd,Uri camera,Uri map){
-        OneTork tork =  new OneTork(null,new Clocks(this),user,camera,sd,map);
+
+    private void addTork(ShopDate sd, Uri camera, Uri map) {
+        OneTork tork = new OneTork(null, new Clocks(this), user, camera, sd, map);
         addTork(tork);
     }
-    public void removeTork(OneTork ot){
+
+    public void removeTork(OneTork ot) {
         user.removeTork(ot);
-        ReadFileSns.removeTorkFile(user.getId(),ot);
-        CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
+        ReadFileSns.removeTorkFile(user.getId(), ot);
+        CustomListView list = (CustomListView) findViewById(R.id.tork_list_view);
         int last = list.getCount();
-        list.setSelection(last-1);
+        list.setSelection(last - 1);
         list.deferNotifyDataSetChanged();
         TA.notifyDataSetChanged();
     }
-    private void createTork(){
-        CustomListView list = (CustomListView)findViewById(R.id.tork_list_view);
-        TA = new TorkAdapter(this,R.layout.tork_list_item,user);
+
+    private void createTork() {
+        CustomListView list = (CustomListView) findViewById(R.id.tork_list_view);
+        TA = new TorkAdapter(this, R.layout.tork_list_item, user);
 /*
         TorkAdapter ta = new TorkAdapter(this,0,user);
 */
@@ -156,20 +165,21 @@ public class MainTork extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CustomListView clv = (CustomListView)parent;
-                OneTork one = (OneTork)clv.getItemAtPosition(position);
-                SampleDialogFragment sdf = new SampleDialogFragment(ME,one);
+                CustomListView clv = (CustomListView) parent;
+                OneTork one = (OneTork) clv.getItemAtPosition(position);
+                SampleDialogFragment sdf = new SampleDialogFragment(ME, one);
                 sdf.show();
             }
         });
 
         int last = list.getCount();
-        list.setSelection(last-1);
+        list.setSelection(last - 1);
     }
 
-    public void storageTork(){
-        StringBuffer sb = new StringBuffer();;
-        for(OneTork otk:user.TORK){
+    public void storageTork() {
+        StringBuffer sb = new StringBuffer();
+        ;
+        for (OneTork otk : user.TORK) {
             sb.append(otk.getStringFileConverter());
         }
         ShareCompat.IntentBuilder builder = ShareCompat.IntentBuilder.from(MapsActivity.MAP_ME);
@@ -179,32 +189,38 @@ public class MainTork extends AppCompatActivity {
         builder.setType("text/plain");
         builder.startChooser();
     }
-    public void openGallery(View view){
+
+    public void openGallery(View view) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,REQUEST_GALLERY);
+        startActivityForResult(intent, REQUEST_GALLERY);
     }
+
     private static final int REQUEST_GALLERY = 0;
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
-                                 Intent resultData) {
-        if (requestCode == REQUEST_GALLERY && resultCode == Activity.RESULT_OK) {
-                addTork(null,resultData.getData(),null);
-        }
+                                    Intent resultData) {
+        Bitmap loadBitmap = BitmapReader.rotateAndResize(this,resultData.getData());
+        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,String.valueOf(user.getId())+new Clocks(this).getStringAllTime());
+        loadBitmap = null;
+        addTork(null,uri, null);
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
-        inputMethodManager.hideSoftInputFromWindow(mainLayout.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+    public boolean onTouchEvent(MotionEvent event) {
+        inputMethodManager.hideSoftInputFromWindow(mainLayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         mainLayout.requestFocus();
         return false;
     }
 }
+
 class SampleDialogFragment extends AlertDialog {
     OneTork OT;
-    public SampleDialogFragment(final Context context,OneTork ot){
+
+    public SampleDialogFragment(final Context context, OneTork ot) {
         super(context);
         OT = ot;
         ArrayList<String> list = new ArrayList<>();
@@ -216,7 +232,7 @@ class SampleDialogFragment extends AlertDialog {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 0:
                         MainTork.ME.removeTork(OT);
                         break;
@@ -230,6 +246,7 @@ class SampleDialogFragment extends AlertDialog {
         setTitle(OT.getTork());
         setView(listView);
     }
+
     class TorkDialogAdapter extends ArrayAdapter<String> {
         private LayoutInflater inflater;
 
@@ -240,7 +257,7 @@ class SampleDialogFragment extends AlertDialog {
 
         @Override
         public View getView(int position, View v, ViewGroup parent) {
-            String item = (String)getItem(position);
+            String item = (String) getItem(position);
             if (null == v) v = inflater.inflate(R.layout.util_list_item, null);
 
             TextView intTextView = (TextView) v.findViewById(R.id.util_text);

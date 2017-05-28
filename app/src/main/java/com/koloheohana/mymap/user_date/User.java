@@ -7,6 +7,7 @@ import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.sns.OneTork;
+import com.koloheohana.mymap.util.ImageCache;
 
 import java.util.ArrayList;
 
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 public class User {
     private int id;
     private Bitmap icon;
-
     private String name;
     private String mutter;
     public ArrayList<OneTork> TORK = new ArrayList<OneTork>();

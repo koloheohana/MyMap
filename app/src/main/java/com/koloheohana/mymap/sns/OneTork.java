@@ -25,7 +25,7 @@ public class OneTork implements Serializable{
     Uri MAP_URI;
     String FILE_NAME;
     public OneTork(String tork, Clocks clocks,User user,Uri gallaryUri,ShopDate sd,Uri mapUri){
-        if(tork.isEmpty()){
+        if(tork == null){
             if(gallaryUri != null){
                 GALLARY_URI = gallaryUri;
                 TORK = gallaryUri.toString();

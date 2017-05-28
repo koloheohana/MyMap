@@ -2,6 +2,7 @@ package com.koloheohana.mymap.dialog;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,11 +37,7 @@ public class TorkShareDialog extends AlertDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User user = adapter.getItem(position);
-                MapsActivity.MAP_ME.setSnapShotPre();
-                Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
-                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId()));
-                intent.setAction(Intent.ACTION_VIEW);
-                MapsActivity.MAP_ME.startActivity(intent);
+                MapsActivity.MAP_ME.getSnapShot(SD,user);
                 dismiss();
             }
 

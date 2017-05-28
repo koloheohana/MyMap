@@ -61,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
         if(ShopList.ALLLIST.isEmpty()) {
-            final CsvReader read = new CsvReader();
-            read.execute();
+
             ReadDate.read();
         }
     }

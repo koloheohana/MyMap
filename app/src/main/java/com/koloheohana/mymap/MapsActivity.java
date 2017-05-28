@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.net.Uri;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
@@ -63,12 +64,15 @@ import com.koloheohana.mymap.dialog.MemoCustomDialog;
 import com.koloheohana.mymap.dialog.ProfDialog;
 import com.koloheohana.mymap.dialog.ShopDialog;
 import com.koloheohana.mymap.map.CsvReader;
+import com.koloheohana.mymap.map.ShopDataIntent;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.map.ShopSearch;
+import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ReadDate;
 import com.koloheohana.mymap.user_date.ShopMemo;
+import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.GetScreenShot;
 
 import java.text.SimpleDateFormat;
@@ -373,6 +377,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+                System.out.println("クリック１");
+                getSnap(null);
+                System.out.println("クリック２");
                 ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
                 if(S_D ==null){
                     return;
@@ -386,7 +393,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             zoomMap(sd);
         }
     }
-    public void setSnapShotPre(){
+    public Bitmap getSnap(View view1){
+        View view = getWindow().getDecorView();
+        view.setDrawingCacheEnabled(true);
+        view.destroyDrawingCache();
+        System.out.println(view);
+        System.out.println(view.getDrawingCache());
+        Bitmap cache = view.getDrawingCache();
+        Bitmap snap = Bitmap.createBitmap(cache);
+        view.setDrawingCacheEnabled(false);
+        return snap;
+    }
+
+    public void getSnapShot(final ShopDate SD,final User user){
         // TODO Auto-generated method stub
         mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
             @Override
@@ -396,7 +415,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Matrix mat = new Matrix();
                 mat.postScale(0.3f, 0.3f);
                 Bitmap cnv = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
-                SaveDateController.bitmapSave(MAP_ME,cnv);
+                Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
+                Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,cnv,"3");
+                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId(),uri.getPath()));
+                intent.setAction(Intent.ACTION_VIEW);
+                MapsActivity.MAP_ME.startActivity(intent);
             }
         });
     }
@@ -435,6 +458,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mcd.show();
     }
     public void myTomo(View view) {
+        getSnap(view);
         ShopSearch.setAdapter();
 /*        long start = System.currentTimeMillis();
         for(LatLng ll:ShopList.SHOP_MAP_LATLNG.keySet()){

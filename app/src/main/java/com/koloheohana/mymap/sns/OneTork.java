@@ -63,7 +63,9 @@ public class OneTork implements Serializable{
     public String getTork(){
         return TORK;
     }
-
+    public Clocks getClock(){
+        return CLOCK;
+    }
 }
 class TorkShareMap{
     Bitmap BIT;

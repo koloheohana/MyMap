@@ -8,6 +8,7 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  */
 public class ReadDate {
     static boolean tester = false;
+    static boolean clear = true;
     public static void read(){
         if(tester) {
             final CsvReader read = new CsvReader();
@@ -16,6 +17,9 @@ public class ReadDate {
             ShopMemo.read();
         }
         ReadFileSns.read();
+        if(clear){
+            ReadFileSns.fileClear();
+        }
         ReadFileSns.readTorkFile();
     }
 }

@@ -33,11 +33,14 @@ import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.ImageCache;
+import com.koloheohana.mymap.util.Window;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -77,27 +80,31 @@ public class TorkAdapter extends ArrayAdapter<OneTork> {
         aViewHolder vh = new aViewHolder();
         view = LayoutInflater.inflate(R.layout.tork_list_item, vp, false);
         vh.set((TextView) view.findViewById(R.id.tork_name));
+        vh.setTime((TextView)view.findViewById(R.id.tork_time));
         vh.setText((TextView) view.findViewById(R.id.tork_text_box));
         vh.setIvTork((ImageView) view.findViewById(R.id.tork_image));
         vh.name.setText(USER.getName());
         view.setTag(vh);
         //画像を表示する場合
         if (ot.getUri() != null) {
-            vh.text.setVisibility(View.INVISIBLE);
+            vh.text.setVisibility(View.GONE);
             if(ImageCache.isKey(ot.getUri())){
                 System.out.println("キャッシュからの呼び出し");
                 vh.iv_tork.setImageBitmap(ImageCache.get(ot.getUri()));
             }else {
                 System.out.println("ファイルからの呼び出し");
-                Bitmap loadBitmap = BitmapReader.getBitmap(MainTork.ME, ot.getUri(), false);
+                Bitmap loadBitmap = BitmapReader.getBitmap(MainTork.ME, ot.getUri(), true);
                 vh.iv_tork.setImageBitmap(loadBitmap);
                 ImageCache.set(ot.getUri(),loadBitmap);
             }
-            return view;
+        }else {
+            vh.iv_tork.setVisibility(View.GONE);
+            vh.text.setText(ot.getTork());
         }
-        vh.text.setText(ot.getTork());
+        vh.time.setText(ot.getClock().getMonthAndDay());
         return view;
     }
+
     public void viewClear(View view){
         releaseImageView(((aViewHolder)view.getTag()).iv_tork);
         view = null;
@@ -115,7 +122,10 @@ public class TorkAdapter extends ArrayAdapter<OneTork> {
         TextView name;
         TextView text;
         ImageView iv_tork;
-
+        TextView time;
+        public void setTime(TextView tv){
+            time = tv;
+        }
         public void setIvTork(ImageView view) {
             iv_tork = view;
         }

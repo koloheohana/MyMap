@@ -58,4 +58,12 @@ public class Clocks {
         String time =YEAR+str+MONTH+str+DAY+str+HOUR+str+MINUTE+str+SECOND;
         return time;
     }
+    public String getMonthAndDay(){
+        StringBuffer sb = new StringBuffer();
+        sb.append(MONTH);
+        sb.append("月");
+        sb.append(DAY);
+        sb.append("日");
+        return sb.toString();
+    }
 }

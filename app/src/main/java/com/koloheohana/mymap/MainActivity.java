@@ -15,6 +15,7 @@ import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.sns.ReadFileSns;
 import com.koloheohana.mymap.user_date.ReadDate;
+import com.koloheohana.mymap.util.Window;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ME = this;
-
+        Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         mPager = (ViewPager) findViewById(R.id.viewpager);
         mPager.setAdapter(mfp);

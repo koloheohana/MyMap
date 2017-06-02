@@ -2,16 +2,13 @@ package com.koloheohana.mymap.sns;
 
 import android.util.Log;
 
-import com.koloheohana.mymap.Clocks;
-import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;
-import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**

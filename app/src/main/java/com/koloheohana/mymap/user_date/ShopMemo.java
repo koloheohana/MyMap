@@ -1,6 +1,6 @@
 package com.koloheohana.mymap.user_date;
 
-import com.koloheohana.mymap.Clocks;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;

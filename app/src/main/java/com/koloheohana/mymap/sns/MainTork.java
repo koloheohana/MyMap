@@ -1,11 +1,9 @@
 package com.koloheohana.mymap.sns;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.koloheohana.mymap.Clocks;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.adapter.TorkAdapter;
@@ -39,6 +37,7 @@ import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.CustomListView;
+import com.koloheohana.mymap.util.MyClipboard;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,7 +82,6 @@ public class MainTork extends AppCompatActivity {
             createTork();
             ShopDate _sd = ShopList.getShopDate(sd.SHOP_NAME, sd.SHOP_ADDRRES);
             Uri uri = Uri.fromFile(new File(sd.file_name));
-
             addTork(_sd, null, uri);
         } else {
             user = UserList.getUserById(ID);
@@ -204,7 +202,7 @@ public class MainTork extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent resultData) {
         Bitmap loadBitmap = BitmapReader.rotateAndResize(this,resultData.getData());
-        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,String.valueOf(user.getId())+new Clocks(this).getStringAllTime());
+        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,"tork"+String.valueOf(user.getId())+new Clocks(this).getStringAllTime());
         loadBitmap = null;
         addTork(null,uri, null);
     }
@@ -224,26 +222,54 @@ class SampleDialogFragment extends AlertDialog {
         super(context);
         OT = ot;
         ArrayList<String> list = new ArrayList<>();
-        list.add("このトークを削除する");
-        list.add("このトークをコピーする");
         TorkDialogAdapter adapter = new TorkDialogAdapter(context.getApplicationContext(), 0, list);
         final ListView listView = new ListView(context);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        MainTork.ME.removeTork(OT);
-                        break;
-                    case 1:
-                        break;
-                }
-                dismiss();
+        if(OT.isImage()){
+            if(OT.MAP_URI != null) {
+                list.add("この場所までのナビを開く");
+                list.add("他の人に共有する");
+                list.add("削除する");
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        switch (position) {
+                            case 0:
+                                Uri gmUri = Uri.parse("google.navigation:q="+"座標"+","+"座標"+"&mode=w");
+                                Intent gmIntent = new Intent(Intent.ACTION_VIEW, gmUri);
+                                gmIntent.setPackage("com.google.android.apps.maps");
+                                MainTork.ME.startActivity(gmIntent);
+                                break;
+                            case 1:
+                                break;
+                            case 2:
+                                MainTork.ME.removeTork(OT);
+                                break;
+                        }
+                        dismiss();
+                    }
+                });
+                setTitle(OT.getTork());
             }
-        });
-
-        setTitle(OT.getTork());
+        }else {
+            list.add("このトークを削除する");
+            list.add("このトークをコピーする");
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position) {
+                        case 0:
+                            MainTork.ME.removeTork(OT);
+                            break;
+                        case 1:
+                            MyClipboard.set(MainTork.ME, OT.getTork());
+                            break;
+                    }
+                    dismiss();
+                }
+            });
+            setTitle(OT.getTork());
+        }
         setView(listView);
     }
 

@@ -30,7 +30,6 @@ public class ShopSearch {
     private static double KM[] = {3, 1, 0.5, 0.1};
 
     public static void setAdapter() {
-
         setCategorySpinner();
         setSearchRange();
     }

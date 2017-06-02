@@ -3,11 +3,8 @@ package com.koloheohana.mymap.user_date;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.sns.OneTork;
-import com.koloheohana.mymap.util.ImageCache;
 
 import java.util.ArrayList;
 

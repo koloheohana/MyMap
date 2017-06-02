@@ -1,6 +1,8 @@
-package com.koloheohana.mymap;
+package com.koloheohana.mymap.util;
 
 import android.content.Context;
+
+import com.koloheohana.mymap.MainActivity;
 
 import java.text.DateFormat;
 import java.util.Calendar;

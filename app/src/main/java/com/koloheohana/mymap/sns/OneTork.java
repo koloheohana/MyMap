@@ -1,15 +1,12 @@
 package com.koloheohana.mymap.sns;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.koloheohana.mymap.Clocks;
-import com.koloheohana.mymap.date.SaveDateController;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.User;
 
-import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -41,7 +38,12 @@ public class OneTork implements Serializable{
         ID = user.TORK.size()+1;
         SHOP_DATA = sd;
     }
-
+    public boolean isImage(){
+        if(GALLARY_URI == null&& MAP_URI == null){
+            return false;
+        }
+        return true;
+    }
     public String getFILE_NAME(){
         return FILE_NAME;
     }

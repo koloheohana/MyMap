@@ -1,51 +1,19 @@
 package com.koloheohana.mymap.adapter;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
-import android.media.Image;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.koloheohana.mymap.Clocks;
-import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.date.SaveDateController;
-import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.ImageCache;
-import com.koloheohana.mymap.util.Window;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
 
 /**
  * Created by User on 2016/08/24.

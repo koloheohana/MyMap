@@ -1,46 +1,22 @@
 package com.koloheohana.mymap;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.Uri;
-import android.os.IBinder;
-import android.os.Message;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -55,29 +31,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.koloheohana.mymap.adapter.MyBookMarkAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.CBookmarkDialog;
 import com.koloheohana.mymap.dialog.MemoCustomDialog;
-import com.koloheohana.mymap.dialog.ProfDialog;
 import com.koloheohana.mymap.dialog.ShopDialog;
-import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopDataIntent;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.map.ShopSearch;
 import com.koloheohana.mymap.sns.MainTork;
-import com.koloheohana.mymap.user_date.MyBookmark;
-import com.koloheohana.mymap.user_date.ReadDate;
-import com.koloheohana.mymap.user_date.ShopMemo;
 import com.koloheohana.mymap.user_date.User;
-import com.koloheohana.mymap.util.GetScreenShot;
+import com.koloheohana.mymap.util.Clocks;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
@@ -377,9 +343,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                System.out.println("クリック１");
-                getSnap(null);
-                System.out.println("クリック２");
+
                 ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
                 if(S_D ==null){
                     return;
@@ -393,17 +357,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             zoomMap(sd);
         }
     }
-    public Bitmap getSnap(View view1){
-        View view = getWindow().getDecorView();
-        view.setDrawingCacheEnabled(true);
-        view.destroyDrawingCache();
-        System.out.println(view);
-        System.out.println(view.getDrawingCache());
-        Bitmap cache = view.getDrawingCache();
-        Bitmap snap = Bitmap.createBitmap(cache);
-        view.setDrawingCacheEnabled(false);
-        return snap;
-    }
+
 
     public void getSnapShot(final ShopDate SD,final User user){
         // TODO Auto-generated method stub
@@ -412,11 +366,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSnapshotReady(Bitmap bitmap) {
                 // TODO Auto-generated method stub
                 // スナップショット画像の縮小
+                System.out.println(bitmap.getHeight()+":"+bitmap.getWidth());
+/*
                 Matrix mat = new Matrix();
                 mat.postScale(0.3f, 0.3f);
                 Bitmap cnv = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
+
+                System.out.println(cnv.getHeight()+":"+cnv.getWidth());
+*/
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
-                Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,cnv,"3");
+                Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,bitmap,"map"+new Clocks(MAP_ME).getStringAllTime());
                 intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId(),uri.getPath()));
                 intent.setAction(Intent.ACTION_VIEW);
                 MapsActivity.MAP_ME.startActivity(intent);
@@ -438,41 +397,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void bookmarkButton(View view){
         CBookmarkDialog cbd = new CBookmarkDialog(this);
         cbd.show();
-/*        PopupMenu pm = new PopupMenu(getApplicationContext(),view);
-        MyBookmark.setBookmarkButton(pm);
-        pm.show();
-        pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                ShopDate S_D = MyBookmark.getList().get(item.getOrder());
-                setMarker(S_D,true);
-                ShopDialog sd = new ShopDialog(S_D);
-                sd.show(getSupportFragmentManager(),S_D.getShopName());
-                return false;
-            }
 
-        });*/
     }
     public void memoButton(View view){
         MemoCustomDialog mcd = new MemoCustomDialog(this);
         mcd.show();
     }
     public void myTomo(View view) {
-        getSnap(view);
-        ShopSearch.setAdapter();
-/*        long start = System.currentTimeMillis();
-        for(LatLng ll:ShopList.SHOP_MAP_LATLNG.keySet()){
-            ShopList.SHOP_MAP_LATLNG.get(ll);
-        }
-        long end = System.currentTimeMillis();
-        System.out.println("hashmapのタイム："+(end-start));
-        long start2 = System.currentTimeMillis();
-        for(ShopDate sd:ShopList.ALLLIST){
 
-        }
-        long end2 = System.currentTimeMillis();
-        System.out.println("ArrayListのタイム："+(end2-start2));*/
+/*
         zoomMap(now_lati, now_long);
+*/
     }
     public void mapSearchButton(View view){
         ShopSearch.searchShop(view);

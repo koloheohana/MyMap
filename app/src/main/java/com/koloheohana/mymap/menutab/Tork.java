@@ -1,7 +1,6 @@
 package com.koloheohana.mymap.menutab;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,15 +9,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.koloheohana.mymap.Clocks;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserAdapter;
 import com.koloheohana.mymap.user_date.UserList;
-
-import java.util.ArrayList;
 
 /**
  * Created by User on 2016/08/03.

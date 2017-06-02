@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.renderscript.ScriptGroup;
 import android.support.media.ExifInterface;
 import android.util.Log;
 import android.widget.ImageView;
@@ -99,7 +100,16 @@ public class BitmapReader {
         }
         return null;
     }
-
+    public static Bitmap getMap(Context context ,Uri uri){
+        Bitmap bitmap = null;
+        try {
+            InputStream in = context.openFileInput(uri.toString());
+            bitmap = BitmapFactory.decodeStream(in);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
     /*
     bitmapを扱う時はここ
     */
@@ -119,6 +129,7 @@ public class BitmapReader {
                 in = context.getContentResolver().openInputStream(uri);
             }
             if (!reduction) {
+                bitmap = BitmapFactory.decodeStream(in);
                 return bitmap;
             }
 
@@ -153,12 +164,15 @@ public class BitmapReader {
                 Bitmap resizeBitmap = Bitmap.createScaledBitmap(bitmap, new_x, new_y, false);
                 bitmap = null;
                 return resizeBitmap;
+            }else{
+                bitmap = BitmapFactory.decodeStream(in);
             }
 
             in.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("エラー");
         }
         return bitmap;
     }

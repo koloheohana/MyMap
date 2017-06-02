@@ -7,8 +7,8 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = false;
-    static boolean clear = true;
+    static boolean tester = true;
+    static boolean clear = false      ;
     public static void read(){
         if(tester) {
             final CsvReader read = new CsvReader();

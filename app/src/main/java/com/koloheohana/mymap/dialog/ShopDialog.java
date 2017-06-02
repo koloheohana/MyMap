@@ -1,6 +1,8 @@
 package com.koloheohana.mymap.dialog;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -8,14 +10,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ShareCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.koloheohana.mymap.MapStreetView;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
@@ -23,6 +32,9 @@ import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ShopMemo;
 import com.koloheohana.mymap.util.GetScreenShot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 2016/08/24.
@@ -47,6 +59,17 @@ public class ShopDialog extends DialogFragment{
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView text = (TextView)dialog.findViewById(R.id.title_dialog);
         text.setText(SD.getShopName());
+        //iconの取得
+        ImageView shopImageView = (ImageView)dialog.findViewById(R.id.shop_image_icon);
+        shopImageView.setImageResource(R.mipmap.map_street4);
+        //画像クリック時の動作
+        shopImageView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                new ImageClickDialog(MapsActivity.MAP_ME).show();
+            }
+        });
+
         //テキストの設置
         LinearLayout ll = (LinearLayout)dialog.findViewById(R.id.shop_date_text);
         TextView category = new TextView(MapsActivity.MAP_ME);
@@ -139,5 +162,55 @@ public class ShopDialog extends DialogFragment{
     }
     public void setLayout(View view){
         view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+    class ImageClickDialog extends AlertDialog{
+        protected ImageClickDialog(Context context) {
+            super(context);
+            ArrayList<String> list = new ArrayList<>();
+            ImageDialogAdapter adapter = new ImageDialogAdapter(context.getApplicationContext(), 0, list);
+            final ListView listView = new ListView(context);
+            listView.setAdapter(adapter);
+            list.add("近くのストリートビューを見る");
+            list.add("閉じる");
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    switch (position){
+                        case 0:
+                            Intent intent = new Intent(MapsActivity.MAP_ME,MapStreetView.class);
+                            intent.putExtra("latitude",SD.getLATLNG().latitude);
+                            intent.putExtra("longitude",SD.getLATLNG().longitude);
+                            startActivity(intent);
+                            break;
+                        case 1:
+                            break;
+                    }
+                    dismiss();
+
+                }
+            });
+            setTitle("ストリートビュー");
+            setView(listView);
+        }
+
+    }
+    class ImageDialogAdapter extends ArrayAdapter<String> {
+        private LayoutInflater inflater;
+
+        public ImageDialogAdapter(Context context, int resource, List<String> objects) {
+            super(context, resource, objects);
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+
+        @Override
+        public View getView(int position, View v, ViewGroup parent) {
+            String item = (String) getItem(position);
+            if (null == v) v = inflater.inflate(R.layout.util_list_item, null);
+
+            TextView intTextView = (TextView) v.findViewById(R.id.util_text);
+            intTextView.setText(item);
+
+            return v;
+        }
     }
 }

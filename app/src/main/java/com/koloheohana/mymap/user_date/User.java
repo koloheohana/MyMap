@@ -23,12 +23,7 @@ public class User {
         setName(name);
         setLoc(mutter);
         readTorkFile();
-/*        for(int i = 0 ; i <= 20;i++) {
-            if(i == 10){
-                TORK.add(new OneTork(String.valueOf(i)+"\ncreate",new Clocks(MainActivity.ME),this,null,null,null));
-            }
-            TORK.add(new OneTork(String.valueOf(i),new Clocks(MainActivity.ME),this,null,null,null));
-        }*/
+
     }
     public void readTorkFile(){
 
@@ -70,4 +65,5 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
 }

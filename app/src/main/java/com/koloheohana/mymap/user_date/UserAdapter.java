@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.sns.OneTork;
 
 import java.util.ArrayList;
 
@@ -37,8 +38,21 @@ public class UserAdapter extends ArrayAdapter<User> {
 
         vh.iv.setImageBitmap(USER.getIcon());
         vh.name.setText(USER.getName());
-        vh.loc.setText(USER.getLoc());
+        vh.loc.setText(setLastTork());
         return view;
+    }
+    public int max_size = 10;
+    public String setLastTork(){
+        String tork = null;
+        if(USER.TORK.isEmpty()){
+            return tork;
+        }
+        OneTork oneTork = USER.TORK.get(USER.TORK.size()-1);
+        tork = oneTork.getTork();
+        if(tork.length() >= max_size){
+            tork.substring(0,max_size);
+        }
+        return tork;
     }
 }
 class ViewHolder {

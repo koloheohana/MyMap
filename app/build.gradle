@@ -22,6 +22,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    compile 'io.realm:realm-android:0.82.1'
     compile 'com.github.gfx.android.orma:orma:4.1.0'
     annotationProcessor 'com.github.gfx.android.orma:orma-processor:4.1.0'
     compile 'com.google.android.gms:play-services:10.2.6'

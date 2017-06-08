@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
+import com.koloheohana.mymap.data.OrmaDatabase;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopList;
@@ -27,6 +28,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 public class MainActivity extends AppCompatActivity {
     public ViewPager mPager;
     public static MainActivity ME = new MainActivity();
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         ME = this;
         Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
@@ -65,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
             ReadDate.read();
         }
+/*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
+        Realm.deleteRealm(realmCondig);*//*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
+        Realm.deleteRealm(realmCondig);*/
     }
 
 

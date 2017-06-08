@@ -18,12 +18,19 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
+import com.koloheohana.mymap.data.DataBaseOperation;
+import com.koloheohana.mymap.data.OrmaDatabase;
 import com.koloheohana.mymap.data.TestClass;
+import com.koloheohana.mymap.data.Todo;
+import com.koloheohana.mymap.data.TodoM;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.date.SaveFile;
 import com.koloheohana.mymap.map.CsvReader;
 
 import junit.framework.Test;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by User on 2016/08/03.
@@ -61,8 +68,7 @@ public class StartMenuTab extends Fragment {
                 "店情報", "お気に入り", "初期化"
         };
         public void chengeMenu(int position){
-            TestClass test = new TestClass();
-
+            //ディレクトリにrealm作成
             switch (position){
                 case 0:
                     Intent intent = new Intent(MainActivity.ME,MapsActivity.class);
@@ -77,11 +83,9 @@ public class StartMenuTab extends Fragment {
                 case 3:
                     return;
                 case 4:
-                    test.test();
-                    test.open();
+                    DataBaseOperation.createUserData();
                     return;
                 case 5:
-                    test.open();
                     return;
                 case 6:
                     SaveDateController.removeFile(SaveFile.BOOKMARK);

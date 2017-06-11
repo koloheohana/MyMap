@@ -2,7 +2,6 @@ package com.koloheohana.mymap.menutab;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,20 +16,8 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
-import com.koloheohana.mymap.data.DataBaseOperation;
-import com.koloheohana.mymap.data.OrmaDatabase;
-import com.koloheohana.mymap.data.TestClass;
-import com.koloheohana.mymap.data.Todo;
-import com.koloheohana.mymap.data.TodoM;
-import com.koloheohana.mymap.date.SaveDateController;
-import com.koloheohana.mymap.date.SaveFile;
-import com.koloheohana.mymap.map.CsvReader;
+import com.koloheohana.mymap.data_base.OrmaOperator;
 
-import junit.framework.Test;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by User on 2016/08/03.
@@ -57,6 +44,7 @@ public class StartMenuTab extends Fragment {
                 hue_adapter.chengeMenu(position);
             }
         });
+
         return view;
     }
     public class HueAdapter extends BaseAdapter {
@@ -81,17 +69,19 @@ public class StartMenuTab extends Fragment {
                     MainActivity.ME.mPager.setCurrentItem(2);
                     return;
                 case 3:
+                    System.out.println("DBに挿入します");
+                    OrmaOperator.set();
                     return;
                 case 4:
-                    DataBaseOperation.createUserData();
+                    System.out.println("DBを読み込みします");
+                    OrmaOperator.read();
                     return;
                 case 5:
+                    System.out.println("DBを削除します");
                     return;
                 case 6:
-                    SaveDateController.removeFile(SaveFile.BOOKMARK);
                     return;
                 case 7:
-                    SaveDateController.removeFile(SaveFile.BOOKMARK);
                     return;
             }
         }

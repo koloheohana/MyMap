@@ -58,19 +58,19 @@ public class SaveDateController {
         }
     }
     public static ArrayList<String> read(String file_name){
+        ArrayList<String> list = new ArrayList<String>();
         try{
             InputStream in = MainActivity.ME.openFileInput(file_name);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
             String s;
-            ArrayList<String> list = new ArrayList<String>();
             while((s = reader.readLine()) != null){
+                System.out.println(s);
                 list.add(s);
             }
             reader.close();
             return list;
         }catch (IOException e){
-            e.printStackTrace();
-            return null;
+            return list;
         }
     }
     public static void bookmarkWriter(ShopDate sd){

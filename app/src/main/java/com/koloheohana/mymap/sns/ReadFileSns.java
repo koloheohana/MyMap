@@ -2,6 +2,10 @@ package com.koloheohana.mymap.sns;
 
 import android.util.Log;
 
+import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaUser;
+import com.koloheohana.mymap.data_base.OrmaUser_Selector;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.date.SaveDateController;
@@ -27,11 +31,12 @@ public class ReadFileSns {
                 String mutter = users[2].split("∥")[1];
                 int icon = Integer.valueOf(users[3].split("∥")[1]);
                 UserList.add(new User(id, icon, name, mutter));
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 Log.v("tork_data", "ユーザーデータに不正な処理が入っている為飛ばします");
             }
         }
+
     }
 
     //後に改定
@@ -77,19 +82,22 @@ public class ReadFileSns {
             int user_id = user.getId();
             String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
             ArrayList<String> tork_list = SaveDateController.read(file_name);
-            for (String str : tork_list) {
-                try {
+            if (tork_list.isEmpty()) {
+                continue;
+            }
+            try {
+                for (String str : tork_list) {
                     String[] torks = str.split("＼");
                     String[] time = torks[2].split("∥");
                     String TORK = torks[3].split("∥")[1];
                     Clocks clock = new Clocks(time);
                     OneTork one_tork = new OneTork(TORK, clock, user, null, null, null);
                     user.addTork(one_tork);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.v("tork_data", "id" + user.getId() + "のトークデータに不正な入力が有りますので飛ばします");
-                    continue;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.v("tork_data", "id" + user.getId() + "のトークデータに不正な入力が有りますので飛ばします");
+                continue;
             }
         }
     }

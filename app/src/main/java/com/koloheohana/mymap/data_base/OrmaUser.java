@@ -17,12 +17,15 @@ public class OrmaUser {
     public int user_age;
     @Column(indexed = true)
     public String user_icon;
+    @Column(defaultExpr = "1",indexed = true)
+    public String addrres;
 
     @Setter
-    public OrmaUser(long id,String user_name,int user_age,String user_icon){
+    public OrmaUser(long id,String user_name,int user_age,String user_icon,String addrres){
         this.id = id;
         this.user_name = user_name;
         this.user_age = user_age;
         this.user_icon = user_icon;
+        this.addrres = addrres;
     }
 }

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaDatabase;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 
 
@@ -70,14 +71,16 @@ public class StartMenuTab extends Fragment {
                     return;
                 case 3:
                     System.out.println("DBに挿入します");
-                    OrmaOperator.set();
+                    OrmaOperator.setUser(MainActivity.ME);
+                    OrmaOperator.setShopData(MainActivity.ME);
                     return;
                 case 4:
                     System.out.println("DBを読み込みします");
-                    OrmaOperator.read();
+                    OrmaOperator.read(MainActivity.ME);
                     return;
                 case 5:
                     System.out.println("DBを削除します");
+                    OrmaOperator.remove(MainActivity.ME);
                     return;
                 case 6:
                     return;

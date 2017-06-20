@@ -16,12 +16,15 @@ public class OrmaTork{
     @Column(indexed = true)
     public String user_id;
     @Column(indexed = true)
+    public String clock;
+    @Column(indexed = true)
     public String image_binary;
     @Column(indexed = true)
     public boolean image_switch;
     @Setter
-    public OrmaTork(long id,String tork_sentence,String user_id,String image_binary,boolean image_switch){
+    public OrmaTork(long id,String tork_sentence,String user_id,String image_binary,boolean image_switch,String clock){
         this.id = id;
+        this.clock = clock;
         this.tork_sentence = tork_sentence;
         this.user_id = user_id;
         this.image_binary = image_binary;

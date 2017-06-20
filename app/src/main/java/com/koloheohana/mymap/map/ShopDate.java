@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 2016/09/11.
@@ -90,13 +91,26 @@ public class ShopDate implements Serializable{
     Image[] IMAGE;
     public ShopDate(int _id,String _addrres,String postal,String _name,String category,String _tel,double _COORDINATE_X,double _COORDINATE_Y){
         ID = _id;
-        SHOP_ID++;
         ADDRRES = _addrres;
         POSTAL = postal;
         NAME = _name;
         TEL = _tel;
         CATEGORY.add(category);
         FIRST_CATEGORY = category;
+        COORDINATE_X = _COORDINATE_X;
+        COORDINATE_Y = _COORDINATE_Y;
+        LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
+    }
+    public ShopDate(long _id,String _addrres,String postal,String _name,List<String> category,String _tel,double _COORDINATE_X,double _COORDINATE_Y){
+        ID = (int)_id;
+        ADDRRES = _addrres;
+        POSTAL = postal;
+        NAME = _name;
+        TEL = _tel;
+        for(String cate:category) {
+            CATEGORY.add(cate);
+        }
+        FIRST_CATEGORY =category.get(0);
         COORDINATE_X = _COORDINATE_X;
         COORDINATE_Y = _COORDINATE_Y;
         LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
@@ -119,6 +133,13 @@ public class ShopDate implements Serializable{
             sb.append(_name);
         }
         return sb.toString();
+    }
+    public List<String> getCategoryList(){
+        List<String> list = new ArrayList<String>();
+        for(String category:CATEGORY){
+            list.add(category);
+        }
+        return list;
     }
     public String getEncodeAddrres(){
         String encode;

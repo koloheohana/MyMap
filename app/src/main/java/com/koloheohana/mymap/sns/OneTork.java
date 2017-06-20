@@ -44,6 +44,9 @@ public class OneTork implements Serializable{
         }
         return true;
     }
+    public int getID(){
+        return ID;
+    }
     public String getFILE_NAME(){
         return FILE_NAME;
     }

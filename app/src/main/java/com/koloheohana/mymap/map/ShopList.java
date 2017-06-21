@@ -1,14 +1,17 @@
 package com.koloheohana.mymap.map;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.koloheohana.mymap.data_base.OrmaShopData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by User on 2016/12/07.
  */
 public class ShopList {
+    public static List<OrmaShopData> ALL_LIST = new ArrayList<OrmaShopData>();
     public static ArrayList<ShopDate> ALLLIST = new ArrayList<ShopDate>();
     public static HashMap<LatLng,ShopDate> SHOP_MAP_LATLNG = new HashMap<LatLng, ShopDate>();
     public static void setShopList(ShopDate sd){

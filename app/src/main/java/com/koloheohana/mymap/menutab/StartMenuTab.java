@@ -72,7 +72,7 @@ public class StartMenuTab extends Fragment {
                 case 3:
                     System.out.println("DBに挿入します");
                     OrmaOperator.setUser(MainActivity.ME);
-                    OrmaOperator.setShopData(MainActivity.ME);
+                    OrmaOperator.createShopData(MainActivity.ME);
                     return;
                 case 4:
                     System.out.println("DBを読み込みします");
@@ -80,9 +80,11 @@ public class StartMenuTab extends Fragment {
                     return;
                 case 5:
                     System.out.println("DBを削除します");
-                    OrmaOperator.remove(MainActivity.ME);
+                    OrmaOperator.remove(MainActivity.ME,1);
+                    OrmaOperator.remove(MainActivity.ME,2);
                     return;
                 case 6:
+                    OrmaOperator.test();
                     return;
                 case 7:
                     return;

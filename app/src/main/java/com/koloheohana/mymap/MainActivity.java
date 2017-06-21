@@ -15,6 +15,7 @@ import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.sns.ReadFileSns;
 import com.koloheohana.mymap.user_date.ReadDate;
+import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.Window;
 
 import java.io.BufferedReader;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Scene.set(ME);
         ME = this;
         Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
@@ -64,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-        if(ShopList.ALLLIST.isEmpty()) {
-            ReadDate.read();
-        }
+        ReadDate.read();
+
 /*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
         Realm.deleteRealm(realmCondig);*//*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
         Realm.deleteRealm(realmCondig);*/

@@ -20,6 +20,7 @@ public class OrmaUser {
     @Column(defaultExpr = "1",indexed = true)
     public String addrres;
 
+
     @Setter
     public OrmaUser(long id,String user_name,int user_age,String user_icon,String addrres){
         this.id = id;

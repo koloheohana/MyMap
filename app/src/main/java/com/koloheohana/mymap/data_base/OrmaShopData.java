@@ -37,9 +37,11 @@ public class OrmaShopData {
     public long coordinate_x;
     @Column(indexed = true)
     public long coordinate_y;
+    @Column(defaultExpr = "1",indexed =  true)
+    public boolean bookmark;
 
     @Setter
-    public OrmaShopData(long id,String shop_name,List<String> shop_category_list,String shop_tel,String shop_homepage,String shop_icon,String shop_postal,String addrres,long coordinate_x,long coordinate_y){
+    public OrmaShopData(long id,String shop_name,List<String> shop_category_list,String shop_tel,String shop_homepage,String shop_icon,String shop_postal,String addrres,long coordinate_x,long coordinate_y,boolean bookmark){
         this.id = id;
         this.shop_name = shop_name;
         this.shop_category_list = shop_category_list;
@@ -50,6 +52,7 @@ public class OrmaShopData {
         this.shop_postal = shop_postal;
         this.coordinate_x = coordinate_x;
         this.coordinate_y = coordinate_y;
+        this.bookmark = bookmark;
     }
 
 }

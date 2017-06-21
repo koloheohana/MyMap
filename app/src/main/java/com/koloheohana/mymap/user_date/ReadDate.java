@@ -9,7 +9,7 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = true;
+    static boolean tester = false;
     static boolean clear = false;
     public static void read(){
 /*
@@ -18,9 +18,17 @@ public class ReadDate {
         if(tester) {
             final CsvReader read = new CsvReader();
             read.execute();
-            MyBookmark.read();
             ShopMemo.read();
-            OrmaOperator.setShopData(MainActivity.ME);
+/*
+            OrmaOperator.remove(MainActivity.ME,1);
+*/
+            OrmaOperator.createShopData(MainActivity.ME);
+/*
+            OrmaOperator.setBookMark();
+*/
+        }else{
+            OrmaOperator.setShopList();
+
         }
 
         if(clear){

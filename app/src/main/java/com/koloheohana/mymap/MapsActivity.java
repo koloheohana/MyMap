@@ -42,6 +42,7 @@ import com.koloheohana.mymap.map.ShopSearch;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.Clocks;
+import com.koloheohana.mymap.util.Scene;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MAP_ME = this;
+        Scene.set(MAP_ME);
         /*CsvReader.parse(this);*/
 
         setContentView(R.layout.activity_maps);

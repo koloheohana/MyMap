@@ -44,7 +44,6 @@ public class ShopSearch {
     private static void searchShop(String shop_name, View view) {
         ArrayList<ShopDate> list = ShopSearch.getSearchShopList(shop_name);
         if (list.isEmpty()) {
-            System.out.println("からです");
             return;
         }
 
@@ -58,7 +57,6 @@ public class ShopSearch {
         pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-
                 ShopDate S_D = ShopSearch.getShopDate(item.getTitle().toString(),item.getTitleCondensed().toString());
                 MapsActivity.MAP_ME.setMarker(S_D, true);
                 ShopDialog sd = new ShopDialog(S_D);

@@ -4,6 +4,7 @@ import android.media.Image;
 import android.media.MediaRouter;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.koloheohana.mymap.data_base.OrmaShopData;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +16,7 @@ import java.util.List;
  * Created by User on 2016/09/11.
  */
 public class ShopDate implements Serializable{
+
     public enum SHOP_CATEGORY{
         飲み屋,居酒屋,レストラン,和食,肉料理,喫茶店カフェ("喫茶店・カフェ"),そばうどん("そば・うどん"),スイーツ,魚料理,
         ラーメン,中華中国料理("中華・中国料理"),すし,イタリアンフレンチ("イタリアン・フレンチ"),たこ焼きお好み焼き("たこ焼き・お好み焼き"),ファーストフード,
@@ -115,6 +117,22 @@ public class ShopDate implements Serializable{
         COORDINATE_Y = _COORDINATE_Y;
         LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
     }
+    public ShopDate(long _id,String _addrres,String postal,String _name,List<String> category,String _tel,double _COORDINATE_X,double _COORDINATE_Y,boolean bookmark){
+        ID = (int)_id;
+        ADDRRES = _addrres;
+        POSTAL = postal;
+        NAME = _name;
+        TEL = _tel;
+        for(String cate:category) {
+            CATEGORY.add(cate);
+        }
+        FIRST_CATEGORY =category.get(0);
+        COORDINATE_X = _COORDINATE_X;
+        COORDINATE_Y = _COORDINATE_Y;
+        LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
+        BOOKMARK = bookmark;
+    }
+    public boolean BOOKMARK = false;
     public Double getX(){
         return COORDINATE_X;
     }

@@ -9,13 +9,11 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = false;
+    static boolean tester = true;
     static boolean clear = false;
     public static void read(){
-/*
-        OrmaOperator.remove(MainActivity.ME);
-*/
         if(tester) {
+            OrmaOperator.remove(MainActivity.ME,1);
             final CsvReader read = new CsvReader();
             read.execute();
             ShopMemo.read();
@@ -26,10 +24,13 @@ public class ReadDate {
 /*
             OrmaOperator.setBookMark();
 */
-        }else{
+        }
+/*
+        else{
             OrmaOperator.setShopList();
 
         }
+*/
 
         if(clear){
             ReadFileSns.fileClear();

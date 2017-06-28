@@ -7,12 +7,17 @@ import android.os.AsyncTask;
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaShopData;
+import com.koloheohana.mymap.data_base.OrmaShopData_Selector;
 import com.koloheohana.mymap.user_date.ShopMemo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by User on 2016/09/10.
@@ -33,6 +38,8 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
     }
     private static String category;
     public static void file_read(Context context,int file){
+        boolean is_category = false;
+        ArrayList<OrmaShopData> list = new ArrayList<OrmaShopData>();
         Resources res = context.getResources();
         InputStream is = res.openRawResource(file);
         BufferedReader reader = null;
@@ -46,6 +53,7 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
         String str;
 
         int i = 0;
+        int id = 1;
         try {
             while ((str = reader.readLine()) != null) {
                 i++;
@@ -82,12 +90,29 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
                 String[] shop_y = shop_date[zahyou_y].split("\"");
 
                 TestXY _coordinate = new TestXY(shop_x[1],shop_y[1]);
+                //ShopData　インスタンス生成
                 ShopDate sd = new ShopDate(0,shop_date[6],shop_date[5],shop_date[4], category,shop_date[10],_coordinate.X,_coordinate.Y);
                 ShopList.setShopList(sd);
+
+/*                OrmaShopData_Selector osd = OrmaOperator.getShopDataSelector().shop_nameEq(shop_date[4]).addrresEq(shop_date[6]);
+                for(OrmaShopData _sd : osd){
+                    _sd.shop_category_list.add(category);
+                    is_category = true;
+                }
+                if(is_category){
+                    is_category = false;
+                    continue;
+                }*/
+/*                List<String> category_list = new ArrayList<String>();
+                category_list.add(category);
+                list.add(new OrmaShopData(id,shop_date[4],category_list,shop_date[10],"null","null",shop_date[5],shop_date[6],_coordinate.X,_coordinate.Y,true));
+                id++;*/
+                //OrmaShopData　生成
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        OrmaOperator.createShopData(MainActivity.ME,list);
     }
     public static String split_double(String s){
         String[] str = s.split("\"");

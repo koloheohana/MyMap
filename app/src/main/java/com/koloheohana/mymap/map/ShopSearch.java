@@ -13,6 +13,10 @@ import android.widget.Spinner;
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaDatabase;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaShopData;
+import com.koloheohana.mymap.data_base.OrmaShopData_Selector;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.ShopDialog;
 import com.koloheohana.mymap.user_date.MyBookmark;
@@ -68,12 +72,7 @@ public class ShopSearch {
     }
 
     public static ShopDate getShopDate(String name, String addrres) {
-        for (ShopDate sd : ShopList.ALLLIST) {
-            if (sd.getADDRRES().equals(addrres)||sd.getShopName().equals(name)) {
-                return sd;
-            }
-        }
-        return null;
+        return new ShopDate(OrmaOperator.getOrmaShopData(MapsActivity.MAP_ME,name,addrres));
     }
 
     public static ShopDate getShopDate(int ID) {
@@ -82,11 +81,9 @@ public class ShopSearch {
 
     public static ArrayList<ShopDate> getSearchShopList(String str) {
         ArrayList<ShopDate> list = new ArrayList<ShopDate>();
-        for (ShopDate sd : ShopList.ALLLIST) {
-            String name = sd.getShopName();
-            if (name.startsWith(str)) {
-                list.add(sd);
-            }
+        OrmaShopData_Selector osd = OrmaOperator.getSelectorShopNameInclude(MapsActivity.MAP_ME,str,"OrmaShopData");
+        for(OrmaShopData sd:osd){
+            list.add(new ShopDate(sd));
         }
         return list;
     }
@@ -125,38 +122,20 @@ public class ShopSearch {
         LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
         Double[] RANGE = Calculation.rangeCal(lan, KM[position]);
         ArrayList<ShopDate> shop_list = new ArrayList<ShopDate>();
-        for (LatLng _lat : ShopList.SHOP_MAP_LATLNG.keySet()) {
-            if (RANGE[0] <= _lat.latitude && RANGE[1] >= _lat.latitude &&
-                    RANGE[2] <= _lat.longitude && RANGE[3] >= _lat.longitude) {
-                shop_list.add(ShopList.SHOP_MAP_LATLNG.get(_lat));
-            }
+        OrmaShopData_Selector osd = OrmaOperator.getShopDataSelector();
+        osd.coordinate_xGe(RANGE[0]);
+        osd.coordinate_xLe(RANGE[1]);
+        osd.coordinate_yGe(RANGE[2]);
+        osd.coordinate_yLe(RANGE[3]);
+        System.out.println("範囲内のショップ数"+osd.count());
+        for(OrmaShopData sd:osd){
+            System.out.println(sd.shop_name);
+            shop_list.add(new ShopDate(sd));
         }
         return shop_list;
     }
-    public static void setMarker(int kiro){
-        LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
-        Double[] RANGE = Calculation.rangeCal(lan, kiro);
-        ArrayList<ShopDate> shop_list = new ArrayList<ShopDate>();
-        for (LatLng _lat : ShopList.SHOP_MAP_LATLNG.keySet()) {
-            if (RANGE[0] <= _lat.latitude && RANGE[1] >= _lat.latitude &&
-                    RANGE[2] <= _lat.longitude && RANGE[3] >= _lat.longitude) {
-                shop_list.add(ShopList.SHOP_MAP_LATLNG.get(_lat));
-            }
-        }
-        MapsActivity.MAP_ME.setMarker(shop_list,true);
-    }
-    public static ArrayList<ShopDate> getSearchRangeKiro(int kiro) {
-        LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
-        Double[] RANGE = Calculation.rangeCal(lan, kiro);
-        ArrayList<ShopDate> shop_list = new ArrayList<ShopDate>();
-        for (LatLng _lat : ShopList.SHOP_MAP_LATLNG.keySet()) {
-            if (RANGE[0] <= _lat.latitude && RANGE[1] >= _lat.latitude &&
-                    RANGE[2] <= _lat.longitude && RANGE[3] >= _lat.longitude) {
-                shop_list.add(ShopList.SHOP_MAP_LATLNG.get(_lat));
-            }
-        }
-        return shop_list;
-    }
+
+
 
     /*    private static void setBookmarkSpinner(){
             ReadDate.read();

@@ -132,6 +132,22 @@ public class ShopDate implements Serializable{
         LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
         BOOKMARK = bookmark;
     }
+    public ShopDate(OrmaShopData sd){
+        ID = (int)sd.id;
+        ADDRRES = sd.addrres;
+        POSTAL = sd.shop_postal;
+        NAME = sd.shop_name;
+        TEL = sd.shop_tel;
+        for(String cate:sd.shop_category_list) {
+            CATEGORY.add(cate);
+        }
+        FIRST_CATEGORY =sd.shop_category_list.get(0);
+        COORDINATE_X = sd.coordinate_x;
+        COORDINATE_Y = sd.coordinate_y;
+        LATLNG = new LatLng(COORDINATE_X,COORDINATE_Y);
+        BOOKMARK = sd.bookmark;
+    }
+
     public boolean BOOKMARK = false;
     public Double getX(){
         return COORDINATE_X;

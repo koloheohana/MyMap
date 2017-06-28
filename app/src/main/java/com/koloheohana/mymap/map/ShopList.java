@@ -1,7 +1,9 @@
 package com.koloheohana.mymap.map;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaShopData;
+import com.koloheohana.mymap.data_base.OrmaShopData_Selector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +13,8 @@ import java.util.List;
  * Created by User on 2016/12/07.
  */
 public class ShopList {
-    public static List<OrmaShopData> ALL_LIST = new ArrayList<OrmaShopData>();
     public static ArrayList<ShopDate> ALLLIST = new ArrayList<ShopDate>();
-    public static HashMap<LatLng,ShopDate> SHOP_MAP_LATLNG = new HashMap<LatLng, ShopDate>();
+    private static HashMap<LatLng,ShopDate> SHOP_MAP_LATLNG = new HashMap<LatLng, ShopDate>();
     public static void setShopList(ShopDate sd){
         if(SHOP_MAP_LATLNG.containsKey(sd.getLATLNG())){
             ShopDate _sd = SHOP_MAP_LATLNG.get(sd.getLATLNG());
@@ -26,9 +27,9 @@ public class ShopList {
         SHOP_MAP_LATLNG.put(sd.getLATLNG(),sd);
     }
     public static ShopDate getShopDate(String shop_name,String shop_addrres){
-        for(ShopDate sd:ALLLIST){
-            if(sd.getADDRRES().matches(shop_addrres)&&sd.getShopName().matches(shop_name)){
-                return sd;
+        for(OrmaShopData sd:OrmaOperator.getShopDataSelector()){
+            if(sd.addrres.matches(shop_addrres)&&sd.shop_name.matches(shop_name)){
+                return new ShopDate(sd);
             }
         }
         return null;

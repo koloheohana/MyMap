@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.data_base.OrmaDatabase;
 import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaShopData;
 
 
 /**
@@ -28,12 +28,14 @@ public class StartMenuTab extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     public HueAdapter hue_adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_menu, container, false);
-        GridView gridView = (GridView)view.findViewById(R.id.gridview);
+        GridView gridView = (GridView) view.findViewById(R.id.gridview);
         hue_adapter = new HueAdapter(MainActivity.ME);
         gridView.setAdapter(hue_adapter);
         /**
@@ -48,6 +50,7 @@ public class StartMenuTab extends Fragment {
 
         return view;
     }
+
     public class HueAdapter extends BaseAdapter {
 
         private Context mContext;
@@ -56,11 +59,12 @@ public class StartMenuTab extends Fragment {
                 "地図", "グループ", "トーク", "登録",
                 "店情報", "お気に入り", "初期化"
         };
-        public void chengeMenu(int position){
+
+        public void chengeMenu(int position) {
             //ディレクトリにrealm作成
-            switch (position){
+            switch (position) {
                 case 0:
-                    Intent intent = new Intent(MainActivity.ME,MapsActivity.class);
+                    Intent intent = new Intent(MainActivity.ME, MapsActivity.class);
                     startActivity(intent);
                     return;
                 case 1:
@@ -72,16 +76,20 @@ public class StartMenuTab extends Fragment {
                 case 3:
                     System.out.println("DBに挿入します");
                     OrmaOperator.setUser(MainActivity.ME);
-                    OrmaOperator.createShopData(MainActivity.ME);
                     return;
                 case 4:
                     System.out.println("DBを読み込みします");
+                    for (OrmaShopData sd : OrmaOperator.getSelectorShopNameInclude(MainActivity.ME, "なん", "OrmaShopData")) {
+                        System.out.println(sd.shop_name);
+                    }
+/*
                     OrmaOperator.read(MainActivity.ME);
+*/
                     return;
                 case 5:
                     System.out.println("DBを削除します");
-                    OrmaOperator.remove(MainActivity.ME,1);
-                    OrmaOperator.remove(MainActivity.ME,2);
+                    OrmaOperator.remove(MainActivity.ME, 1);
+                    OrmaOperator.remove(MainActivity.ME, 2);
                     return;
                 case 6:
                     OrmaOperator.test();
@@ -90,8 +98,9 @@ public class StartMenuTab extends Fragment {
                     return;
             }
         }
-        public int iconSelect(int position){
-            switch (position){
+
+        public int iconSelect(int position) {
+            switch (position) {
                 case 0:
                     return R.drawable.worldmap48;
                 case 1:
@@ -110,6 +119,7 @@ public class StartMenuTab extends Fragment {
             }
             return R.drawable.koloheohana;
         }
+
         /*    private Integer[] mHueIdArray = {
                     R.drawable.hue_ff4040,
                     R.drawable.hue_ffcf40,
@@ -122,7 +132,7 @@ public class StartMenuTab extends Fragment {
             };*/
         private class ViewHolder {
             public ImageView hueImageView;
-            public TextView  hueTextView;
+            public TextView hueTextView;
         }
 
         public HueAdapter(Context context) {
@@ -135,7 +145,7 @@ public class StartMenuTab extends Fragment {
         }
 
         public Object getItem(int position) {
-            System.out.println("ゲットアイテム"+position);
+            System.out.println("ゲットアイテム" + position);
             return mHueArray[position];
         }
 
@@ -149,11 +159,11 @@ public class StartMenuTab extends Fragment {
             if (convertView == null) {
                 convertView = mLayoutInflater.inflate(R.layout.grid_item_hue, null);
                 holder = new ViewHolder();
-                holder.hueImageView = (ImageView)convertView.findViewById(R.id.hue_imageview);
-                holder.hueTextView = (TextView)convertView.findViewById(R.id.hue_textview);
+                holder.hueImageView = (ImageView) convertView.findViewById(R.id.hue_imageview);
+                holder.hueTextView = (TextView) convertView.findViewById(R.id.hue_textview);
                 convertView.setTag(holder);
             } else {
-                holder = (ViewHolder)convertView.getTag();
+                holder = (ViewHolder) convertView.getTag();
             }
 
         /*holder.hueImageView.setImageResource(mHueIdArray[position]);*/

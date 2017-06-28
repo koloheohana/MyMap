@@ -31,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaShopData_Selector;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.CBookmarkDialog;
 import com.koloheohana.mymap.dialog.MemoCustomDialog;
@@ -42,6 +44,7 @@ import com.koloheohana.mymap.map.ShopSearch;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.Clocks;
+import com.koloheohana.mymap.util.MyConfig;
 import com.koloheohana.mymap.util.Scene;
 
 import java.util.ArrayList;
@@ -320,7 +323,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void setMarker(ArrayList<ShopDate> list){
         int count = 0;
-        int max_value = 300;
+        int max_value = MyConfig.map_marker_max;
         for(ShopDate sd:list){
             setMarker(sd,false);
             count++;
@@ -345,8 +348,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-
-                ShopDate S_D = ShopList.SHOP_MAP_LATLNG.get(marker.getPosition());
+                LatLng ll = marker.getPosition();
+                OrmaShopData_Selector osd = OrmaOperator.getShopDataSelector().coordinate_xEq(ll.latitude).coordinate_yEq(ll.longitude);
+                ShopDate S_D = new ShopDate(osd.get(0));
                 if(S_D ==null){
                     return;
                 }
@@ -369,13 +373,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // TODO Auto-generated method stub
                 // スナップショット画像の縮小
                 System.out.println(bitmap.getHeight()+":"+bitmap.getWidth());
-/*
-                Matrix mat = new Matrix();
-                mat.postScale(0.3f, 0.3f);
-                Bitmap cnv = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), mat, true);
 
-                System.out.println(cnv.getHeight()+":"+cnv.getWidth());
-*/
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
                 Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,bitmap,"map"+new Clocks(MAP_ME).getStringAllTime());
                 intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId(),uri.getPath()));

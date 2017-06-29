@@ -1,9 +1,13 @@
 package com.koloheohana.mymap.user_date;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaTork;
+import com.koloheohana.mymap.data_base.OrmaUser;
 import com.koloheohana.mymap.sns.OneTork;
 
 import java.util.ArrayList;
@@ -12,21 +16,33 @@ import java.util.ArrayList;
  * Created by User on 2016/08/24.
  */
 public class User {
-    private int id;
+    private long id;
     private Bitmap icon;
     private String name;
     private String mutter;
+    private int age;
+    private String addrres;
+    private String tel;
     public ArrayList<OneTork> TORK = new ArrayList<OneTork>();
-    public User(int _id ,int _icon,String name ,String mutter){
+    public User(long _id ,int _icon,String name ,String mutter){
         id = _id;
         setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), _icon));
         setName(name);
         setLoc(mutter);
-        readTorkFile();
+        readTorkFile(MainActivity.ME);
+    }
+    public User(Context context,OrmaUser ormaUser){
+        id = ormaUser.id;
+        setIcon(null);
+        setName(ormaUser.user_name);
+        setLoc(ormaUser.addrres);
+        readTorkFile(context);
 
     }
-    public void readTorkFile(){
-
+    public void readTorkFile(Context context){
+        for(OrmaTork ot: OrmaOperator.getOrmaTorkSelector(MainActivity.ME).user_idEq(id).orderByIdAsc()){
+            TORK.add(new OneTork(context,ot));
+        }
     }
     public void addTork(OneTork tork){
         TORK.add(tork);
@@ -44,10 +60,10 @@ public class User {
     public void setLoc(String loc) {
         this.mutter = loc;
     }
-    public int getUserId(){
+    public long getUserId(){
         return this.id;
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
     public Bitmap getIcon() {

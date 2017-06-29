@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.ShopMemo;
@@ -41,7 +42,7 @@ public class MapMemoDialog extends DialogFragment{
             public void onClick(View v) {
                 EditText et = (EditText)dialog.findViewById(R.id.edit_memo);
                 String st = et.getText().toString();
-                ShopMemo.write(SD,st);
+                ShopMemo.write(MapsActivity.MAP_ME,SD,st);
                 dismiss();
             }
         });

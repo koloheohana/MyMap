@@ -7,25 +7,24 @@ import com.github.gfx.android.orma.annotation.Table;
 
 import java.util.List;
 
+/**
+ * Created by User on 2017/06/28.
+ */
 @Table
-public class OrmaUser {
+public class OrmaShopMemo {
     @PrimaryKey(auto = false)
     public long id;
     @Column(indexed = true)
-    public String user_name;
+    public List<String> memo_list;
     @Column(indexed = true)
-    public int user_age;
-    @Column(indexed = true)
-    public String user_icon;
-    @Column(defaultExpr = "1",indexed = true)
-    public String addrres;
-
+    public long shop_id;
+    @Column(defaultExpr = "time",indexed = true)
+    public String time;
     @Setter
-    public OrmaUser(long id,String user_name,int user_age,String user_icon,String addrres){
+    public OrmaShopMemo(long id ,List<String> memo_list,long shop_id,String time){
         this.id = id;
-        this.user_name = user_name;
-        this.user_age = user_age;
-        this.user_icon = user_icon;
-        this.addrres = addrres;
+        this.memo_list = memo_list;
+        this. shop_id = shop_id;
+        this.time = time;
     }
 }

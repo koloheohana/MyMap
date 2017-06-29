@@ -1,8 +1,12 @@
 package com.koloheohana.mymap.sns;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.data_base.OrmaTork;
+import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.user_date.User;
@@ -14,13 +18,31 @@ import java.io.Serializable;
  */
 public class OneTork implements Serializable{
     String TORK;
+    long USER_ID;
     User USER;
-    int ID;
+    long ID;
     Clocks CLOCK;
     ShopDate SHOP_DATA;
     Uri GALLARY_URI;
     Uri MAP_URI;
     String FILE_NAME;
+    public OneTork(Context context,OrmaTork ormaTork){
+        if(ormaTork.image_switch){
+            if(!ormaTork.camera_picture){
+                GALLARY_URI = null;
+                TORK = ormaTork.image_uri;
+            }else{
+                MAP_URI = null;
+                TORK = ormaTork.image_uri;
+                SHOP_DATA = null;
+            }
+        }else {
+            TORK = ormaTork.tork_sentence;
+        }
+        CLOCK = new Clocks(ormaTork.clock);
+        USER_ID = ormaTork.user_id;
+        ID = ormaTork.user_id;
+    }
     public OneTork(String tork, Clocks clocks,User user,Uri gallaryUri,ShopDate sd,Uri mapUri){
         if(tork == null){
             if(gallaryUri != null){
@@ -44,8 +66,11 @@ public class OneTork implements Serializable{
         }
         return true;
     }
+    public boolean isCamera(){
+        return GALLARY_URI != null;
+    }
     public int getID(){
-        return ID;
+        return (int) ID;
     }
     public String getFILE_NAME(){
         return FILE_NAME;

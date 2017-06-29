@@ -35,7 +35,6 @@ public class ShopDate implements Serializable{
             return list;
         }
     }
-    public static int SHOP_ID;
     /**
      * 仮
      */
@@ -54,7 +53,7 @@ public class ShopDate implements Serializable{
         }
         return 0;
     }
-    int ID;
+    public int ID;
     String ADDRRES;
     String NAME;
     String TEL;
@@ -168,6 +167,7 @@ public class ShopDate implements Serializable{
         }
         return sb.toString();
     }
+
     public List<String> getCategoryList(){
         List<String> list = new ArrayList<String>();
         for(String category:CATEGORY){

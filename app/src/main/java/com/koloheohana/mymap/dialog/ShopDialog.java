@@ -103,7 +103,7 @@ public class ShopDialog extends DialogFragment{
                     Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入りを解除しました",Toast.LENGTH_SHORT);
                     toast.show();
                 }else {
-                    MyBookmark.set(SD);
+                    MyBookmark.set(MapsActivity.MAP_ME,SD);
                     Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入り登録しました",Toast.LENGTH_SHORT);
                     toast.show();
                 }

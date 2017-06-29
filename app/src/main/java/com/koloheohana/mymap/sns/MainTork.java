@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
@@ -48,7 +49,7 @@ import java.util.List;
  */
 public class MainTork extends AppCompatActivity {
     //インテントで移動する時に誰のトークを開くか指定している　stringじゃなくオブジェクト指定にする
-    public static int ID;
+    public static long ID;
     public static User user;
     public static MainTork ME;
     private TorkAdapter TA;
@@ -84,7 +85,7 @@ public class MainTork extends AppCompatActivity {
             Uri uri = Uri.fromFile(new File(sd.file_name));
             addTork(_sd, null, uri);
         } else {
-            user = UserList.getUserById(ID);
+            user = UserList.getDbUserById(ME,ID);
             createTork();
         }
         tv.setText(user.getName());
@@ -128,8 +129,11 @@ public class MainTork extends AppCompatActivity {
     }
 
     private void addTork(OneTork tork) {
-        ReadFileSns.writeTorkFile(user.getId(), tork);
+        OrmaOperator.addTork(ME,tork);
         user.addTork(tork);
+/*
+        ReadFileSns.writeTorkFile(user.getId(), tork);
+*/
         CustomListView list = (CustomListView) findViewById(R.id.tork_list_view);
         int last = list.getCount();
         list.setSelection(last - 1);
@@ -144,7 +148,9 @@ public class MainTork extends AppCompatActivity {
 
     public void removeTork(OneTork ot) {
         user.removeTork(ot);
+/*
         ReadFileSns.removeTorkFile(user.getId(), ot);
+*/
         CustomListView list = (CustomListView) findViewById(R.id.tork_list_view);
         int last = list.getCount();
         list.setSelection(last - 1);

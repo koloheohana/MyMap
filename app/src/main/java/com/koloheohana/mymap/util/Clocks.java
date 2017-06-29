@@ -20,6 +20,25 @@ public class Clocks {
     public final int MINUTE;
     public final int SECOND;
     public final int MILLSECOND;
+    public static int getClock(Context context){
+        Calendar CALENDER = Calendar.getInstance();
+        DateFormat DATE_FORMAT = android.text.format.DateFormat.getDateFormat(context.getApplicationContext());
+        String str = DATE_FORMAT.format(CALENDER.getTime());
+        String[] time = str.split("/");
+        return 1;
+    }
+    public Clocks(String str){
+        CALENDER = null;
+        DATE_FORMAT = null;
+        String[] clock = str.split("/");
+        YEAR = Integer.valueOf(clock[0]);
+        MONTH = Integer.valueOf(clock[1]);
+        DAY = Integer.valueOf(clock[2]);
+        HOUR = Integer.valueOf(clock[3]);
+        MINUTE = Integer.valueOf(clock[4]);
+        SECOND = Integer.valueOf(clock[5]);
+        MILLSECOND = Integer.valueOf(clock[6]);
+    }
     public Clocks(Context context){
         CALENDER = Calendar.getInstance();
         DATE_FORMAT = android.text.format.DateFormat.getDateFormat(context.getApplicationContext());
@@ -57,7 +76,7 @@ public class Clocks {
         return sb.toString();
     }
     public String getStringSandTheString(String str){
-        String time =YEAR+str+MONTH+str+DAY+str+HOUR+str+MINUTE+str+SECOND;
+        String time =YEAR+str+MONTH+str+DAY+str+HOUR+str+MINUTE+str+SECOND+str+MILLSECOND;
         return time;
     }
     public String getMonthAndDay(){

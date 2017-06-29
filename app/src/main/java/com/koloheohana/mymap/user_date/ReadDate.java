@@ -9,18 +9,21 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = true;
+    static boolean tester = false;
     static boolean clear = false;
     public static void read(){
         if(tester) {
             OrmaOperator.remove(MainActivity.ME,1);
+            OrmaOperator.remove(MainActivity.ME,2);
             final CsvReader read = new CsvReader();
             read.execute();
-            ShopMemo.read();
 /*
             OrmaOperator.remove(MainActivity.ME,1);
 */
             OrmaOperator.createShopData(MainActivity.ME);
+            ReadFileSns.read();
+            ReadFileSns.readTorkFile();
+            OrmaOperator.createUserData(MainActivity.ME);
 /*
             OrmaOperator.setBookMark();
 */
@@ -31,13 +34,12 @@ public class ReadDate {
 
         }
 */
-
         if(clear){
             ReadFileSns.fileClear();
             ReadFileSns.testCreate();
         }
-        ReadFileSns.read();
-        ReadFileSns.readTorkFile();
+        //データベースからの読み込み、セット
+        OrmaOperator.read(MainActivity.ME);
 
     }
 }

@@ -1,5 +1,10 @@
 package com.koloheohana.mymap.user_date;
 
+import android.content.Context;
+
+import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.data_base.OrmaOperator;
+
 import java.util.ArrayList;
 
 /**
@@ -21,5 +26,11 @@ public class UserList {
             }
         }
         return null;
+    }
+    public static User getDbUserById(Context context,long id){
+        return new User(context,OrmaOperator.getDBUser(MainActivity.ME).idEq(id).get(0));
+    }
+    public static User getDbUserById(Context context,int id){
+        return new User(context,OrmaOperator.getDBUser(MainActivity.ME).idEq(id).get(0));
     }
 }

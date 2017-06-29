@@ -109,6 +109,7 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
                 id++;*/
                 //OrmaShopData　生成
             }
+            is.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

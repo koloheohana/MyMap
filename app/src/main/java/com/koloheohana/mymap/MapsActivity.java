@@ -376,7 +376,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
                 Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,bitmap,"map"+new Clocks(MAP_ME).getStringAllTime());
-                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),user.getUserId(),uri.getPath()));
+                intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),(int)user.getUserId(),uri.getPath()));
                 intent.setAction(Intent.ACTION_VIEW);
                 MapsActivity.MAP_ME.startActivity(intent);
             }

@@ -1,5 +1,6 @@
 package com.koloheohana.mymap.sns;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.koloheohana.mymap.MainActivity;
@@ -71,15 +72,18 @@ public class ReadFileSns {
 
     public static void fileClear() {
         for (User user : UserList.ALL_USER_LIST) {
-            int user_id = user.getId();
+            int user_id = (int) user.getId();
             String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
             SaveDateController.newFile(file_name, "");
         }
     }
+    public static void readTorkFile(Context context,long user_id){
 
+    }
     public static void readTorkFile() {
+
         for (User user : UserList.ALL_USER_LIST) {
-            int user_id = user.getId();
+            int user_id = (int) user.getId();
             String file_name = SaveFile.TORK_ID + user_id + SaveFile.FORMAT;
             ArrayList<String> tork_list = SaveDateController.read(file_name);
             if (tork_list.isEmpty()) {

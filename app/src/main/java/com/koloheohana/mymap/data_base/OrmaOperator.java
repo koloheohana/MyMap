@@ -11,6 +11,7 @@ import com.github.gfx.android.orma.annotation.OnConflict;
 import com.github.gfx.android.orma.migration.BuildConfig;
 import com.github.gfx.android.orma.migration.ManualStepMigration;
 import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.menutab.Tork;
@@ -32,26 +33,32 @@ import dagger.Provides;
 
 public class OrmaOperator {
     int version_3 = 4;
-    public static void test(){
+    public static int SHOP_NUMBER = 1;
+    public static int USER_NUMBER = 2;
+    public static int TORK_NUMBER = 5;
+    public static void test() {
         OrmaDatabase orma = getOrmaDataBase(Scene.CONTEXT, "OrmaShopData");
         OrmaShopData_Selector selector = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
-        System.out.println("ステップ1:ブックマークの数は"+selector.count());
+        System.out.println("ステップ1:ブックマークの数は" + selector.count());
         orma.updateOrmaShopData().idEq(100).bookmark(true).execute();
         OrmaShopData_Selector selector1 = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
-        System.out.println("ステップ2:ブックマークの数は"+selector1.count());
+        System.out.println("ステップ2:ブックマークの数は" + selector1.count());
         OrmaShopData_Selector selector2 = orma.selectFromOrmaShopData().idEq(101).orderByAddrresDesc();
 
     }
+
     public static OrmaDatabase getOrmaDataBase(Context context, String name) {
         OrmaDatabase ormaDatabase = null;
         OrmaDatabase.Builder db = OrmaDatabase.builder(context).name(name);
         ormaDatabase = db.readOnMainThread(AccessThreadConstraint.NONE).writeOnMainThread(BuildConfig.DEBUG ? AccessThreadConstraint.WARNING : AccessThreadConstraint.NONE).build();
         return ormaDatabase;
     }
-    public static OrmaTork_Selector getOrmaTorkSelector(Context context){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaTork");
+
+    public static OrmaTork_Selector getOrmaTorkSelector(Context context) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaTork");
         return orma.selectFromOrmaTork();
     }
+
     public static ArrayList<String> sampleUser() {
         return null;
     }
@@ -64,11 +71,22 @@ public class OrmaOperator {
             inserter.execute(ot);
         }
     }
-    public static void createUserData(Context context){
+    public static void createMyData(Context context){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
+        Inserter<OrmaMyData> inserter = orma.prepareInsertIntoOrmaMyData();
+        OrmaMyData data = new OrmaMyData(1,"マイネーム","08069180544","愛知県/名古屋市/天白区/平針/4-701", R.mipmap.ic_launcher);
+        inserter.execute(data);
+    }
+    public static OrmaMyData getMyData(Context context){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
+        return orma.selectFromOrmaMyData().get(0);
+
+    }
+    public static void createUserData(Context context) {
         final ArrayList<OrmaUser> list = new ArrayList<OrmaUser>();
         long id = 1;
-        for(User user:UserList.ALL_USER_LIST){
-            OrmaUser ou = new OrmaUser(id,user.getName(),20,user.getIcon().toString(),user.getLoc());
+        for (User user : UserList.ALL_USER_LIST) {
+            OrmaUser ou = new OrmaUser(id, user.getName(), 20, user.getIcon().toString(), user.getLoc());
             list.add(ou);
             id++;
         }
@@ -85,6 +103,7 @@ public class OrmaOperator {
             }
         });
     }
+
     public static void createShopData(Context context) {
         final ArrayList<OrmaShopData> list = new ArrayList<OrmaShopData>();
 
@@ -95,10 +114,11 @@ public class OrmaOperator {
             list.add(osd);
             id++;
         }
-        createShopData(context,list);
+        createShopData(context, list);
         ShopList.ALLLIST.clear();
     }
-    public static void createShopData(Context context,final ArrayList<OrmaShopData> list){
+
+    public static void createShopData(Context context, final ArrayList<OrmaShopData> list) {
         final OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopData");
         final Inserter<OrmaShopData> inserter = orma.prepareInsertIntoOrmaShopData();
 
@@ -112,18 +132,25 @@ public class OrmaOperator {
             }
         });
     }
+
+    public static OrmaShopMemo_Selector getMemoSelector(Context context, long shop_id) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopMemo");
+        return orma.selectFromOrmaShopMemo().shop_idEq(shop_id).orderByIdAsc();
+    }
+
     public static void addTork(Context context, OneTork tork) {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaTork");
         Inserter<OrmaTork> inserter = orma.prepareInsertIntoOrmaTork();
         int id = tork.getID();
         String Clock = tork.getClock().getStringSandTheString("/");
         int shop_data;
-        if(tork.getShopData() == null){
+        if (tork.getShopData() == null) {
             shop_data = 0;
-        }else{
+        } else {
             shop_data = tork.getShopData().ID;
         }
-        OrmaTork ormaTork = new OrmaTork(id,tork.getTork(),1,"null",tork.isImage(),Clock,tork.isCamera(),"",shop_data);
+        OrmaTork ormaTork = new OrmaTork(id, tork.getTork(), tork.getID(), tork.getStringUri(), tork.isImage(), Clock, tork.isCamera(), tork.getStringUri(), shop_data);
+        System.out.println("orma_tork_image_uri:"+ormaTork.image_uri.toString());
         inserter.execute(ormaTork);
     }
 
@@ -137,6 +164,17 @@ public class OrmaOperator {
                 OrmaDatabase orma = getOrmaDataBase(context, "OrmaUser");
                 orma.deleteFromOrmaUser().execute();
                 break;
+            case 3:
+                OrmaDatabase orma3 = getOrmaDataBase(context, "OrmaShopMemo");
+                orma3.deleteFromOrmaShopMemo().execute();
+                break;
+            case 4:
+                OrmaDatabase orma4 = getOrmaDataBase(context,"OrmaMyData");
+                orma4.deleteFromOrmaMyData().execute();
+                break;
+            case 5:
+                OrmaDatabase orma5 = getOrmaDataBase(context,"OrmaTork");
+                orma5.deleteFromOrmaTork().execute();
         }
     }
 
@@ -146,7 +184,7 @@ public class OrmaOperator {
         OrmaUser_Selector selector = orma.selectFromOrmaUser()
                 .orderByIdAsc();
         for (OrmaUser ot : selector) {
-            UserList.add(new User(context,ot));
+            UserList.add(new User(context, ot));
         }
         //ブックマークデータの読み込み
         setBookMark(context);
@@ -154,43 +192,38 @@ public class OrmaOperator {
         ShopMemo.read(context);
 
     }
-    public static void readTorkData(long id){
+
+    public static void readTorkData(long id) {
 
     }
-    public static void deleteShopMemo(Context context,long id){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopMemo");
+
+    public static void deleteShopMemo(Context context, long id) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopMemo");
         orma.deleteFromOrmaShopMemo().idEq(id).execute();
     }
-    public static void writeShopMemo(Context context,long id,String memo,String time){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopMemo");
 
-        if(!orma.selectFromOrmaShopMemo().shop_idEq(id).isEmpty()){
-            System.out.println("追加します");
-            OrmaShopMemo orma_memo = orma.selectFromOrmaShopMemo().idEq(id).get(0);
-            orma_memo.memo_list.add(memo);
-            orma.updateOrmaShopMemo().shop_idEq(id).memo_list(orma_memo.memo_list).time(time).execute();
-        }else {
-            System.out.println("新規作成します");
-            List<String> list = new ArrayList<String>();
-            list.add(memo);
-            OrmaShopMemo orma_memo = new OrmaShopMemo(id, list, id, time);
-            Inserter<OrmaShopMemo> inserter = orma.prepareInsertIntoOrmaShopMemo();
-            inserter.execute(orma_memo);
-        }
-
+    public static void writeShopMemo(Context context, long id, String memo, String time) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopMemo");
+        System.out.println("新規作成します");
+        OrmaShopMemo orma_memo = new OrmaShopMemo(id, memo, id, time);
+        Inserter<OrmaShopMemo> inserter = orma.prepareInsertIntoOrmaShopMemo();
+        inserter.execute(orma_memo);
     }
-    public static OrmaTork_Selector readTork(Context context,long id){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaTork");
+
+    public static OrmaTork_Selector readTork(Context context, long id) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaTork");
         OrmaTork_Selector selector = orma.selectFromOrmaTork().user_idEq(id).orderByIdDesc();
         return selector;
     }
-    public static void setBookMark(Context context){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopData");
+
+    public static void setBookMark(Context context) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopData");
         OrmaShopData_Selector selector = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
-        for(OrmaShopData sd:selector){
-            MyBookmark.set(context,new ShopDate(sd));
+        for (OrmaShopData sd : selector) {
+            MyBookmark.set(context, new ShopDate(sd));
         }
     }
+
     public static void setShopList() {
         OrmaDatabase orma1 = getOrmaDataBase(MainActivity.ME, "OrmaShopData");
         OrmaShopData_Selector selector1 = orma1.selectFromOrmaShopData();
@@ -202,45 +235,52 @@ public class OrmaOperator {
         TimeStopper.stop();
         System.out.println("ショップインスタンス生成タイム");
     }
-    public static OrmaShopData_Selector getShopDataSelector(){
+
+    public static OrmaShopData_Selector getShopDataSelector() {
         OrmaDatabase orma1 = getOrmaDataBase(MainActivity.ME, "OrmaShopData");
         OrmaShopData_Selector selector1 = orma1.selectFromOrmaShopData();
         return selector1;
     }
-    public static boolean setBookmark(Context context,int shop_id,boolean b){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopData");
+
+    public static boolean setBookmark(Context context, int shop_id, boolean b) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopData");
         OrmaShopData_Selector selector = orma.selectFromOrmaShopData().idEq(shop_id);
         OrmaShopData osd = selector.get(0);
-        if(osd.bookmark){
+        if (osd.bookmark) {
             return false;
         }
         orma.updateOrmaShopData().idEq(shop_id).bookmark(b).execute();
         return true;
     }
-    public static OrmaShopData_Selector getSelectorShopNameInclude(Context context, String name, String table){
-        OrmaDatabase orma = getOrmaDataBase(context,table);
-        OrmaShopData_Selector osd = orma.selectFromOrmaShopData().where("shop_name LIKE ?","%"+name).orderByShop_nameDesc();
+
+    public static OrmaShopData_Selector getSelectorShopNameInclude(Context context, String name, String table) {
+        OrmaDatabase orma = getOrmaDataBase(context, table);
+        OrmaShopData_Selector osd = orma.selectFromOrmaShopData().where("shop_name LIKE ?", "%" + name).orderByShop_nameDesc();
 
         return osd;
     }
-    public static OrmaShopData getOrmaShopData(Context context,long shop_id){
-        return getOrmaDataBase(context,"OrmaShopData").selectFromOrmaShopData().idEq(shop_id).orderByIdDesc().get(0);
+
+    public static OrmaShopData getOrmaShopData(Context context, long shop_id) {
+        return getOrmaDataBase(context, "OrmaShopData").selectFromOrmaShopData().idEq(shop_id).orderByIdDesc().get(0);
     }
-    public static OrmaShopData getOrmaShopData(Context context,String shop_name,String addrres){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopData");
+
+    public static OrmaShopData getOrmaShopData(Context context, String shop_name, String addrres) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopData");
         OrmaShopData_Selector osd = orma.selectFromOrmaShopData().shop_nameEq(shop_name).addrresEq(addrres).orderByShop_nameDesc();
         return osd.get(0);
     }
-    public static OrmaShopData_Selector getShopSelector(Context context){
-        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopData");
+
+    public static OrmaShopData_Selector getShopSelector(Context context) {
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopData");
         return orma.selectFromOrmaShopData();
     }
 
-    public static OrmaShopMemo_Selector getShopMemoSelector(Context context){
-        OrmaDatabase odb = getOrmaDataBase(context,"OrmaShopMemo");
+    public static OrmaShopMemo_Selector getShopMemoSelector(Context context) {
+        OrmaDatabase odb = getOrmaDataBase(context, "OrmaShopMemo");
         OrmaShopMemo_Selector selector = odb.selectFromOrmaShopMemo();
         return selector;
     }
+
     public static OrmaUser_Selector getDBUser(Context context) {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaUser");
         orma.deleteFromOrmaUser();

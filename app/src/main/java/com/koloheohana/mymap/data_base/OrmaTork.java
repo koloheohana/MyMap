@@ -9,7 +9,7 @@ import com.github.gfx.android.orma.annotation.Table;
 
 @Table
 public class OrmaTork{
-    @PrimaryKey(auto = false)
+    @PrimaryKey(autoincrement = true)
     public long id;
     @Column(indexed = true)
     public String tork_sentence;
@@ -30,7 +30,6 @@ public class OrmaTork{
 
     @Setter
     public OrmaTork(long id,String tork_sentence,long user_id,String image_binary,boolean image_switch,String clock,boolean camera_picture,String image_uri,long shop_id){
-        this.id = id;
         this.clock = clock;
         this.tork_sentence = tork_sentence;
         this.user_id = user_id;

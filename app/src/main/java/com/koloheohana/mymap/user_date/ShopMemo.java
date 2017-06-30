@@ -66,7 +66,9 @@ public class ShopMemo {
         sd.getMemo().remove(memo);*/
     }
     public static void write(Context context,ShopDate SD,String memo){
-        OrmaOperator.writeShopMemo(context,SD.ID,memo,new Clocks(context).getStringAllTime());
+        OrmaOperator.writeShopMemo(context,SD.ID,memo,new Clocks(context).getStringSandTheString("/"));
+        MEMO_SHOP_LIST.add(SD);
+
 /*        if(memo.isEmpty()){
             return;
         }

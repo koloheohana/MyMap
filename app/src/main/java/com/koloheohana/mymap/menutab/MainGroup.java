@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.dialog.GroupDialog;
 import com.koloheohana.mymap.dialog.ProfDialog;
 import com.koloheohana.mymap.me.MyUser;
@@ -65,6 +66,7 @@ public class MainGroup extends Fragment {
     }
     private ListView createProf(View view){
         ListView listView = (ListView)view.findViewById(R.id.profList);
+        MyUser my = new MyUser(OrmaOperator.getMyData(MainActivity.ME));
         UserAdapter adapter = new UserAdapter(MainActivity.ME,0, MyUser.ME.getListUser());
         listView.setAdapter(adapter);
         setPopupWindow(listView);

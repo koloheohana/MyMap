@@ -54,6 +54,8 @@ public class TorkAdapter extends ArrayAdapter<OneTork> {
         vh.name.setText(USER.getName());
         view.setTag(vh);
         //画像を表示する場合
+        System.out.println("TORK"+ot.getTork());
+        System.out.print("FILE"+ot.getStringUri());
         if (ot.getUri() != null) {
             vh.text.setVisibility(View.GONE);
             if(ImageCache.isKey(ot.getUri())){

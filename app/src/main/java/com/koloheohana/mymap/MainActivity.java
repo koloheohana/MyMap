@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
         Scene.set(ME);
         ME = this;
+        ReadDate.read();
+
         Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         mPager = (ViewPager) findViewById(R.id.viewpager);
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-        ReadDate.read();
 
 /*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
         Realm.deleteRealm(realmCondig);*//*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();

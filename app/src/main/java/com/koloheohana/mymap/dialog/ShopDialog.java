@@ -91,7 +91,7 @@ public class ShopDialog extends DialogFragment{
         button.setEnabled(true);
 
         String bookmark ="お気に入り登録";
-        if(MyBookmark.getList().contains(SD)){
+        if(MyBookmark.isBookmark(SD.ID)){
             bookmark = "お気に入りを解除する";
         }
         button.setText(bookmark);

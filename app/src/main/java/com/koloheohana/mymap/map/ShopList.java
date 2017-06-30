@@ -1,5 +1,7 @@
 package com.koloheohana.mymap.map;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaShopData;
@@ -25,6 +27,9 @@ public class ShopList {
         }
         ALLLIST.add(sd);
         SHOP_MAP_LATLNG.put(sd.getLATLNG(),sd);
+    }
+    public static ShopDate getShopDate(Context context,long id){
+        return new ShopDate(OrmaOperator.getOrmaShopData(context,id));
     }
     public static ShopDate getShopDate(String shop_name,String shop_addrres){
         for(OrmaShopData sd:OrmaOperator.getShopDataSelector()){

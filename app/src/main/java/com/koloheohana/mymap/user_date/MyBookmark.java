@@ -29,7 +29,14 @@ public class MyBookmark {
         bookmark_list.remove(sd);
         OrmaOperator.setBookmark(MainActivity.ME,sd.ID,false);
     }
-
+    public static boolean isBookmark(long id){
+        for(ShopDate sd: bookmark_list){
+            if(sd.ID == id){
+                return false;
+            }
+        }
+        return true;
+    }
     public static ArrayList<ShopDate> getList(){
         return bookmark_list;
     }

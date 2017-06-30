@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaTork;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.map.ShopDate;
@@ -29,12 +30,12 @@ public class OneTork implements Serializable{
     public OneTork(Context context,OrmaTork ormaTork){
         if(ormaTork.image_switch){
             if(!ormaTork.camera_picture){
-                GALLARY_URI = null;
+                GALLARY_URI = SaveDateController.getUri(ormaTork.image_uri);
                 TORK = ormaTork.image_uri;
             }else{
-                MAP_URI = null;
+                MAP_URI = SaveDateController.getUri(ormaTork.image_uri);
                 TORK = ormaTork.image_uri;
-                SHOP_DATA = null;
+                SHOP_DATA = new ShopDate(OrmaOperator.getOrmaShopData(context,ormaTork.shop_id));
             }
         }else {
             TORK = ormaTork.tork_sentence;
@@ -84,6 +85,14 @@ public class OneTork implements Serializable{
         }else{
             return MAP_URI;
         }
+    }
+    public String getStringUri(){
+        String str = "";
+        System.out.println("URI:"+getUri());
+        if(isImage()){
+            return getUri().toString();
+        }
+        return str;
     }
     public String getStringFileConverter(){
         StringBuffer sb = new StringBuffer();

@@ -81,9 +81,10 @@ public class MainTork extends AppCompatActivity {
             user = UserList.getUserById(sd.USER_ID);
             ID = sd.USER_ID;
             createTork();
-            ShopDate _sd = ShopList.getShopDate(sd.SHOP_NAME, sd.SHOP_ADDRRES);
+            ShopDate _sd = ShopList.getShopDate(ME,ID);
             Uri uri = Uri.fromFile(new File(sd.file_name));
             addTork(_sd, null, uri);
+
         } else {
             user = UserList.getDbUserById(ME,ID);
             createTork();
@@ -164,6 +165,7 @@ public class MainTork extends AppCompatActivity {
 /*
         TorkAdapter ta = new TorkAdapter(this,0,user);
 */
+
         list.setAdapter(TA);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

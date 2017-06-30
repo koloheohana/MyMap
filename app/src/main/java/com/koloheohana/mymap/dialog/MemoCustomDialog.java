@@ -29,7 +29,7 @@ public class MemoCustomDialog extends AlertDialog{
                 ShopDate sd = (ShopDate)listView.getItemAtPosition(position);
                 new AlertDialog.Builder(context)
                         .setTitle("メモ")
-                        .setMessage(sd.getMemoString())
+                        .setMessage(sd.getMemoString(context))
 /*                        .setPositiveButton("", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

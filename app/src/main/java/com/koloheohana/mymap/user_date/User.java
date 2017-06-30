@@ -25,6 +25,7 @@ public class User {
     private String tel;
     public ArrayList<OneTork> TORK = new ArrayList<OneTork>();
     public User(long _id ,int _icon,String name ,String mutter){
+        System.out.println(_icon);
         id = _id;
         setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), _icon));
         setName(name);

@@ -13,8 +13,15 @@ public class ReadDate {
     static boolean clear = false;
     public static void read(){
         if(tester) {
-            OrmaOperator.remove(MainActivity.ME,1);
+            OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
+
+            OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
+            OrmaOperator.remove(MainActivity.ME,OrmaOperator.SHOP_NUMBER);
             OrmaOperator.remove(MainActivity.ME,2);
+            OrmaOperator.remove(MainActivity.ME,3);
+            //クリエイト
+            OrmaOperator.remove(MainActivity.ME,4);
+            OrmaOperator.createMyData(MainActivity.ME);
             final CsvReader read = new CsvReader();
             read.execute();
 /*
@@ -38,6 +45,7 @@ public class ReadDate {
             ReadFileSns.fileClear();
             ReadFileSns.testCreate();
         }
+
         //データベースからの読み込み、セット
         OrmaOperator.read(MainActivity.ME);
 

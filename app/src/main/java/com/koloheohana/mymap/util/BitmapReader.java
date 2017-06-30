@@ -114,6 +114,7 @@ public class BitmapReader {
     bitmapを扱う時はここ
     */
     public static Bitmap getBitmap(Context context, Uri uri, boolean reduction) {
+        System.out.println("URIチェッカー"+uri.toString());
         Bitmap bitmap = null;
         String fileName = null;
 

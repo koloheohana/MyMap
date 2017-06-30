@@ -184,6 +184,12 @@ public class SaveDateController {
         }
         return uri;
     }
+    public static Uri getUri(String file_path){
+        Uri uri;
+        File file = new File(file_path);
+        uri = Uri.fromFile(file);
+        return uri;
+    }
     public static Bitmap getBitMapPre(Context con){
         SharedPreferences pref = con.getSharedPreferences("hoge",Context.MODE_PRIVATE);
         String s = pref.getString("hoge","");

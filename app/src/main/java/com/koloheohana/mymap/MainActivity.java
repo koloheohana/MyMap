@@ -6,13 +6,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.map.ShopList;
+import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.ReadFileSns;
 import com.koloheohana.mymap.user_date.ReadDate;
 import com.koloheohana.mymap.util.Scene;
@@ -42,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
         Scene.set(ME);
         ME = this;
         ReadDate.read();
-
+/*
+        ServerOperator.sendPush();
+*/
+        System.out.println("ゲットトークン"+FirebaseInstanceId.getInstance().getToken());
         Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
         mPager = (ViewPager) findViewById(R.id.viewpager);

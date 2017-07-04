@@ -3,6 +3,7 @@ package com.koloheohana.mymap.user_date;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.map.CsvReader;
+import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.ReadFileSns;
 
 /**
@@ -14,7 +15,6 @@ public class ReadDate {
     public static void read(){
         if(tester) {
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
-
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.SHOP_NUMBER);
             OrmaOperator.remove(MainActivity.ME,2);
@@ -48,6 +48,9 @@ public class ReadDate {
 
         //データベースからの読み込み、セット
         OrmaOperator.read(MainActivity.ME);
-
+        //サーバーデータを作成
+        ServerOperator.setServer(MainActivity.ME);
+        //プッシュ通知の設定
+        ServerOperator.setPush();
     }
 }

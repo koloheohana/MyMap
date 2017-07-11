@@ -27,9 +27,10 @@ public class OrmaTork{
     public long shop_id;
     @Column(defaultExpr = "null",indexed = true)
     public String image_uri;
-
+    @Column(defaultExpr = "false",indexed = true)
+    public boolean read;
     @Setter
-    public OrmaTork(long id,String tork_sentence,long user_id,String image_binary,boolean image_switch,String clock,boolean camera_picture,String image_uri,long shop_id){
+    public OrmaTork(long id,String tork_sentence,long user_id,String image_binary,boolean image_switch,String clock,boolean camera_picture,String image_uri,long shop_id,boolean read){
         this.clock = clock;
         this.tork_sentence = tork_sentence;
         this.user_id = user_id;
@@ -38,5 +39,6 @@ public class OrmaTork{
         this.camera_picture = camera_picture;
         this.image_uri = image_uri;
         this.shop_id = shop_id;
+        this.read = read;
     }
 }

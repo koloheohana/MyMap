@@ -13,8 +13,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-    <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -32,47 +30,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@android:drawable/sym_action_email" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-<!--        &lt;!&ndash; プッシュ通知タップ時に起動するActivityの設定 &ndash;&gt;
-        <meta-data android:name="openPushStartActivity" android:value=".MainActivity"/>
-
-        &lt;!&ndash; 通知エリアに表示されるアイコンの設定 &ndash;&gt;
-        <meta-data android:name="smallIcon" android:resource="@drawable/ic_group_collapse_09"/>
-
-        &lt;!&ndash; 通知エリアに表示されるアイコンカラーの設定 &ndash;&gt;
-        <meta-data android:name="smallIconColor" android:value="@color/cast_libraries_material_featurehighlight_outer_highlight_default_color"/>
-
-        &lt;!&ndash; 通知エリアにプッシュ通知を複数表示する設定　0:最新のみ表示 , 1:複数表示 &ndash;&gt;
-        <meta-data android:name="notificationOverlap" android:value="1"/>
-
-        &lt;!&ndash; カスタムダイアログプッシュを利用する場合のみ背景画像の設定 &ndash;&gt;
-        <meta-data android:name="dialogPushBacskgroundImage" android:resource="@drawable/ic_dialog_close_light"/>-->
-        <service
-            android:name=".server.MyFirebaseMessageingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
-        <service
-            android:name=".server.MyFirebaseInstanceIDService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+        <!--NiftyCloud-->
         <receiver
             android:name="com.nifty.cloud.mb.core.NCMBGcmReceiver"
             android:exported="true"
@@ -83,12 +41,29 @@
             </intent-filter>
         </receiver>
         <service
-            android:name="com.nifty.cloud.mb.core.NCMBGcmListenerService"
+            android:name=".server.CustomGcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
             </intent-filter>
         </service>
+        <!-- プッシュ通知タップ時に起動するActivityの設定 -->
+        <meta-data android:name="openPushStartActivity" android:value=".MainActivity"/>
+
+        <!-- 通知エリアに表示されるアイコンの設定 -->
+        <meta-data android:name="smallIcon" android:resource="@drawable/ic_mr_button_connected_00_light"/>
+
+        <!-- 通知エリアに表示されるアイコンカラーの設定 -->
+        <meta-data android:name="smallIconColor" android:value="@color/wallet_hint_foreground_holo_light"/>
+
+        <!-- 通知エリアにプッシュ通知を複数表示する設定　0:最新のみ表示 , 1:複数表示 -->
+        <meta-data android:name="notificationOverlap" android:value="1"/>
+
+        <!-- カスタムダイアログプッシュを利用する場合のみ背景画像の設定 -->
+        <meta-data android:name="dialogPushBackgroundImage" android:resource="@drawable/ic_audiotrack_light"/>
+
+        <!-- NiftyCloud end-->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

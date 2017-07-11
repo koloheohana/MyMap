@@ -8,12 +8,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.util.BitmapReader;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.ImageCache;
 
 /**
@@ -67,7 +70,6 @@ public class TorkAdapter extends ArrayAdapter<OneTork> {
                 Bitmap loadBitmap = BitmapReader.getBitmap(MainTork.ME, ot.getUri(), true);
                 vh.iv_tork.setImageBitmap(loadBitmap);
                 ImageCache.set(ot.getUri(),loadBitmap);
-                ServerOperator.imageUpload(BitmapReader.getBitmap(MainTork.ME,ot.getUri(),true));
             }
         }else {
             vh.iv_tork.setVisibility(View.GONE);

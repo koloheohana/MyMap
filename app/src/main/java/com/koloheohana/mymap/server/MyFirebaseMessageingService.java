@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.koloheohana.mymap.MainActivity;
 
 import static com.github.gfx.android.orma.migration.SQLiteMaster.TAG;
 

@@ -20,7 +20,9 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.TorkShareDialog;
+import com.koloheohana.mymap.me.MyUser;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.FetchFileCallback;
 import com.nifty.cloud.mb.core.FindCallback;
@@ -36,6 +38,7 @@ import com.nifty.cloud.mb.core.NCMBUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.List;
@@ -70,10 +73,37 @@ public class ServerOperator {
             }
         });
     }
-    public static void sendPush(){
+    public static void getServerBitmap(final String file_name){
+        NCMBFile file = new NCMBFile(file_name);
+        file.fetchInBackground(new FetchFileCallback() {
+            @Override
+            public void done(byte[] bytes, NCMBException e) {
+                if(e != null){
+                    System.out.println("失敗");
+                }else{
+                    Bitmap bMap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    SaveDateController.saveBitmapFile(MainActivity.ME,bMap,file_name);
+                }
+            }
+        });
+    }
+
+    public static String MY_USER_ID = "my_user_id";
+    public static String SENT_USER_ID = "send_send_id";
+    public static String IMAGE_URL = "url";
+    public static String SHOP_ID = "SHOP_ID";
+    public static void sendPush(long send_id,String str,int shop_id,String url){
         NCMBPush push = new NCMBPush();
-        push.setTitle("test title");
-        push.setMessage("test Message");
+        push.setTitle("新しいメッセージです");
+        push.setMessage(str);
+        try {
+            String json = "{"+MY_USER_ID+":"+ 100 +","+SENT_USER_ID+":"+send_id+","+IMAGE_URL+":"+"null"+","+SHOP_ID+":"+shop_id+"}";
+            JSONObject jsonObject = null;
+            jsonObject = new JSONObject(json);
+            push.setUserSettingValue(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             push.setTarget(new JSONArray("[android]"));
         } catch (JSONException e) {
@@ -180,7 +210,7 @@ public class ServerOperator {
         });
     }
     public static Bitmap TestBitmap = null;
-    public static void imageUpload(Bitmap bitmap){
+    public static void imageUpload(String file_name,Bitmap bitmap){
         //画像準備
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,0,output);

@@ -14,12 +14,14 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
+import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ShopMemo;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.TimeStopper;
 
@@ -137,7 +139,20 @@ public class OrmaOperator {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaShopMemo");
         return orma.selectFromOrmaShopMemo().shop_idEq(shop_id).orderByIdAsc();
     }
-
+    public static void addServerTork(Context context,String str_tork,long send_id,String uri,int shop_id){
+        OrmaDatabase orma = getOrmaDataBase(context, "OrmaTork");
+        Inserter<OrmaTork> inserter = orma.prepareInsertIntoOrmaTork();
+        boolean is_image = true;
+        if(uri == "null"){
+            is_image = false;
+        }
+        boolean is_camera = false;
+        if(shop_id != 0){
+            is_camera = true;
+        }
+        OrmaTork ormaTork = new OrmaTork(MyUser.ME.getId(), str_tork, send_id, uri, is_image, new Clocks(context).getStringAllTime(),is_camera, uri, shop_id,false);
+        inserter.execute(ormaTork);
+    }
     public static void addTork(Context context, OneTork tork) {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaTork");
         Inserter<OrmaTork> inserter = orma.prepareInsertIntoOrmaTork();
@@ -149,8 +164,7 @@ public class OrmaOperator {
         } else {
             shop_data = tork.getShopData().ID;
         }
-        OrmaTork ormaTork = new OrmaTork(id, tork.getTork(), tork.getID(), tork.getStringUri(), tork.isImage(), Clock, tork.isCamera(), tork.getStringUri(), shop_data);
-        System.out.println("orma_tork_image_uri:"+ormaTork.image_uri.toString());
+        OrmaTork ormaTork = new OrmaTork(id, tork.getTork(), tork.getID(), tork.getStringUri(), tork.isImage(), Clock, tork.isCamera(), tork.getStringUri(), shop_data,true);
         inserter.execute(ormaTork);
     }
 

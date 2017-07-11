@@ -25,6 +25,7 @@ public class Clocks {
         DateFormat DATE_FORMAT = android.text.format.DateFormat.getDateFormat(context.getApplicationContext());
         String str = DATE_FORMAT.format(CALENDER.getTime());
         String[] time = str.split("/");
+
         return 1;
     }
     public Clocks(String str){

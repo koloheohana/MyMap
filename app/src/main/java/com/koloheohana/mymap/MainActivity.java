@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Scene.set(ME);
         ME = this;
         ReadDate.read();
-/*
-        ServerOperator.sendPush();
-*/
+
         System.out.println("ゲットトークン"+FirebaseInstanceId.getInstance().getToken());
         Window.setWindowSize(this);
         final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);

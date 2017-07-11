@@ -41,8 +41,11 @@ import com.koloheohana.mymap.map.ShopDataIntent;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.map.ShopSearch;
+import com.koloheohana.mymap.me.MyUser;
+import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.user_date.User;
+import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.MyConfig;
 import com.koloheohana.mymap.util.Scene;
@@ -376,6 +379,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
                 Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,bitmap,"map"+new Clocks(MAP_ME).getStringAllTime());
+                ServerOperator.imageUpload("id"+ MyUser.ME.getId()+"id"+user.getId()+"time"+ new Clocks(MainTork.ME).getStringAllTime()+".png", BitmapReader.getBitmap(MainTork.ME,uri,true));
                 intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),(int)user.getUserId(),uri.getPath()));
                 intent.setAction(Intent.ACTION_VIEW);
 

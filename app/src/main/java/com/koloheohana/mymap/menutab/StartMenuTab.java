@@ -18,6 +18,8 @@ import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaShopData;
+import com.koloheohana.mymap.server.ServerOperator;
+import com.koloheohana.mymap.user_date.UserList;
 
 
 /**
@@ -78,18 +80,10 @@ public class StartMenuTab extends Fragment {
                     OrmaOperator.setUser(MainActivity.ME);
                     return;
                 case 4:
-                    System.out.println("DBを読み込みします");
-                    for (OrmaShopData sd : OrmaOperator.getSelectorShopNameInclude(MainActivity.ME, "なん", "OrmaShopData")) {
-                        System.out.println(sd.shop_name);
-                    }
-/*
-                    OrmaOperator.read(MainActivity.ME);
-*/
+
                     return;
                 case 5:
-                    System.out.println("DBを削除します");
-                    OrmaOperator.remove(MainActivity.ME, 1);
-                    OrmaOperator.remove(MainActivity.ME, 2);
+                    ServerOperator.sendPush(UserList.ALL_USER_LIST.get(1).getId(),"tork内容",0,"");
                     return;
                 case 6:
                     OrmaOperator.test();

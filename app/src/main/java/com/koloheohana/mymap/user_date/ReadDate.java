@@ -15,7 +15,6 @@ public class ReadDate {
     public static void read(){
         if(tester) {
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
-            OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.SHOP_NUMBER);
             OrmaOperator.remove(MainActivity.ME,2);
             OrmaOperator.remove(MainActivity.ME,3);

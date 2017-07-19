@@ -11,6 +11,8 @@ import java.util.List;
 public class OrmaUser {
     @PrimaryKey(auto = false)
     public long id;
+    @Column(indexed = true,defaultExpr = "1")
+    public String device_id;
     @Column(indexed = true)
     public String user_name;
     @Column(indexed = true)
@@ -21,8 +23,9 @@ public class OrmaUser {
     public String addrres;
 
     @Setter
-    public OrmaUser(long id,String user_name,int user_age,String user_icon,String addrres){
+    public OrmaUser(long id,String device_id,String user_name,int user_age,String user_icon,String addrres){
         this.id = id;
+        this.device_id = device_id;
         this.user_name = user_name;
         this.user_age = user_age;
         this.user_icon = user_icon;

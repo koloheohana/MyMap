@@ -147,7 +147,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * GooglePlayServicesを切断する
      */
     protected void disConnectGooglePlayServices() {
-
+        if(mGoogleApiClient == null){
+            System.out.println("mGoogleApi:null");
+        }
         if (mGoogleApiClient.isConnected()) {
             // 位置情報の取得を停止
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -368,7 +370,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    public void getSnapShot(final ShopDate SD,final User user){
+    public void getSnapShot(final ShopDate SD, final User user, final Context context){
         // TODO Auto-generated method stub
         mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
             @Override
@@ -379,7 +381,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(MapsActivity.MAP_ME,MainTork.class);
                 Uri uri = SaveDateController.saveBitmapFile(MapsActivity.MAP_ME,bitmap,"map"+new Clocks(MAP_ME).getStringAllTime());
-                ServerOperator.imageUpload("id"+ MyUser.ME.getId()+"id"+user.getId()+"time"+ new Clocks(MainTork.ME).getStringAllTime()+".png", BitmapReader.getBitmap(MainTork.ME,uri,true));
+                ServerOperator.imageUploadAndSendPush(context,user.getId(),SD.ID,"id"+ MyUser.ME.getId()+"id"+user.getId()+"time"+ new Clocks(context).getStringAllTime()+".png", BitmapReader.getBitmap(context,uri,true));
                 intent.putExtra("ShopData", new ShopDataIntent(SD.getShopName(),SD.getADDRRES(),(int)user.getUserId(),uri.getPath()));
                 intent.setAction(Intent.ACTION_VIEW);
 

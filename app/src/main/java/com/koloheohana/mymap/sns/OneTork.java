@@ -58,7 +58,7 @@ public class OneTork implements Serializable{
         }
         CLOCK = clocks;
         USER = user;
-        ID = user.TORK.size()+1;
+        ID = user.getId();
         SHOP_DATA = sd;
     }
     public boolean isImage(){

@@ -20,6 +20,7 @@ import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaShopData;
 import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.user_date.UserList;
+import com.koloheohana.mymap.util.Patisuro;
 
 
 /**
@@ -80,10 +81,10 @@ public class StartMenuTab extends Fragment {
                     OrmaOperator.setUser(MainActivity.ME);
                     return;
                 case 4:
-
+                    ServerOperator.sendPush(2,"test",2,"test_uri");
                     return;
                 case 5:
-                    ServerOperator.sendPush(UserList.ALL_USER_LIST.get(1).getId(),"tork内容",0,"");
+                    new Patisuro().start();
                     return;
                 case 6:
                     OrmaOperator.test();

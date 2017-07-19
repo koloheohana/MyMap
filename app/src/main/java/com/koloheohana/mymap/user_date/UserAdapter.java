@@ -48,6 +48,9 @@ public class UserAdapter extends ArrayAdapter<User> {
             return tork;
         }
         OneTork oneTork = USER.TORK.get(USER.TORK.size()-1);
+        if(oneTork.isImage()){
+            return "画像";
+        }
         tork = oneTork.getTork();
         if(tork.length() >= max_size){
             tork.substring(0,max_size);

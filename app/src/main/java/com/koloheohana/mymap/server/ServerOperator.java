@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -16,16 +17,20 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.TorkShareDialog;
 import com.koloheohana.mymap.me.MyUser;
+import com.koloheohana.mymap.util.MyNotification;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.FetchFileCallback;
 import com.nifty.cloud.mb.core.FindCallback;
+import com.nifty.cloud.mb.core.LoginCallback;
 import com.nifty.cloud.mb.core.NCMB;
 import com.nifty.cloud.mb.core.NCMBAcl;
 import com.nifty.cloud.mb.core.NCMBException;
@@ -51,9 +56,11 @@ public class ServerOperator {
     public static String APP_KEY = "760f1e53c4c219a642f2bcbdff34f77509ac07c45d37b3b2242a69ca68f4ecb1";
     public static String CLIENT_KEY = "6fee8348c87aba566b616672818c33fa9143f598118cfacf44506ba131e7f356";
     public static String SENDER_KEY = "385724188713";
+    public static String insta_id ="";
+    public static String user_nifty_id = "";
     public static void setServer(Context context){
         NCMB.initialize(context,APP_KEY,CLIENT_KEY);
-        rogin();
+        setPush();
     }
 
     public static Activity activity;
@@ -73,16 +80,23 @@ public class ServerOperator {
             }
         });
     }
-    public static void getServerBitmap(final String file_name){
+    //ニフティサーバーからデータの取得
+    public static void getServerBitmap(final String file_name,final Bundle data,final JSONObject json){
         NCMBFile file = new NCMBFile(file_name);
         file.fetchInBackground(new FetchFileCallback() {
             @Override
             public void done(byte[] bytes, NCMBException e) {
                 if(e != null){
-                    System.out.println("失敗");
+                    System.out.println("画像取得失敗");
                 }else{
-                    Bitmap bMap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    SaveDateController.saveBitmapFile(MainActivity.ME,bMap,file_name);
+                    try {
+                        Bitmap bMap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        SaveDateController.saveBitmapFile(MainActivity.ME,bMap,file_name,"");
+                        OrmaOperator.addServerTork(MainActivity.ME,data.getString("message"),json.getLong(ServerOperator.SENT_USER_ID),json.getString(ServerOperator.IMAGE_URL),json.getInt(ServerOperator.SHOP_ID));
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
             }
         });
@@ -97,7 +111,7 @@ public class ServerOperator {
         push.setTitle("新しいメッセージです");
         push.setMessage(str);
         try {
-            String json = "{"+MY_USER_ID+":"+ 100 +","+SENT_USER_ID+":"+send_id+","+IMAGE_URL+":"+"null"+","+SHOP_ID+":"+shop_id+"}";
+            String json = "{"+MY_USER_ID+":"+ 100 +","+SENT_USER_ID+":"+send_id+","+IMAGE_URL+":"+url+","+SHOP_ID+":"+shop_id+"}";
             JSONObject jsonObject = null;
             jsonObject = new JSONObject(json);
             push.setUserSettingValue(jsonObject);
@@ -105,6 +119,9 @@ public class ServerOperator {
             e.printStackTrace();
         }
         try {
+            NCMBQuery<NCMBInstallation> query = new NCMBQuery<>("installation");
+            query.whereEqualTo("objectId","9q2EAqcn6roZI5NB");
+            push.setSearchCondition(query);
             push.setTarget(new JSONArray("[android]"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,7 +142,6 @@ public class ServerOperator {
     public static void setPush(){
 
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
-
         //NCM設定
         installation.getRegistrationIdInBackground("385724188713", new DoneCallback() {
             @Override
@@ -136,13 +152,16 @@ public class ServerOperator {
                         public void done(NCMBException e) {
                             if(e == null){
                                 System.out.println("保存成功");
+                                insta_id = installation.getObjectId();
                             }else if(NCMBException.DUPLICATE_VALUE.equals(e.getCode())){
                                 System.out.println("保存失敗:registrationID重複");
+                                insta_id = installation.getObjectId();
                                 updateInstallation(installation);
                             }else{
-                                System.out.println("保存失敗：そのた");
-                                e.printStackTrace();
+                                System.out.println("保存失敗：そのた"+e);
                             }
+                            //ログイン
+                            ServerOperator.rogin(MainActivity.ME);
                         }
                     });
                 }else{
@@ -151,6 +170,9 @@ public class ServerOperator {
                 }
             }
         });
+
+    }
+    public static void isInstallation(){
 
     }
     public static void updateInstallation(final NCMBInstallation installation){
@@ -174,15 +196,49 @@ public class ServerOperator {
         });
     }
     //ログインダイアログ
-    public static void rogin(){
-        SignUpDialog dialog = new SignUpDialog();
-        dialog.show(MainActivity.ME.getFragmentManager(),"サインアップ");
+    public static void rogin(Context context){
+        //自動ログイン処理
+
+        String uuid = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        System.out.println("uuisd:"+uuid);
+        String nama = "tanaka4";
+        String pass = "tanaka4";
+        try {
+            NCMBUser.loginInBackground(nama,pass, new LoginCallback() {
+                @Override
+                public void done(NCMBUser ncmbUser, NCMBException e) {
+                    if(e != null){
+                        System.out.println("test:"+e.getCode());
+                        if (e.getCode().equals( "E401002") ) {
+                            SignUpDialog dialog = new SignUpDialog();
+                            dialog.show(MainActivity.ME.getFragmentManager(),"サインアップ");
+                        }
+                    }else{
+                        ncmbUser.put("ID",insta_id);
+
+                        System.out.println("既存会員です");
+                        System.out.println("情報更新を開始します:objectID-"+insta_id);
+                        ncmbUser.saveInBackground(new DoneCallback() {
+                            @Override
+                            public void done(NCMBException e) {
+                                System.out.println("情報更新しました");
+                            }
+                        });
+                    }
+                }
+            });
+        } catch (NCMBException e) {
+            System.out.println("test:"+e);
+
+            e.printStackTrace();
+        }
+
+
     }
     //ログイン
     public static void signup(Activity _activity,String user_name,String user_pass){
         activity = _activity;
         NCMBUser user = new NCMBUser();
-
         final ProgressDialog dialog = new ProgressDialog(MainActivity.ME);
         dialog.setIndeterminate(true);
         dialog.setMessage("アカウントを作成します");
@@ -201,7 +257,7 @@ public class ServerOperator {
                             new Runnable() {
                                 @Override
                                 public void run() {
-                                    activity.finish();
+                                    /*activity.finish();*/
                                     dialog.dismiss();
                                 }
                             },3000);
@@ -210,7 +266,7 @@ public class ServerOperator {
         });
     }
     public static Bitmap TestBitmap = null;
-    public static void imageUpload(String file_name,Bitmap bitmap){
+    public static void imageUploadAndSendPush(final Context context, final long send_id, final int shop_id, final String file_path, Bitmap bitmap){
         //画像準備
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,0,output);
@@ -220,7 +276,7 @@ public class ServerOperator {
         acl.setPublicReadAccess(true);
         acl.setPublicWriteAccess(true);
         //通信実施
-        final NCMBFile file = new NCMBFile("testBitmap.png",data,acl);
+        final NCMBFile file = new NCMBFile(MyUser.ME.getId()+file_path,data,acl);
         file.saveInBackground(new DoneCallback() {
             @Override
             public void done(NCMBException e) {
@@ -228,7 +284,45 @@ public class ServerOperator {
                 if(e != null){
                     System.out.println("保存失敗");
                 }else{
-                    NCMBFile file = new NCMBFile("testBitmap.png");
+                    NCMBFile file = new NCMBFile(MyUser.ME.getId()+file_path);
+                    file.fetchInBackground(new FetchFileCallback() {
+                        @Override
+                        public void done(byte[] bytes, NCMBException e) {
+                            if(e != null){
+                                System.out.println("保存失敗");
+                                Toast toast = new Toast(context);
+                                toast.setText("何らかの理由で画像を送信できませんでした");
+                            }else{
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                                TestBitmap = bitmap;
+                                ServerOperator.sendPush(send_id,"",shop_id,file_path);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+    public static void imageUpload(final String file_name,Bitmap bitmap){
+        //画像準備
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,0,output);
+        byte[] data = output.toByteArray();
+        NCMBAcl acl = new NCMBAcl();
+        //読み書き許可
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        //通信実施
+        final NCMBFile file = new NCMBFile(MyUser.ME.getId()+file_name,data,acl);
+        file.saveInBackground(new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                String result;
+                if(e != null){
+                    System.out.println("保存失敗");
+                }else{
+                    NCMBFile file = new NCMBFile(MyUser.ME.getId()+file_name);
                     file.fetchInBackground(new FetchFileCallback() {
                         @Override
                         public void done(byte[] bytes, NCMBException e) {
@@ -265,7 +359,8 @@ class SignUpDialog extends DialogFragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ServerOperator.signup(getActivity(),"田中","12341234");
+                ServerOperator.signup(getActivity(),"tanaka4","12341234");
+                ServerOperator.rogin(MainActivity.ME);
                 dismiss();
             }
         });

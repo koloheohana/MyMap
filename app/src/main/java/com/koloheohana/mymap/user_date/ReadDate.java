@@ -10,9 +10,13 @@ import com.koloheohana.mymap.sns.ReadFileSns;
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = false;
-    static boolean clear = false;
+    static boolean tester = true;
+    static boolean clear = true;
     public static void read(){
+        if(clear){
+            ReadFileSns.fileClear();
+            ReadFileSns.testCreate();
+        }
         if(tester) {
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.TORK_NUMBER);
             OrmaOperator.remove(MainActivity.ME,OrmaOperator.SHOP_NUMBER);
@@ -40,16 +44,13 @@ public class ReadDate {
 
         }
 */
-        if(clear){
-            ReadFileSns.fileClear();
-            ReadFileSns.testCreate();
-        }
+
 
         //データベースからの読み込み、セット
         OrmaOperator.read(MainActivity.ME);
         //サーバーデータを作成
         ServerOperator.setServer(MainActivity.ME);
-        //プッシュ通知の設定
-        ServerOperator.setPush();
+
+
     }
 }

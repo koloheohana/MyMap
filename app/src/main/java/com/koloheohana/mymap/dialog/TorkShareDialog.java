@@ -37,7 +37,7 @@ public class TorkShareDialog extends AlertDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User user = adapter.getItem(position);
-                MapsActivity.MAP_ME.getSnapShot(SD,user);
+                MapsActivity.MAP_ME.getSnapShot(SD,user,MapsActivity.MAP_ME);
                 dismiss();
             }
 

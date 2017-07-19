@@ -42,7 +42,7 @@ public class Clocks {
     }
     public Clocks(Context context){
         CALENDER = Calendar.getInstance();
-        DATE_FORMAT = android.text.format.DateFormat.getDateFormat(context.getApplicationContext());
+        DATE_FORMAT = android.text.format.DateFormat.getDateFormat(context);
         String str = DATE_FORMAT.format(CALENDER.getTime());
         String[] time = str.split("/");
         YEAR = Integer.valueOf(time[0]);
@@ -54,7 +54,6 @@ public class Clocks {
         MILLSECOND = CALENDER.get(Calendar.MILLISECOND);
     }
     public Clocks(String[] time){
-
         CALENDER = Calendar.getInstance();
         DATE_FORMAT = android.text.format.DateFormat.getDateFormat(MainActivity.ME.getApplicationContext());
         YEAR = Integer.valueOf(time[1]);

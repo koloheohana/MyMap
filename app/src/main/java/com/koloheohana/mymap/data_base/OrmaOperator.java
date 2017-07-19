@@ -69,7 +69,7 @@ public class OrmaOperator {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaUser");
         Inserter<OrmaUser> inserter = orma.prepareInsertIntoOrmaUser();
         for (User user : UserList.ALL_USER_LIST) {
-            OrmaUser ot = new OrmaUser(user.getId(), user.getName(), 19000101, "null", "愛知県");
+            OrmaUser ot = new OrmaUser(user.getId(),"9q2EAqcn6roZI5NB",user.getName(), 19000101, "null", "愛知県");
             inserter.execute(ot);
         }
     }
@@ -88,7 +88,7 @@ public class OrmaOperator {
         final ArrayList<OrmaUser> list = new ArrayList<OrmaUser>();
         long id = 1;
         for (User user : UserList.ALL_USER_LIST) {
-            OrmaUser ou = new OrmaUser(id, user.getName(), 20, user.getIcon().toString(), user.getLoc());
+            OrmaUser ou = new OrmaUser(id, "9q2EAqcn6roZI5NB",user.getName(), 20, user.getIcon().toString(), user.getLoc());
             list.add(ou);
             id++;
         }
@@ -150,7 +150,7 @@ public class OrmaOperator {
         if(shop_id != 0){
             is_camera = true;
         }
-        OrmaTork ormaTork = new OrmaTork(MyUser.ME.getId(), str_tork, send_id, uri, is_image, new Clocks(context).getStringAllTime(),is_camera, uri, shop_id,false);
+        OrmaTork ormaTork = new OrmaTork(MyUser.ME.getId(), str_tork, send_id, uri, is_image, new Clocks(context).getStringSandTheString("/"),is_camera, uri, shop_id,false);
         inserter.execute(ormaTork);
     }
     public static void addTork(Context context, OneTork tork) {
@@ -164,6 +164,7 @@ public class OrmaOperator {
         } else {
             shop_data = tork.getShopData().ID;
         }
+        System.out.println("ODB:インサート開始");
         OrmaTork ormaTork = new OrmaTork(id, tork.getTork(), tork.getID(), tork.getStringUri(), tork.isImage(), Clock, tork.isCamera(), tork.getStringUri(), shop_data,true);
         inserter.execute(ormaTork);
     }

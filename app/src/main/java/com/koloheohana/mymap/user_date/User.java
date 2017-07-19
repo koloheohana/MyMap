@@ -17,6 +17,7 @@ import java.util.ArrayList;
  */
 public class User {
     private long id;
+    private String server_id;
     private Bitmap icon;
     private String name;
     private String mutter;

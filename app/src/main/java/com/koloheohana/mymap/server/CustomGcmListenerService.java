@@ -24,16 +24,16 @@ public class CustomGcmListenerService extends NCMBGcmListenerService{
 
     @Override
     public void onMessageReceived(String from, Bundle data) {
-
         //ペイロードデータの取得
         if (data.containsKey("com.nifty.Data")) {
             try {
+                System.out.println("data:"+data);
                 JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
-                System.out.println("user_id:"+json.getString("user_id"));
-                ServerOperator.getServerBitmap(json.getString(ServerOperator.IMAGE_URL));
-                OrmaOperator.addServerTork(MainActivity.ME,data.getString("message"),json.getLong(ServerOperator.SENT_USER_ID),json.getString(ServerOperator.IMAGE_URL),json.getInt(ServerOperator.SHOP_ID));
+                ServerOperator.getServerBitmap(json.getString(ServerOperator.IMAGE_URL),data,json);
+
             } catch (JSONException e) {
                 //エラー処理
+                System.out.println(e.toString());
             }
         }
 

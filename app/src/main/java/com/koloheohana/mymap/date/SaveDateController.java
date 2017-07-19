@@ -165,6 +165,28 @@ public class SaveDateController {
         editor.putString("hoge", bitmapStr);
         editor.commit();
     }
+    public static Uri saveBitmapFile(Context context, Bitmap image, String file_name,String extention){
+        FileOutputStream out = null;
+        Uri uri = null;
+        try {
+            // openFileOutputはContextのメソッドなのでActivity内ならばthisでOK
+            out = context.openFileOutput(file_name+extention, Context.MODE_PRIVATE);
+            image.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.close();
+
+            File file = new File(file_name);
+            uri = Uri.fromFile(file);
+            System.out.println("SaveDateController.saveBitmapFile.Uri:"+uri.toString());
+/*
+            FileInputStream in = context.openFileInput(file_name+".png");
+*/
+
+            return uri;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uri;
+    }
     public static Uri saveBitmapFile(Context context, Bitmap image, String file_name){
         FileOutputStream out = null;
         Uri uri = null;
@@ -176,7 +198,10 @@ public class SaveDateController {
 
             File file = new File(file_name+".png");
             uri = Uri.fromFile(file);
+            System.out.println("SaveDateController.saveBitmapFile.Uri:"+uri.toString());
+/*
             FileInputStream in = context.openFileInput(file_name+".png");
+*/
 
             return uri;
         } catch (IOException e) {

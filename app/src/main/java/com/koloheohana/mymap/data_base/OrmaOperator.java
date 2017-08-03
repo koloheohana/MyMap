@@ -38,6 +38,7 @@ public class OrmaOperator {
     public static int SHOP_NUMBER = 1;
     public static int USER_NUMBER = 2;
     public static int TORK_NUMBER = 5;
+    public static int CONFIG_NUMBER = 6;
     public static void test() {
         OrmaDatabase orma = getOrmaDataBase(Scene.CONTEXT, "OrmaShopData");
         OrmaShopData_Selector selector = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
@@ -48,7 +49,30 @@ public class OrmaOperator {
         OrmaShopData_Selector selector2 = orma.selectFromOrmaShopData().idEq(101).orderByAddrresDesc();
 
     }
+    public static void firstRead(){
 
+    }
+    public static void setFirstConfig(Context context){
+        OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
+        if(!ormaDatabase.selectFromOrmaConfig().isEmpty()){
+            return;
+        }
+        Inserter<OrmaConfig> inserter = ormaDatabase.prepareInsertIntoOrmaConfig();
+        inserter.execute(new OrmaConfig(1,300,true,"name","pass"));
+    }
+
+    public static void setConfig(Context context,String name,String pass,boolean regist){
+        System.out.println("setConfig:"+name);
+        OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
+        OrmaConfig_Updater updater = ormaDatabase.updateOrmaConfig().this_idEq(1);
+        updater.user_name(name).user_pass(pass).isMemberRegist(regist).execute();
+        OrmaConfig oc = ormaDatabase.selectFromOrmaConfig().this_idEq(1).get(0);
+        System.out.println("getConfig:"+oc.user_name+"boolean:"+oc.isMemberRegist);
+    }
+    public static OrmaConfig getConfig(Context context){
+        OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
+        return ormaDatabase.selectFromOrmaConfig().get(0);
+    }
     public static OrmaDatabase getOrmaDataBase(Context context, String name) {
         OrmaDatabase ormaDatabase = null;
         OrmaDatabase.Builder db = OrmaDatabase.builder(context).name(name);
@@ -190,6 +214,11 @@ public class OrmaOperator {
             case 5:
                 OrmaDatabase orma5 = getOrmaDataBase(context,"OrmaTork");
                 orma5.deleteFromOrmaTork().execute();
+                break;
+            case 6:
+                OrmaDatabase orma6 = getOrmaDataBase(context,"OrmaConfig");
+                orma6.deleteFromOrmaConfig().execute();
+                break;
         }
     }
 

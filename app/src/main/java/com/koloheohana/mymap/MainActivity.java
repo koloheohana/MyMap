@@ -1,7 +1,10 @@
 package com.koloheohana.mymap;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.koloheohana.mymap.adapter.MainFragmentPagerAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.map.CsvReader;
@@ -33,22 +38,33 @@ import java.io.PrintWriter;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Runnable{
     public ViewPager mPager;
     public static MainActivity ME = new MainActivity();
     public MainActivity me;
+    public ProgressDialog progressDialog;
+    public Handler handler_2 = new Handler();
+    private Thread thread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Scene.set(ME);
         ME = this;
-        ReadDate.read();
+        progressDialog = new ProgressDialog(ME);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("各種データ読み込み中...");
+        progressDialog.show();
 
-        System.out.println("ゲットトークン"+FirebaseInstanceId.getInstance().getToken());
+        //データ読み込みスレッド開始
+        thread = new Thread(this);
+        thread.start();
+
+    }
+
+    public void setter(){
         Window.setWindowSize(this);
-        final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),MainActivity.this);
+        final MainFragmentPagerAdapter mfp = new MainFragmentPagerAdapter(getSupportFragmentManager(),ME);
         mPager = (ViewPager) findViewById(R.id.viewpager);
         mPager.setAdapter(mfp);
 
@@ -71,13 +87,7 @@ public class MainActivity extends AppCompatActivity {
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
-
-/*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
-        Realm.deleteRealm(realmCondig);*//*        RealmConfiguration realmCondig = new RealmConfiguration.Builder(MainActivity.ME).build();
-        Realm.deleteRealm(realmCondig);*/
     }
-
-
     public void myMap(View view) {
         Intent intent = new Intent(this,MapsActivity.class);
         startActivity(intent);
@@ -96,5 +106,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void println(String str){
         System.out.println(str);
+    }
+    private Handler handler = new Handler(){
+        public void handleMessage(Message message){
+            MainActivity.ME.setter();
+        }
+    };
+    @Override
+    public void run() {
+        ReadDate.read(ME);
+        this.handler.sendEmptyMessage(0);
+        progressDialog.dismiss();
+    }
+    public void openQRreader(){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.initiateScan();
+    }
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data){
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode,resultCode,data);
+        String code = intentResult.getContents();
+        System.out.println("QRコード読み取り結果:"+code);
     }
 }

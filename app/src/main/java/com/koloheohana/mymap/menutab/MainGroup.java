@@ -43,7 +43,7 @@ public class MainGroup extends Fragment {
          */
         registerForContextMenu(lv);
         createProf(view);
-        setPopupWindow(lv);
+        setPopupWindow(lv,false);
         return view;
     }
 
@@ -53,23 +53,34 @@ public class MainGroup extends Fragment {
         myList.setAdapter(adapter);
         return myList;
     }
-    private void setPopupWindow(final ListView _lv) {
-        _lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                ProfDialog gd = new ProfDialog();
-                TextView tv = (TextView) view.findViewById(R.id.name);
-                gd.setUser(tv.getText().toString());
-                gd.show(getFragmentManager(), "名前");
-
-            }
-        });
+    private void setPopupWindow(final ListView _lv,boolean player) {
+        if(player) {
+            _lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                    ProfDialog gd = new ProfDialog();
+                    TextView tv = (TextView) view.findViewById(R.id.name);
+                    gd.setUser(tv.getText().toString());
+                    gd.show(getFragmentManager(), "名前");
+                }
+            });
+        }else{
+            _lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                    GroupDialog gd = new GroupDialog();
+                    TextView tv = (TextView) view.findViewById(R.id.name);
+                    gd.setUser(tv.getText().toString());
+                    gd.show(getFragmentManager(), "名前");
+                }
+            });
+        }
     }
     private ListView createProf(View view){
         ListView listView = (ListView)view.findViewById(R.id.profList);
-        MyUser my = new MyUser(OrmaOperator.getMyData(MainActivity.ME));
+        MyUser myUser = new MyUser(OrmaOperator.getMyData(MainActivity.ME));
+
         UserAdapter adapter = new UserAdapter(MainActivity.ME,0, MyUser.ME.getListUser());
         listView.setAdapter(adapter);
-        setPopupWindow(listView);
+        setPopupWindow(listView,true);
         return listView;
     }
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo info) {

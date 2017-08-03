@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaConfig;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.TorkShareDialog;
@@ -58,9 +60,15 @@ public class ServerOperator {
     public static String SENDER_KEY = "385724188713";
     public static String insta_id ="";
     public static String user_nifty_id = "";
+    public static boolean isSetServer = false;
     public static void setServer(Context context){
-        NCMB.initialize(context,APP_KEY,CLIENT_KEY);
-        setPush();
+        if(!isSetServer) {
+            NCMB.initialize(context, APP_KEY, CLIENT_KEY);
+            isSetServer = true;
+        }
+/*
+        setPush(context);
+*/
     }
 
     public static Activity activity;
@@ -138,30 +146,53 @@ public class ServerOperator {
             }
         });
     }
+    //データ数が増えると遅くなる筈
+    public static boolean isDevice(final NCMBInstallation installation){
+        NCMBQuery<NCMBInstallation> query = NCMBInstallation.getQuery();
+        //同じRegistration IDをdeviceTokenフィールドに持つ端末情報を検索する
+        query.whereEqualTo("objectId", installation.getObjectId());
+        try {
+            for(NCMBInstallation in : query.find()){
+                System.out.println("デバイス"+in.getObjectId()+"デバイス："+installation.getObjectId());
+                if(in.getObjectId().equals(installation.getObjectId())){
+                    return true;
+                }
+            }
+        } catch (NCMBException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //プッシュ通知設定
-    public static void setPush(){
+    public static boolean setPush(final Context context){
 
         final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+        insta_id = installation.getObjectId();
+        if(ServerOperator.isDevice(installation)){
+            System.out.println("登録済みデバイス");
+            return true;
+        }else{
+            System.out.println("未登録デバイス");
+        }
         //NCM設定
         installation.getRegistrationIdInBackground("385724188713", new DoneCallback() {
             @Override
             public void done(NCMBException e) {
                 if(e == null){
                     installation.saveInBackground(new DoneCallback() {
+
                         @Override
                         public void done(NCMBException e) {
                             if(e == null){
                                 System.out.println("保存成功");
-                                insta_id = installation.getObjectId();
                             }else if(NCMBException.DUPLICATE_VALUE.equals(e.getCode())){
                                 System.out.println("保存失敗:registrationID重複");
-                                insta_id = installation.getObjectId();
                                 updateInstallation(installation);
                             }else{
                                 System.out.println("保存失敗：そのた"+e);
                             }
-                            //ログイン
-                            ServerOperator.rogin(MainActivity.ME);
+/*                            //ログイン
+                            ServerOperator.rogin(context);*/
                         }
                     });
                 }else{
@@ -170,7 +201,7 @@ public class ServerOperator {
                 }
             }
         });
-
+        return false;
     }
     public static void isInstallation(){
 
@@ -196,13 +227,15 @@ public class ServerOperator {
         });
     }
     //ログインダイアログ
-    public static void rogin(Context context){
+    public static void rogin(final Context context){
         //自動ログイン処理
 
         String uuid = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         System.out.println("uuisd:"+uuid);
-        String nama = "tanaka4";
-        String pass = "tanaka4";
+        OrmaConfig oc = OrmaOperator.getConfig(context);
+        final String nama = oc.user_name;
+        final String pass = oc.user_pass;
+
         try {
             NCMBUser.loginInBackground(nama,pass, new LoginCallback() {
                 @Override
@@ -211,11 +244,10 @@ public class ServerOperator {
                         System.out.println("test:"+e.getCode());
                         if (e.getCode().equals( "E401002") ) {
                             SignUpDialog dialog = new SignUpDialog();
-                            dialog.show(MainActivity.ME.getFragmentManager(),"サインアップ");
+                            dialog.show(((AppCompatActivity)context).getFragmentManager(),"サインアップ");
                         }
                     }else{
                         ncmbUser.put("ID",insta_id);
-
                         System.out.println("既存会員です");
                         System.out.println("情報更新を開始します:objectID-"+insta_id);
                         ncmbUser.saveInBackground(new DoneCallback() {

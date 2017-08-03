@@ -1,10 +1,10 @@
 package com.koloheohana.mymap.dialog;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -14,13 +14,19 @@ import android.widget.TextView;
 
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.qrCode.QrCord;
+import com.koloheohana.mymap.user_date.User;
 
 /**
- * Created by User on 2016/08/24.
+ * Created by User on 2017/07/27.
  */
-public class ProfDialog extends DialogFragment{
+
+public class groupFriendDialog extends DialogFragment {
     public String USER_NOW;
     private String NAME = "仮名";
+    public User USER;
+    public groupFriendDialog(User user){
+        USER = user;
+    }
     public void setUser(String _user){
         USER_NOW = _user;
     }
@@ -43,9 +49,11 @@ public class ProfDialog extends DialogFragment{
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // アイコンを設定する
         ImageView imageView = (ImageView)dialog.findViewById(R.id.icon);
-        imageView.setImageBitmap(QrCord.getQRCode("test"));
+/*
+        imageView.setImageBitmap(QrCord.getQRCode(""));
+*/
         TextView text = (TextView)dialog.findViewById(R.id.title_dialog);
-        text.setText("プロフィール");
+        text.setText(USER.getName());
         // OK ボタンのリスナ
         Button button = (Button)dialog.findViewById(R.id.positive_button);
         button.setText("プロフ設定");

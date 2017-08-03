@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation= "vertical"
-    tools:context="com.koloheohana.mymap.SettingSelectActivity">
+    tools:context="com.koloheohana.mymap.SettingActivity">
     <LinearLayout
         android:background="#222222"
         android:layout_width="match_parent"

@@ -55,8 +55,6 @@ public class Tork extends Fragment {
         ListView myList = (ListView) view.findViewById(R.id.myListView);
         UserAdapter adapter = new UserAdapter(MainActivity.ME, 0, UserList.ALL_USER_LIST);
         myList.setAdapter(adapter);
-
-
         return myList;
     }
 

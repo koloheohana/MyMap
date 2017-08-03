@@ -16,10 +16,8 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.SettingSelectActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
-import com.koloheohana.mymap.data_base.OrmaShopData;
-import com.koloheohana.mymap.server.ServerOperator;
-import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.Patisuro;
 
 
@@ -60,7 +58,7 @@ public class StartMenuTab extends Fragment {
         private LayoutInflater mLayoutInflater;
         private String[] mHueArray = {
                 "地図", "グループ", "トーク", "登録",
-                "店情報", "お気に入り", "初期化"
+                "店情報", "お気に入り", "設定"
         };
 
         public void chengeMenu(int position) {
@@ -81,15 +79,16 @@ public class StartMenuTab extends Fragment {
                     OrmaOperator.setUser(MainActivity.ME);
                     return;
                 case 4:
-                    ServerOperator.sendPush(2,"test",2,"test_uri");
+                    MainActivity.ME.openQRreader();
                     return;
                 case 5:
                     new Patisuro().start();
                     return;
                 case 6:
-                    OrmaOperator.test();
-                    return;
+                    Intent setting_intent = new Intent(MainActivity.ME,SettingSelectActivity.class);
+                    startActivity(setting_intent);                    return;
                 case 7:
+
                     return;
             }
         }

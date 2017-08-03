@@ -9,62 +9,56 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.koloheohana.mymap.setting.Setting;
+
 /**
  * Created by User on 2017/08/03.
  */
 
 public class SettingActivity extends AppCompatActivity{
     public static SettingActivity ME;
+    public static String Scene;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting_chose);
+        Intent intent = getIntent();
+
+        Scene = intent.getStringExtra(SettingSelectActivity.INTENT_KEY);
         ME = this;
+        int layout = 0;
+        switch(Scene){
+            case SettingSelectActivity.MyProfSetting:
+                layout = R.layout.activity_setting_prof;
+                break;
+            case SettingSelectActivity.FriendSetting:
+                layout = R.layout.activity_setting;
+                break;
+            case SettingSelectActivity.MapSetting:
+                layout = R.layout.activity_setting;
+                break;
+            case SettingSelectActivity.UtilSetting:
+                layout = R.layout.activity_setting;
+                break;
+        }
+        setContentView(layout);
+        setLayout();
     }
 
-    public static final  String MyName = "MyName";
-    public static final String MyPicture = "MyPicture";
-    public static final String MyAddrres = "MyAddrres";
-    public static final String MyComment = "MyComment";
-
-    private void setListView(){
-        ListView listView = (ListView)findViewById(R.id.settingListView);
-        ArrayAdapter<String> list = new ArrayAdapter<String>(this,R.layout.list);
-        list.add(MyName);
-        list.add(MyPicture);
-        list.add(MyAddrres);
-        list.add(MyComment);
-
-        listView.setAdapter(list);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView tv = (TextView)view.findViewById(R.id.setting_item);
-                String item_name = tv.getText().toString();
-                Intent intent;
-                switch (item_name){
-                    case MyName:
-                        intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select", MyName);
-                        startActivity(intent);
-                        break;
-                    case MyPicture:
-                        intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select", MyPicture);
-                        startActivity(intent);
-                        break;
-                    case MyAddrres:
-                        intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select", MyAddrres);
-                        startActivity(intent);                        break;
-                    case MyComment:
-                        intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select", MyComment);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
+    public void setLayout(){
+        switch(Scene){
+            case SettingSelectActivity.MyProfSetting:
+                Setting.setProfListView(this);
+                break;
+            case SettingSelectActivity.FriendSetting:
+                break;
+            case SettingSelectActivity.MapSetting:
+                break;
+            case SettingSelectActivity.UtilSetting:
+                break;
+        }
     }
+
+
+
+
 }

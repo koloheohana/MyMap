@@ -9,11 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
-import com.journeyapps.barcodescanner.Util;
-
-import java.util.ArrayList;
-
 /**
  * Created by User on 2017/07/27.
  */
@@ -28,10 +23,12 @@ public class SettingSelectActivity extends AppCompatActivity{
         setListView();
 
     }
-    public static final  String MyProfSetting = "MyName";
-    public static final String MapSetting = "MyPicture";
-    public static final String FriendSetting = "MyAddrres";
-    public static final String UtilSetting = "MyComment";
+    public static final  String MyProfSetting = "プロフィール設定";
+    public static final String MapSetting = "地図設定";
+    public static final String FriendSetting = "友達設定";
+    public static final String UtilSetting = "その他";
+
+    public static final String INTENT_KEY = "select";
 
     private void setListView(){
         ListView listView = (ListView)findViewById(R.id.settingListView);
@@ -52,21 +49,21 @@ public class SettingSelectActivity extends AppCompatActivity{
                 switch (item_name){
                     case MyProfSetting:
                         intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select",MyProfSetting);
+                        intent.putExtra(INTENT_KEY,MyProfSetting);
                         startActivity(intent);
                         break;
                     case MapSetting:
                         intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select",MapSetting);
+                        intent.putExtra(INTENT_KEY,MapSetting);
                         startActivity(intent);
                         break;
                     case FriendSetting:
                         intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select",FriendSetting);
+                        intent.putExtra(INTENT_KEY,FriendSetting);
                         startActivity(intent);                        break;
                     case UtilSetting:
                         intent = new Intent(ME,SettingActivity.class);
-                        intent.putExtra("select",UtilSetting);
+                        intent.putExtra(INTENT_KEY,UtilSetting);
                         startActivity(intent);
                         break;
                 }

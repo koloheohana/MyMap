@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation= "vertical"
+    tools:context="com.koloheohana.mymap.SettingActivity">
+    <LinearLayout
+        android:background="#222222"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#FFFFFF"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="プロフィール"
+                android:id="@+id/nowGroupText"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="7dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/settingListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+</LinearLayout>

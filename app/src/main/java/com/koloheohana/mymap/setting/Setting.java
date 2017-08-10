@@ -2,6 +2,7 @@ package com.koloheohana.mymap.setting;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Picture;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -39,10 +40,12 @@ public class Setting {
                 String item_name = tv.getText().toString();
                 switch (item_name) {
                     case MyName:
-                        NameChangeDialog dialog = new NameChangeDialog();
+                        NameChangeDialog dialog = new NameChangeDialog(activity);
                         dialog.show(activity.getSupportFragmentManager(),"name");
                         break;
                     case MyPicture:
+                        PictureChangeDialog dialog1 = new PictureChangeDialog(activity);
+                        dialog1.show(activity.getFragmentManager(),"name");
                         break;
                     case MyAddrres:
                         break;

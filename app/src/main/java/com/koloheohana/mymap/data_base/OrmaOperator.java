@@ -108,6 +108,10 @@ public class OrmaOperator {
         return orma.selectFromOrmaMyData().get(0);
 
     }
+    public static void setMyData(String name,Context context){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
+        orma.updateOrmaMyData().idEq(1).user_name(name).execute();
+    }
     public static void createUserData(Context context) {
         final ArrayList<OrmaUser> list = new ArrayList<OrmaUser>();
         long id = 1;

@@ -11,21 +11,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.me.MyUser;
-import com.koloheohana.mymap.qrCode.QrCord;
 
 /**
- * Created by User on 2017/08/03.
+ * Created by User on 2017/08/08.
  */
 
-public class NameChangeDialog extends DialogFragment {
+public class AddrresChangeDialog extends DialogFragment {
     public static Context CONTEXT;
-    public NameChangeDialog(Context context){
+    public AddrresChangeDialog(Context context){
         CONTEXT = context;
     }
     @Override
@@ -38,7 +36,7 @@ public class NameChangeDialog extends DialogFragment {
         dialog.setContentView(R.layout.setting_name_dialog);
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final TextView textView = (TextView)dialog.findViewById(R.id.now_name);
+        final TextView textView = (TextView)dialog.findViewById(R.id.now_addrres);
         textView.setText(MyUser.ME.getName());
         //エディットテキスト
         final EditText edit = (EditText)dialog.findViewById(R.id.name_edit);
@@ -65,3 +63,4 @@ public class NameChangeDialog extends DialogFragment {
         return dialog;
     }
 }
+

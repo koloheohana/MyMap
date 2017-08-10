@@ -1,31 +1,29 @@
 package com.koloheohana.mymap.setting;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.me.MyUser;
-import com.koloheohana.mymap.qrCode.QrCord;
 
 /**
- * Created by User on 2017/08/03.
+ * Created by User on 2017/08/08.
  */
 
-public class NameChangeDialog extends DialogFragment {
+public class CommentChangeDialog extends DialogFragment {
     public static Context CONTEXT;
-    public NameChangeDialog(Context context){
+    public CommentChangeDialog(Context context){
         CONTEXT = context;
     }
     @Override
@@ -65,3 +63,4 @@ public class NameChangeDialog extends DialogFragment {
         return dialog;
     }
 }
+

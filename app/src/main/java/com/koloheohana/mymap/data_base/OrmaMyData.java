@@ -20,13 +20,16 @@ public class OrmaMyData {
     @Column
     public String user_addrres;
     @Column(defaultExpr = "1")
-    public int user_icon;
+    public String user_icon;
+    @Column(defaultExpr = "1")
+    public String comment;
     @Setter
-    public OrmaMyData(long id,String user_name,String user_tel,String user_addrres,int user_icon){
+    public OrmaMyData(long id,String user_name,String user_tel,String user_addrres,String user_icon,String comment){
         this.id = id;
         this.user_name = user_name;
         this. user_tel = user_tel;
         this.user_addrres = user_addrres;
         this.user_icon = user_icon;
+        this.comment = comment;
     }
 }

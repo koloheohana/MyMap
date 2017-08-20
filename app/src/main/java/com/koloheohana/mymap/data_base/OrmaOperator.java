@@ -12,6 +12,7 @@ import com.github.gfx.android.orma.migration.BuildConfig;
 import com.github.gfx.android.orma.migration.ManualStepMigration;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.data_base.OrmaDatabase;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.me.MyUser;
@@ -22,6 +23,7 @@ import com.koloheohana.mymap.user_date.ShopMemo;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserList;
 import com.koloheohana.mymap.util.Clocks;
+import com.koloheohana.mymap.util.MyConfig;
 import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.TimeStopper;
 
@@ -37,6 +39,8 @@ public class OrmaOperator {
     int version_3 = 4;
     public static int SHOP_NUMBER = 1;
     public static int USER_NUMBER = 2;
+    public static int MEMO_NUMBER = 3;
+    public static int BOOKMARK_NUMBER = 7;
     public static int TORK_NUMBER = 5;
     public static int CONFIG_NUMBER = 6;
     public static void test() {
@@ -55,25 +59,47 @@ public class OrmaOperator {
     public static void setFirstConfig(Context context){
         OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
         if(!ormaDatabase.selectFromOrmaConfig().isEmpty()){
+            System.out.println("config:ok");
             return;
+        }else{
+            System.out.println("config:null");
         }
         Inserter<OrmaConfig> inserter = ormaDatabase.prepareInsertIntoOrmaConfig();
         inserter.execute(new OrmaConfig(1,300,true,"name","pass"));
     }
 
     public static void setConfig(Context context,String name,String pass,boolean regist){
-        System.out.println("setConfig:"+name);
         OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
         OrmaConfig_Updater updater = ormaDatabase.updateOrmaConfig().this_idEq(1);
         updater.user_name(name).user_pass(pass).isMemberRegist(regist).execute();
-        OrmaConfig oc = ormaDatabase.selectFromOrmaConfig().this_idEq(1).get(0);
-        System.out.println("getConfig:"+oc.user_name+"boolean:"+oc.isMemberRegist);
+
+    }
+    public static void setConfig(Context context,int max_shop_search,boolean isMemberRegist,String user_name,String user_pass,boolean change_regist){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaConfig");
+        long ID = 1;
+        if(max_shop_search != 0){
+            orma.updateOrmaConfig().this_idEq(ID).max_shop_search(max_shop_search).execute();
+            System.out.println("config変更:ID,"+ID);
+        }
+        if(change_regist){
+            orma.updateOrmaConfig().this_idEq(ID).isMemberRegist(isMemberRegist).execute();
+        }
+        if(!user_name.isEmpty()){
+            orma.updateOrmaConfig().this_idEq(ID).user_name(user_name).execute();
+        }
+        if(!user_pass.isEmpty()){
+            orma.updateOrmaConfig().this_idEq(ID).user_pass(user_pass).execute();
+        }
+        System.out.println("config変更:"+orma.selectFromOrmaConfig().orderByThis_idDesc().get(0).max_shop_search);
     }
     public static OrmaConfig getConfig(Context context){
         OrmaDatabase ormaDatabase = getOrmaDataBase(context,"OrmaConfig");
+        int count = ormaDatabase.selectFromOrmaConfig().orderByThis_idDesc().count();
+        System.out.println("config_version:"+count);
         return ormaDatabase.selectFromOrmaConfig().get(0);
     }
     public static OrmaDatabase getOrmaDataBase(Context context, String name) {
+
         OrmaDatabase ormaDatabase = null;
         OrmaDatabase.Builder db = OrmaDatabase.builder(context).name(name);
         ormaDatabase = db.readOnMainThread(AccessThreadConstraint.NONE).writeOnMainThread(BuildConfig.DEBUG ? AccessThreadConstraint.WARNING : AccessThreadConstraint.NONE).build();
@@ -93,14 +119,14 @@ public class OrmaOperator {
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaUser");
         Inserter<OrmaUser> inserter = orma.prepareInsertIntoOrmaUser();
         for (User user : UserList.ALL_USER_LIST) {
-            OrmaUser ot = new OrmaUser(user.getId(),"9q2EAqcn6roZI5NB",user.getName(), 19000101, "null", "愛知県");
+            OrmaUser ot = new OrmaUser(user.getId(),"9q2EAqcn6roZI5NB",user.getName(), 19000101, "null", "愛知県","comment");
             inserter.execute(ot);
         }
     }
     public static void createMyData(Context context){
         OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
         Inserter<OrmaMyData> inserter = orma.prepareInsertIntoOrmaMyData();
-        OrmaMyData data = new OrmaMyData(1,"マイネーム","08069180544","愛知県/名古屋市/天白区/平針/4-701", R.mipmap.ic_launcher);
+        OrmaMyData data = new OrmaMyData(1,"マイネーム","08069180544","愛知県", String.valueOf(R.mipmap.ic_launcher),"");
         inserter.execute(data);
     }
     public static OrmaMyData getMyData(Context context){
@@ -112,11 +138,26 @@ public class OrmaOperator {
         OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
         orma.updateOrmaMyData().idEq(1).user_name(name).execute();
     }
+    public static void setMyData(String name,String picture,String addrres,String comment,Context context){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaMyData");
+        if(!name.isEmpty()){
+            orma.updateOrmaMyData().idEq(1).user_name(name).execute();
+        }
+        if(!picture.isEmpty()) {
+            orma.updateOrmaMyData().idEq(1).user_icon(picture).execute();
+        }
+        if(!addrres.isEmpty()){
+            orma.updateOrmaMyData().idEq(1).user_addrres(addrres).execute();
+        }
+        if(!comment.isEmpty()){
+            orma.updateOrmaMyData().idEq(1).comment(comment).execute();
+        }
+    }
     public static void createUserData(Context context) {
         final ArrayList<OrmaUser> list = new ArrayList<OrmaUser>();
         long id = 1;
         for (User user : UserList.ALL_USER_LIST) {
-            OrmaUser ou = new OrmaUser(id, "9q2EAqcn6roZI5NB",user.getName(), 20, user.getIcon().toString(), user.getLoc());
+            OrmaUser ou = new OrmaUser(id, "9q2EAqcn6roZI5NB",user.getName(), 20, user.getIcon().toString(), user.getLoc(),"comment");
             list.add(ou);
             id++;
         }
@@ -196,7 +237,10 @@ public class OrmaOperator {
         OrmaTork ormaTork = new OrmaTork(id, tork.getTork(), tork.getID(), tork.getStringUri(), tork.isImage(), Clock, tork.isCamera(), tork.getStringUri(), shop_data,true);
         inserter.execute(ormaTork);
     }
-
+    public static void removeBookmarkAndMemo(Context context){
+        remove(context,MEMO_NUMBER);
+        remove(context,BOOKMARK_NUMBER);
+    }
     public static void remove(Context context, int number) {
         switch (number) {
             case 1:
@@ -223,9 +267,20 @@ public class OrmaOperator {
                 OrmaDatabase orma6 = getOrmaDataBase(context,"OrmaConfig");
                 orma6.deleteFromOrmaConfig().execute();
                 break;
+            case 7:
+                removeBookmark(context);
+                break;
+            case 8:
+                break;
         }
     }
-
+    public static void removeBookmark(Context context){
+        OrmaDatabase orma = getOrmaDataBase(context,"OrmaShopData");
+        OrmaShopData_Selector selector = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
+        for(OrmaShopData data:selector){
+            orma.updateOrmaShopData().idEq(data.id).bookmark(false).execute();
+        }
+    }
     public static void read(Context context) {
         //データベースからユーザーデータ読み込みおよび、トークデータ読み込み
         OrmaDatabase orma = getOrmaDataBase(context, "OrmaUser");
@@ -238,6 +293,7 @@ public class OrmaOperator {
         setBookMark(context);
         //メモデータの読み込み
         ShopMemo.read(context);
+        MyConfig.setDate(context);
 
     }
 

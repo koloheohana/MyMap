@@ -1,10 +1,12 @@
 package com.koloheohana.mymap.server;
 
 import android.app.NotificationManager;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.koloheohana.mymap.MainActivity;
+import com.koloheohana.mymap.Sound.Sound;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.sns.OneTork;
@@ -30,7 +32,7 @@ public class CustomGcmListenerService extends NCMBGcmListenerService{
                 System.out.println("data:"+data);
                 JSONObject json = new JSONObject(data.getString("com.nifty.Data"));
                 ServerOperator.getServerBitmap(json.getString(ServerOperator.IMAGE_URL),data,json);
-
+                Sound.ME.playRingtone();
             } catch (JSONException e) {
                 //エラー処理
                 System.out.println(e.toString());

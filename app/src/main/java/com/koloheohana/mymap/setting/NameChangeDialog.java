@@ -39,7 +39,7 @@ public class NameChangeDialog extends DialogFragment {
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final TextView textView = (TextView)dialog.findViewById(R.id.now_name);
-        textView.setText(MyUser.ME.getName());
+        textView.setText("現在の名前\n"+MyUser.ME.getName());
         //エディットテキスト
         final EditText edit = (EditText)dialog.findViewById(R.id.name_edit);
         edit.setWidth(400);
@@ -51,7 +51,7 @@ public class NameChangeDialog extends DialogFragment {
             public void onClick(View v) {
                 String change = edit.getText().toString();
                 MyUser.ME.setName(change);
-                OrmaOperator.setMyData(change,CONTEXT);
+                OrmaOperator.setMyData(change,"","","",CONTEXT);
                 dismiss();
             }
         });

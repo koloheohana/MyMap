@@ -21,14 +21,16 @@ public class OrmaUser {
     public String user_icon;
     @Column(defaultExpr = "1",indexed = true)
     public String addrres;
-
+    @Column(defaultExpr = "comment")
+    public String comment;
     @Setter
-    public OrmaUser(long id,String device_id,String user_name,int user_age,String user_icon,String addrres){
+    public OrmaUser(long id,String device_id,String user_name,int user_age,String user_icon,String addrres,String comment){
         this.id = id;
         this.device_id = device_id;
         this.user_name = user_name;
         this.user_age = user_age;
         this.user_icon = user_icon;
         this.addrres = addrres;
+        this.comment = comment;
     }
 }

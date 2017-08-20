@@ -1,6 +1,7 @@
 package com.koloheohana.mymap.data_base;
 
 import com.github.gfx.android.orma.annotation.Column;
+import com.github.gfx.android.orma.annotation.PrimaryKey;
 import com.github.gfx.android.orma.annotation.Setter;
 import com.github.gfx.android.orma.annotation.Table;
 
@@ -9,6 +10,7 @@ import com.github.gfx.android.orma.annotation.Table;
  */
 @Table
 public class OrmaConfig {
+
     @Column(defaultExpr = "1",indexed = true)
     public long this_id;
     @Column(indexed = true)

@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.server.ServerOperator;
+import com.koloheohana.mymap.util.Scene;
+import com.koloheohana.mymap.util.Util;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.NCMBException;
 import com.nifty.cloud.mb.core.NCMBUser;
@@ -33,6 +35,8 @@ public class SighupActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ME = this;
+        Scene.set(this);
+
         setContentView(R.layout.activity_sighup);
         _nameText = (EditText)findViewById(R.id.input_name);
         _passwordText = (EditText)findViewById(R.id.input_password);
@@ -58,6 +62,8 @@ public class SighupActivity extends AppCompatActivity{
                 finish();
             }
         });
+        _nameText.setFilters(Util.getEnglishFilters());
+        _passwordText.setFilters(Util.getEnglishFilters());
     }
 
     public void signup() {

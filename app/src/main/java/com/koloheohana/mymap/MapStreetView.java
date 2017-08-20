@@ -8,6 +8,7 @@ import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.koloheohana.mymap.util.Scene;
 
 /**
  * Created by User on 2017/06/02.
@@ -17,6 +18,7 @@ public class MapStreetView extends FragmentActivity implements OnStreetViewPanor
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Scene.set(this);
         setContentView(R.layout.street_view);
         StreetViewPanoramaFragment streetViewPanoramaFragment = (StreetViewPanoramaFragment)getFragmentManager().findFragmentById(R.id.streetviewpanorama);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);

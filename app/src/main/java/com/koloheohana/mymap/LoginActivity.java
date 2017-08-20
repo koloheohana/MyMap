@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ import android.widget.Toast;
 
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.server.ServerOperator;
+import com.koloheohana.mymap.util.Scene;
+import com.koloheohana.mymap.util.Util;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.LoginCallback;
 import com.nifty.cloud.mb.core.NCMBException;
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ME = this;
+        Scene.set(this);
         setContentView(R.layout.activity_login);
         _noLoginButton = (Button)findViewById(R.id.btn_no_login);
         _nameText = (EditText)findViewById(R.id.input_name);
@@ -64,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+        _nameText.setFilters(Util.getEnglishFilters());
+        _passwordText.setFilters(Util.getEnglishFilters());
     }
 
     public void login() {

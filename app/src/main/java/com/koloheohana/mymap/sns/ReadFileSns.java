@@ -31,7 +31,7 @@ public class ReadFileSns {
                 String name = users[1].split("∥")[1];
                 String mutter = users[2].split("∥")[1];
                 int icon = Integer.valueOf(users[3].split("∥")[1]);
-                UserList.add(new User(id, icon, name, mutter));
+                UserList.add(new User(id, String.valueOf(icon), name, mutter));
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.v("tork_data", "ユーザーデータに不正な処理が入っている為飛ばします");

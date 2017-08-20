@@ -8,7 +8,9 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaTork;
 import com.koloheohana.mymap.data_base.OrmaUser;
+import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.sns.OneTork;
+import com.koloheohana.mymap.util.BitmapReader;
 
 import java.util.ArrayList;
 
@@ -21,14 +23,20 @@ public class User {
     private Bitmap icon;
     private String name;
     private String mutter;
+    private String comment;
     private int age;
     private String addrres;
     private String tel;
     public ArrayList<OneTork> TORK = new ArrayList<OneTork>();
-    public User(long _id ,int _icon,String name ,String mutter){
+    public User(long _id ,String _icon,String name ,String mutter){
         System.out.println(_icon);
         id = _id;
-        setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), _icon));
+        if(_icon.startsWith("file")) {
+            setIcon(BitmapReader.getBitmap(MainActivity.ME,SaveDateController.getUri(_icon),false));
+        }else {
+            setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), Integer.valueOf(_icon)));
+        }
+        setComment("コメント");
         setName(name);
         setLoc(mutter);
         readTorkFile(MainActivity.ME);
@@ -38,13 +46,20 @@ public class User {
         setIcon(null);
         setName(ormaUser.user_name);
         setLoc(ormaUser.addrres);
+        setComment("コメント");
         readTorkFile(context);
 
+    }
+    public void setComment(String _comment){
+        comment = _comment;
     }
     public void readTorkFile(Context context){
         for(OrmaTork ot: OrmaOperator.getOrmaTorkSelector(MainActivity.ME).user_idEq(id).orderByIdAsc()){
             TORK.add(new OneTork(context,ot));
         }
+    }
+    public String getComment(){
+        return comment;
     }
     public void addTork(OneTork tork){
         TORK.add(tork);

@@ -23,15 +23,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_title"
-            android:text="名前変更"
             android:padding="10dp"
             android:textSize="18sp"
             android:textColor="@android:color/white"
             />
 
         <!-- メッセージ -->
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/now_comment"
+            android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -39,26 +44,7 @@
             android:text=""
             android:textSize="16sp"
             android:textColor="#333333" />
-        <EditText
-            android:id="@+id/comment_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:lineSpacingExtra="6dp"
-            android:hint="4~20文字"
-            android:textSize="16sp"
-            android:textColor="#333333"
-            />
-        <!-- OK ボタン -->
-        <Button
-            android:id="@+id/positive_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/bt_dialog_positive"
-            android:text="トーク"
-            android:textColor="@android:color/white"
-            />
+
 
     </LinearLayout>
 

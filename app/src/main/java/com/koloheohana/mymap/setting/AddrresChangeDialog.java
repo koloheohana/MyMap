@@ -33,13 +33,13 @@ public class AddrresChangeDialog extends DialogFragment {
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         // フルスクリーン
         dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-        dialog.setContentView(R.layout.setting_name_dialog);
+        dialog.setContentView(R.layout.setting_addrres_dialog);
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final TextView textView = (TextView)dialog.findViewById(R.id.now_addrres);
         textView.setText(MyUser.ME.getName());
         //エディットテキスト
-        final EditText edit = (EditText)dialog.findViewById(R.id.name_edit);
+        final EditText edit = (EditText)dialog.findViewById(R.id.addrres_edit);
         edit.setWidth(400);
         // OK ボタンのリスナ
         Button button = (Button)dialog.findViewById(R.id.positive_button);
@@ -48,8 +48,7 @@ public class AddrresChangeDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 String change = edit.getText().toString();
-                MyUser.ME.setName(change);
-                OrmaOperator.setMyData(change,CONTEXT);
+                OrmaOperator.setMyData("","",change,"",CONTEXT);
                 dismiss();
             }
         });

@@ -11,9 +11,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.SettingActivity;
+import com.koloheohana.mymap.SettingSelectActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.me.MyUser;
 
@@ -36,6 +39,18 @@ public class PictureChangeDialog extends DialogFragment{
         dialog.setContentView(R.layout.setting_picture_dialog);
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ImageView image = (ImageView)dialog.findViewById(R.id.tork_image);
+        image.setImageBitmap(MyUser.ME.getIcon());
+
+        Button change_picture = (Button)dialog.findViewById(R.id.picture_select_button);
+        change_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingActivity.ME.getPicture();
+                dismiss();
+            }
+        });
 
         // OK ボタンのリスナ
         Button button = (Button)dialog.findViewById(R.id.positive_button);

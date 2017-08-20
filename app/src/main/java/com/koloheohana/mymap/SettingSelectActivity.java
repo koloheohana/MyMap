@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.koloheohana.mymap.util.Scene;
+
 /**
  * Created by User on 2017/07/27.
  */
@@ -19,6 +21,8 @@ public class SettingSelectActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ME = this;
+        Scene.set(this);
+
         setContentView(R.layout.activity_setting);
         setListView();
 
@@ -60,7 +64,8 @@ public class SettingSelectActivity extends AppCompatActivity{
                     case FriendSetting:
                         intent = new Intent(ME,SettingActivity.class);
                         intent.putExtra(INTENT_KEY,FriendSetting);
-                        startActivity(intent);                        break;
+                        startActivity(intent);
+                        break;
                     case UtilSetting:
                         intent = new Intent(ME,SettingActivity.class);
                         intent.putExtra(INTENT_KEY,UtilSetting);
@@ -70,4 +75,5 @@ public class SettingSelectActivity extends AppCompatActivity{
             }
         });
     }
+
 }

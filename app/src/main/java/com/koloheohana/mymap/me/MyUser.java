@@ -17,7 +17,7 @@ import java.util.List;
 public class MyUser extends User{
     public static MyUser ME;
     public MyUser(OrmaMyData omd) {
-        super(-1,Integer.valueOf(omd.user_icon),omd.user_name,omd.user_addrres);
+        super(-1,omd.user_icon,omd.user_name,omd.user_addrres);
         ME = this;
     }
     public ArrayList<User> getListUser(){

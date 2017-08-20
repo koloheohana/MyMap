@@ -57,7 +57,7 @@ public class StartMenuTab extends Fragment {
         private Context mContext;
         private LayoutInflater mLayoutInflater;
         private String[] mHueArray = {
-                "地図", "グループ", "トーク", "登録",
+                "地図", "グループ", "トーク",
                 "店情報", "お気に入り", "設定"
         };
 
@@ -74,22 +74,19 @@ public class StartMenuTab extends Fragment {
                 case 2:
                     MainActivity.ME.mPager.setCurrentItem(2);
                     return;
-                case 3:
+/*                case 3:
                     System.out.println("DBに挿入します");
                     OrmaOperator.setUser(MainActivity.ME);
-                    return;
-                case 4:
+                    return;*/
+                case 3:
                     MainActivity.ME.openQRreader();
                     return;
-                case 5:
+                case 4:
                     new Patisuro().start();
                     return;
-                case 6:
+                case 5:
                     Intent setting_intent = new Intent(MainActivity.ME,SettingSelectActivity.class);
                     startActivity(setting_intent);                    return;
-                case 7:
-
-                    return;
             }
         }
 
@@ -101,15 +98,14 @@ public class StartMenuTab extends Fragment {
                     return R.drawable.couplemanwoman48;
                 case 2:
                     return R.drawable.thinking48;
+/*                case 3:
+                    return R.drawable.plus48;*/
                 case 3:
-                    return R.drawable.plus48;
-                case 4:
                     return R.drawable.cafe48;
-                case 5:
+                case 4:
                     return R.drawable.likeoutline48;
-                case 6:
+                case 5:
                     return R.drawable.settings348;
-                case 7:
             }
             return R.drawable.koloheohana;
         }

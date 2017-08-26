@@ -17,6 +17,7 @@ import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.menutab.Tork;
+import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.OneTork;
 import com.koloheohana.mymap.user_date.MyBookmark;
 import com.koloheohana.mymap.user_date.ShopMemo;
@@ -43,6 +44,9 @@ public class OrmaOperator {
     public static int BOOKMARK_NUMBER = 7;
     public static int TORK_NUMBER = 5;
     public static int CONFIG_NUMBER = 6;
+    public static void checkDataBase(){
+
+    }
     public static void test() {
         OrmaDatabase orma = getOrmaDataBase(Scene.CONTEXT, "OrmaShopData");
         OrmaShopData_Selector selector = orma.selectFromOrmaShopData().bookmarkEq(true).orderByIdDesc();
@@ -157,7 +161,7 @@ public class OrmaOperator {
         final ArrayList<OrmaUser> list = new ArrayList<OrmaUser>();
         long id = 1;
         for (User user : UserList.ALL_USER_LIST) {
-            OrmaUser ou = new OrmaUser(id, "9q2EAqcn6roZI5NB",user.getName(), 20, user.getIcon().toString(), user.getLoc(),"comment");
+            OrmaUser ou = new OrmaUser(id, ServerOperator.insta_id,user.getName(), 20, user.getIcon().toString(), user.getLoc(),"comment");
             list.add(ou);
             id++;
         }

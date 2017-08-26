@@ -27,8 +27,7 @@ public class StartActivity extends AppCompatActivity {
             if(!OrmaOperator.getConfig(this).isMemberRegist){
                 mainStartActivity(this);
             }else{
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
+                ServerOperator.rogin(this);
             }
         }else {
             Intent intent = new Intent(this, LoginActivity.class);

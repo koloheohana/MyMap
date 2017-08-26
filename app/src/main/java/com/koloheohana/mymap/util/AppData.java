@@ -6,4 +6,7 @@ package com.koloheohana.mymap.util;
 
 public class AppData {
     public static String NAME = "飲み友";
+    public static String installation_id;
+    public static boolean StartUp = false;
+    public static boolean StartUp_data = false;
 }

@@ -26,11 +26,13 @@ import android.widget.Toast;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.StartActivity;
 import com.koloheohana.mymap.data_base.OrmaConfig;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.dialog.TorkShareDialog;
 import com.koloheohana.mymap.me.MyUser;
+import com.koloheohana.mymap.util.AppData;
 import com.koloheohana.mymap.util.MyNotification;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.FetchFileCallback;
@@ -63,11 +65,10 @@ public class ServerOperator {
     public static String SENDER_KEY = "385724188713";
     public static String insta_id ="";
     public static String user_nifty_id = "";
-    public static boolean isSetServer = false;
     public static void setServer(Context context){
-        if(!isSetServer) {
+        if(!AppData.StartUp) {
             NCMB.initialize(context, APP_KEY, CLIENT_KEY);
-            isSetServer = true;
+            AppData.StartUp = true;
         }
 /*
         setPush(context);
@@ -233,8 +234,6 @@ public class ServerOperator {
     public static void rogin(final Context context){
         //自動ログイン処理
 
-        String uuid = Settings.Secure.getString(context.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        System.out.println("uuisd:"+uuid);
         OrmaConfig oc = OrmaOperator.getConfig(context);
         final String nama = oc.user_name;
         final String pass = oc.user_pass;
@@ -245,7 +244,7 @@ public class ServerOperator {
                 public void done(NCMBUser ncmbUser, NCMBException e) {
                     if(e != null){
                         System.out.println("test:"+e.getCode());
-                        if (e.getCode().equals( "E401002") ) {
+                        if (e.getCode().equals( "E401002")) {
                             SignUpDialog dialog = new SignUpDialog();
                             dialog.show(((AppCompatActivity)context).getFragmentManager(),"サインアップ");
                         }
@@ -259,6 +258,7 @@ public class ServerOperator {
                                 System.out.println("情報更新しました");
                             }
                         });
+                        StartActivity.mainStartActivity(context);
                     }
                 }
             });

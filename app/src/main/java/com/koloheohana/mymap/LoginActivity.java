@@ -19,6 +19,7 @@ import com.koloheohana.mymap.util.Util;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.LoginCallback;
 import com.nifty.cloud.mb.core.NCMBException;
+import com.nifty.cloud.mb.core.NCMBInstallation;
 import com.nifty.cloud.mb.core.NCMBUser;
 
 /**
@@ -116,6 +117,15 @@ public class LoginActivity extends AppCompatActivity {
                                                 @Override
                                                 public void done(NCMBException e) {
                                                     System.out.println("登録情報を更新しました");
+                                                    final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+                                                    installation.put("menberID",name);
+                                                    installation.saveInBackground(new DoneCallback() {
+                                                        @Override
+                                                        public void done(NCMBException e) {
+                                                            System.out.println("サーバー情報に紐付け完了");
+                                                        }
+                                                    });
+
                                                 }
                                             });
                                         }

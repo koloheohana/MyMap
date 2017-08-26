@@ -17,6 +17,7 @@ import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.Util;
 import com.nifty.cloud.mb.core.DoneCallback;
 import com.nifty.cloud.mb.core.NCMBException;
+import com.nifty.cloud.mb.core.NCMBInstallation;
 import com.nifty.cloud.mb.core.NCMBUser;
 
 /**
@@ -109,6 +110,14 @@ public class SighupActivity extends AppCompatActivity{
                                         user.saveInBackground(new DoneCallback() {
                                             @Override
                                             public void done(NCMBException e) {
+                                                final NCMBInstallation installation = NCMBInstallation.getCurrentInstallation();
+                                                installation.put("menberID",name);
+                                                installation.saveInBackground(new DoneCallback() {
+                                                    @Override
+                                                    public void done(NCMBException e) {
+                                                        System.out.println("サーバー情報に紐付け完了");
+                                                    }
+                                                });
                                             }
                                         });
                                     }

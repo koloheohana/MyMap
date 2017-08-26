@@ -23,6 +23,7 @@ import com.koloheohana.mymap.map.ShopList;
 import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.ReadFileSns;
 import com.koloheohana.mymap.user_date.ReadDate;
+import com.koloheohana.mymap.util.AppData;
 import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.Window;
 
@@ -55,10 +56,11 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("各種データ読み込み中...");
         progressDialog.show();
-
-        //データ読み込みスレッド開始
-        thread = new Thread(this);
-        thread.start();
+        if(!AppData.StartUp_data){
+            //データ読み込みスレッド開始
+            thread = new Thread(this);
+            thread.start();
+        }
 
     }
 

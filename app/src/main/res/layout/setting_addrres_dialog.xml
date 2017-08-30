@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_title"
-            android:text="名前変更"
+            android:text="所在地変更"
             android:padding="10dp"
             android:textSize="18sp"
             android:textColor="@android:color/white"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:background="@drawable/bt_dialog_positive"
-            android:text="トーク"
+            android:text="変更"
             android:textColor="@android:color/white"
             />
 

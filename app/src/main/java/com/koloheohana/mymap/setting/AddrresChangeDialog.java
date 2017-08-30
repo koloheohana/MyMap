@@ -37,13 +37,12 @@ public class AddrresChangeDialog extends DialogFragment {
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         final TextView textView = (TextView)dialog.findViewById(R.id.now_addrres);
-        textView.setText(MyUser.ME.getName());
+        textView.setText(MyUser.ME.getAddrres());
         //エディットテキスト
         final EditText edit = (EditText)dialog.findViewById(R.id.addrres_edit);
         edit.setWidth(400);
         // OK ボタンのリスナ
         Button button = (Button)dialog.findViewById(R.id.positive_button);
-        button.setText("変更");
         dialog.findViewById(R.id.positive_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

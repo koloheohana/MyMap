@@ -17,6 +17,7 @@ import com.koloheohana.mymap.util.AppData;
 public class ReadDate {
     static boolean tester = true;
     static boolean clear = true;
+    static boolean map = false;
 
     public static void read(final Context context) {
 
@@ -45,7 +46,8 @@ public class ReadDate {
             OrmaOperator.remove(context, 3);
             OrmaOperator.remove(context, 4);
             //クリエイト
-
+        }
+        if (map) {
             MainActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
@@ -55,7 +57,8 @@ public class ReadDate {
 
             final CsvReader read = new CsvReader();
             read.execute();
-
+        }
+        if (tester) {
             MainActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {

@@ -37,7 +37,6 @@ public class ReadFileSns {
                 Log.v("tork_data", "ユーザーデータに不正な処理が入っている為飛ばします");
             }
         }
-
     }
 
     //後に改定

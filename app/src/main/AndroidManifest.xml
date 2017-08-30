@@ -85,6 +85,7 @@
 
         </activity>
         <activity android:name=".SettingSelectActivity"/>
+        <activity android:name=".TrimActivity"/>
         <activity android:name=".SettingActivity"/>
 
 

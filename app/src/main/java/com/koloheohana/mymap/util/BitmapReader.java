@@ -221,7 +221,40 @@ public class BitmapReader {
         }
         return loadBitmap;
     }
+    /**
+     * 画像リサイズ
+     * @param bitmap 変換対象ビットマップ
+     * @param newWidth 変換サイズ横
+     * @param newHeight 変換サイズ縦
+     * @return 変換後Bitmap
+     */
+    public static Bitmap resize(Bitmap bitmap, int newWidth, int newHeight) {
 
+        if (bitmap == null) {
+            return null;
+        }
+
+        int oldWidth = bitmap.getWidth();
+        int oldHeight = bitmap.getHeight();
+
+        if (oldWidth < newWidth && oldHeight < newHeight) {
+            // 縦も横も指定サイズより小さい場合は何もしない
+            return bitmap;
+        }
+
+        float scaleWidth = ((float) newWidth) / oldWidth;
+        float scaleHeight = ((float) newHeight) / oldHeight;
+        float scaleFactor = Math.min(scaleWidth, scaleHeight);
+
+        Matrix scale = new Matrix();
+        scale.postScale(scaleFactor, scaleFactor);
+
+        Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, scale, false);
+        bitmap.recycle();
+
+        return resizeBitmap;
+
+    }
     public static void setResizeOption(BitmapFactory.Options options){
         //サイズ
         int intScaleWidth = options.outWidth / 1920;

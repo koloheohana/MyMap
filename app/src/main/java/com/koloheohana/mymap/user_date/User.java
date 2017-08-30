@@ -3,6 +3,7 @@ package com.koloheohana.mymap.user_date;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
@@ -50,6 +51,9 @@ public class User {
         readTorkFile(context);
 
     }
+    public String getAddrres(){
+        return addrres;
+    }
     public void setComment(String _comment){
         comment = _comment;
     }
@@ -86,7 +90,9 @@ public class User {
     public Bitmap getIcon() {
         return icon;
     }
-
+    public void setIcon(Context context,Uri uri){
+        setIcon(BitmapReader.getBitmap(context,uri,false));
+    }
     public void setIcon(Bitmap icon) {
         this.icon = icon;
     }

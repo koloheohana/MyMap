@@ -3,6 +3,7 @@ package com.koloheohana.mymap;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapRegionDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.setting.Setting;
+import com.koloheohana.mymap.util.AppData;
 import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.Scene;
@@ -88,8 +90,19 @@ public class SettingActivity extends AppCompatActivity{
             return;
         }
         Bitmap loadBitmap = BitmapReader.rotateAndResize(this,resultData.getData());
-        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,"tork"+String.valueOf(MyUser.ME.getId())+new Clocks(this).getStringAllTime());
+/*
+        loadBitmap = BitmapReader.resize(loadBitmap,200,200);
+*/
+        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,"setting"+String.valueOf(MyUser.ME.getId())+new Clocks(this).getStringAllTime());
+
+        Intent intent = new Intent(this,TrimActivity.class);
+        intent.putExtra("uri",uri.toString());
+        startActivity(intent);
+
+/*
         OrmaOperator.setMyData("",uri.toString(),"","",SettingActivity.ME);
+        MyUser.ME.setIcon(this,uri);
+*/
 
     }
 

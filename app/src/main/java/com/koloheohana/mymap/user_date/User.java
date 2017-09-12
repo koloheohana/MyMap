@@ -32,6 +32,9 @@ public class User {
     public User(long _id ,String _icon,String name ,String mutter){
         System.out.println(_icon);
         id = _id;
+        if(_id == -1){
+            System.out.println("アイコン:"+_icon);
+        }
         if(_icon.startsWith("file")) {
             setIcon(BitmapReader.getBitmap(MainActivity.ME,SaveDateController.getUri(_icon),false));
         }else {

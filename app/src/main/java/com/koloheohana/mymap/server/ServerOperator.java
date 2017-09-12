@@ -301,6 +301,57 @@ public class ServerOperator {
         });
     }
     public static Bitmap TestBitmap = null;
+    public static void testUp(){
+        byte[] data = "Hello".getBytes();
+        NCMBFile file = new NCMBFile("HELLO.txt",data,new NCMBAcl());
+        file.saveInBackground(new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                if(e != null){
+                    System.out.println("code:"+e.getCode());
+                }else{
+                    System.out.println("成功");
+                }
+            }
+        });
+    }
+    public static int SERVER_FILE_CATEGORY_MY_PICTURE = 1;
+    public static void imageUploadAndPush(final Context context,final String file_path,Bitmap bitmap,int category){
+        //画像準備
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,0,output);
+        byte[] data = output.toByteArray();
+        //読み書き許可
+        NCMBAcl acl = new NCMBAcl();
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        //通信実施
+        final NCMBFile file = new NCMBFile("test.png",data,acl);
+        file.saveInBackground(new DoneCallback() {
+            @Override
+            public void done(NCMBException e) {
+                String result;
+                if(e != null){
+                    System.out.println("保存失敗"+e.getCode()+":"+e.toString()+":code:"+e.getCode());
+
+                    System.out.println("保存失敗");
+                }else{
+                    NCMBFile file = new NCMBFile("test.png");
+                    file.fetchInBackground(new FetchFileCallback() {
+                        @Override
+                        public void done(byte[] bytes, NCMBException e) {
+                            if(e != null){
+                                System.out.println("error:"+e.getCode()+":"+e.getMessage());
+                            }else{
+                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                                TestBitmap = bitmap;
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
     public static void imageUploadAndSendPush(final Context context, final long send_id, final int shop_id, final String file_path, Bitmap bitmap){
         //画像準備
         ByteArrayOutputStream output = new ByteArrayOutputStream();

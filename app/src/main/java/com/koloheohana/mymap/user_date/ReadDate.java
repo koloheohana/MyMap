@@ -5,8 +5,10 @@ import android.content.Context;
 
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.Sound.Sound;
+import com.koloheohana.mymap.data_base.OrmaMyData;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.map.CsvReader;
+import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.ReadFileSns;
 import com.koloheohana.mymap.util.AppData;
@@ -44,7 +46,9 @@ public class ReadDate {
             OrmaOperator.remove(context, OrmaOperator.SHOP_NUMBER);
             OrmaOperator.remove(context, 2);
             OrmaOperator.remove(context, 3);
+/*
             OrmaOperator.remove(context, 4);
+*/
             //クリエイト
         }
         if (map) {
@@ -65,7 +69,9 @@ public class ReadDate {
                     MainActivity.ME.progressDialog.setMessage("ユーザーデータベース作成中");
                 }
             });
+/*
             OrmaOperator.createMyData(context);
+*/
             OrmaOperator.createShopData(context);
             ReadFileSns.read();
             ReadFileSns.readTorkFile();
@@ -91,6 +97,7 @@ public class ReadDate {
         OrmaOperator.read(context);
         //サーバーデータを作成
         ServerOperator.setServer(context);
-
+/*        OrmaMyData omd = OrmaOperator.getMyData(context);
+        ServerOperator.imageUploadAndPush(context, omd.user_icon, MyUser.ME.getIcon(),1);*/
     }
 }

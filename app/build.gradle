@@ -26,7 +26,7 @@ dependencies {
 
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/NCMB.jar')
-    compile 'com.isseiaoki:simplecropview:1.0.10'
+    compile 'com.isseiaoki:simplecropview:1.1.6'
     compile 'com.github.gfx.android.orma:orma:4.1.0'
     compile 'com.google.android.gms:play-services:10.2.6'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'

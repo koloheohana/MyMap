@@ -80,7 +80,7 @@ public class SighupActivity extends AppCompatActivity{
         final ProgressDialog progressDialog = new ProgressDialog(SighupActivity.this,
                 R.style.Theme_AppCompat_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("アカウント作成中...");
         progressDialog.show();
 
         final String name = _nameText.getText().toString();

@@ -18,7 +18,10 @@ import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.SettingSelectActivity;
 import com.koloheohana.mymap.TrimActivity;
+import com.koloheohana.mymap.data_base.OrmaMyData;
 import com.koloheohana.mymap.data_base.OrmaOperator;
+import com.koloheohana.mymap.me.MyUser;
+import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.util.Patisuro;
 
 
@@ -83,8 +86,8 @@ public class StartMenuTab extends Fragment {
                     MainActivity.ME.openQRreader();
                     return;
                 case 4:
-                    Intent trim_intent = new Intent(MainActivity.ME,TrimActivity.class);
-                    startActivity(trim_intent);
+                    OrmaMyData omd = OrmaOperator.getMyData(MainActivity.ME);
+                    ServerOperator.imageUploadAndPush(MainActivity.ME, omd.user_icon, MyUser.ME.getIcon(),1);
                     /*new Patisuro().start();*/
                     return;
                 case 5:

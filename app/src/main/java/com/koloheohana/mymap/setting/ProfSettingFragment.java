@@ -1,26 +1,31 @@
-package com.koloheohana.mymap.menutab;
+package com.koloheohana.mymap.setting;
 
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.SettingActivity;
+import com.koloheohana.mymap.SettingSelectActivity;
+import com.koloheohana.mymap.sns.MainTork;
 import com.koloheohana.mymap.user_date.User;
 import com.koloheohana.mymap.user_date.UserAdapter;
 import com.koloheohana.mymap.user_date.UserList;
 
-/**
- * Created by User on 2016/08/03.
- */
-public class Tork extends Fragment {
+import java.util.ArrayList;
 
+/**
+ * Created by User on 2017/10/04.
+ */
+
+public class ProfSettingFragment extends Fragment{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,7 @@ public class Tork extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.activity_group, container, false);
+        view = inflater.inflate(R.layout.fragment_page_list, container, false);
         ListView lv= create(view);
         /**
          * コンテキストメニュー作成
@@ -48,12 +53,19 @@ public class Tork extends Fragment {
                 startActivity(intent);
             }
         });
-
     }
-
+    public static final String MyName = "名前";
+    public static final String MyPicture = "写真";
+    public static final String MyAddrres = "所在地";
+    public static final String MyComment = "コメント";
     public static ListView create(View view) {
+
         ListView myList = (ListView) view.findViewById(R.id.myListView);
-        UserAdapter adapter = new UserAdapter(MainActivity.ME, 0, UserList.ALL_USER_LIST);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingSelectActivity.ME,R.layout.list);
+        adapter.add(MyName);
+        adapter.add(MyPicture);
+        adapter.add(MyAddrres);
+        adapter.add(MyComment);
         myList.setAdapter(adapter);
         return myList;
     }

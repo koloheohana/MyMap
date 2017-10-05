@@ -1,23 +1,18 @@
 package com.koloheohana.mymap.user_date;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
 import com.koloheohana.mymap.MainActivity;
-import com.koloheohana.mymap.Sound.Sound;
-import com.koloheohana.mymap.data_base.OrmaMyData;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.map.CsvReader;
-import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.sns.ReadFileSns;
-import com.koloheohana.mymap.util.AppData;
 
 /**
  * Created by User on 2017/04/07.
  */
 public class ReadDate {
-    static boolean tester = true;
+    static boolean user = true;
     static boolean clear = true;
     static boolean map = false;
 
@@ -35,7 +30,7 @@ public class ReadDate {
             ReadFileSns.testCreate();
 */
         }
-        if (tester) {
+        if (user) {
             MainActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
@@ -62,7 +57,7 @@ public class ReadDate {
             final CsvReader read = new CsvReader();
             read.execute();
         }
-        if (tester) {
+        if (user) {
             MainActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {

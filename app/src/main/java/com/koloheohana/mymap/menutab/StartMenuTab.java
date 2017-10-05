@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.SettingActivity;
 import com.koloheohana.mymap.SettingSelectActivity;
 import com.koloheohana.mymap.TrimActivity;
 import com.koloheohana.mymap.data_base.OrmaMyData;

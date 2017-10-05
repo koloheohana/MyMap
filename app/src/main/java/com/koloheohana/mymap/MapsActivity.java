@@ -80,6 +80,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             connectGooglePlayServices();
         }
+        // 選択されたアイテムを取得します
+        ArrayList<ShopDate> list = ShopSearch.getSearchRange(2);
+        MapsActivity.MAP_ME.setMarker(list, true);
     }
 
     public static final String TAG = "LocationService";

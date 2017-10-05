@@ -11,6 +11,8 @@ import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.menutab.MainGroup;
 import com.koloheohana.mymap.menutab.Tork;
 import com.koloheohana.mymap.menutab.StartMenuTab;
+import com.koloheohana.mymap.setting.FriendSettingFragment;
+import com.koloheohana.mymap.setting.MapSettingFragment;
 import com.koloheohana.mymap.setting.ProfSettingFragment;
 
 /**
@@ -36,8 +38,8 @@ public class SettingFragAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
     public static ProfSettingFragment prof = new ProfSettingFragment();
-    public static ProfSettingFragment map = new ProfSettingFragment();
-    public static ProfSettingFragment friend = new ProfSettingFragment();
+    public static MapSettingFragment map = new MapSettingFragment();
+    public static FriendSettingFragment friend = new FriendSettingFragment();
     @Override
     public Fragment getItem(int position) {
         switch(position){

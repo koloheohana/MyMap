@@ -76,11 +76,11 @@ public class SettingActivity extends AppCompatActivity{
                 break;
         }
     }
-    private static final int REQUEST_GALLERY = 0;
+/*    private static final int REQUEST_GALLERY = 0;
 
     public void getPicture(){
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, REQUEST_GALLERY);
     }
@@ -92,21 +92,21 @@ public class SettingActivity extends AppCompatActivity{
             return;
         }
         Bitmap loadBitmap = BitmapReader.rotateAndResize(this,resultData.getData());
-/*
+*//*
         loadBitmap = BitmapReader.resize(loadBitmap,200,200);
-*/
+*//*
         Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,"setting"+String.valueOf(MyUser.ME.getId())+new Clocks(this).getStringAllTime());
 
         Intent intent = new Intent(this,TrimActivity.class);
         intent.putExtra("uri",uri.toString());
         startActivity(intent);
 
-/*
+*//*
         OrmaOperator.setMyData("",uri.toString(),"","",SettingActivity.ME);
         MyUser.ME.setIcon(this,uri);
-*/
+*//*
 
-    }
+    }*/
 
 
 }

@@ -47,7 +47,7 @@ public class PictureChangeDialog extends DialogFragment{
         change_picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingActivity.ME.getPicture();
+                SettingSelectActivity.ME.getPicture();
                 dismiss();
             }
         });

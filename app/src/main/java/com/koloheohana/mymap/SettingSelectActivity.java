@@ -1,6 +1,10 @@
 package com.koloheohana.mymap;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +16,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.koloheohana.mymap.adapter.SettingFragAdapter;
+import com.koloheohana.mymap.date.SaveDateController;
+import com.koloheohana.mymap.me.MyUser;
+import com.koloheohana.mymap.util.BitmapReader;
+import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.Window;
 
@@ -106,5 +114,35 @@ public class SettingSelectActivity extends AppCompatActivity{
             }
         });
     }
+    private static final int REQUEST_GALLERY = 0;
 
+    public void getPicture(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_GALLERY);
+    }
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent resultData) {
+        if(resultData == null){
+            return;
+        }
+        Bitmap loadBitmap = BitmapReader.rotateAndResize(this,resultData.getData());
+/*
+        loadBitmap = BitmapReader.resize(loadBitmap,200,200);
+*/
+        Uri uri = SaveDateController.saveBitmapFile(this, loadBitmap,"setting"+String.valueOf(MyUser.ME.getId())+new Clocks(this).getStringAllTime());
+
+        Intent intent = new Intent(this,TrimActivity.class);
+        intent.putExtra("uri",uri.toString());
+        startActivity(intent);
+
+/*
+        OrmaOperator.setMyData("",uri.toString(),"","",SettingActivity.ME);
+        MyUser.ME.setIcon(this,uri);
+*/
+
+    }
 }

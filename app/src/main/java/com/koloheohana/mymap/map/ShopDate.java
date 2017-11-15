@@ -106,7 +106,6 @@ public class ShopDate implements Serializable {
     }
 
     Image[] IMAGE;
-
     public ShopDate(int _id, String _addrres, String postal, String _name, String category, String _tel, double _COORDINATE_X, double _COORDINATE_Y) {
         ID = _id;
         ADDRRES = _addrres;
@@ -166,7 +165,26 @@ public class ShopDate implements Serializable {
         LATLNG = new LatLng(COORDINATE_X, COORDINATE_Y);
         BOOKMARK = sd.bookmark;
     }
-
+    public void setPlusData(int seat,String charge,String homepage_addrres,String budget,String business_hour,String smooking_space){
+        SEAT = seat;
+        CHARGE = charge;
+        HOMEPAGE_ADDRRES = homepage_addrres;
+        BUDGET = budget;
+        BUSINESS_HOUR = business_hour;
+        SMOOKING_SPACE = smooking_space;
+    }
+    public String SMOOKING_SPACE = "不明";
+    //営業時間
+    public String BUSINESS_HOUR = "不明";
+    //予算
+    public String BUDGET = "不明";
+    //座席数
+    public int SEAT = 0;
+    //充電可否
+    public String CHARGE = "不明";
+    //HPアドレス
+    public String HOMEPAGE_ADDRRES ="不明";
+    //ブックマーク
     public boolean BOOKMARK = false;
 
     public Double getX() {

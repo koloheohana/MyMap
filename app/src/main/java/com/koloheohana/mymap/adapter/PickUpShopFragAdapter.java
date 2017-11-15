@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.koloheohana.mymap.setting.FriendSettingFragment;
 import com.koloheohana.mymap.setting.MapSettingFragment;
 import com.koloheohana.mymap.setting.ProfSettingFragment;
+import com.koloheohana.mymap.shop.NewPickUpShopFragment;
+import com.koloheohana.mymap.shop.PickUpShop;
 import com.koloheohana.mymap.shop.PickUpShopFragment;
 
 /**
@@ -17,7 +19,7 @@ import com.koloheohana.mymap.shop.PickUpShopFragment;
 public class PickUpShopFragAdapter extends FragmentPagerAdapter {
 
     final int PAGE_COUNT = 2;
-    private String tabTitles[] = new String[]{"新着情報", "店舗"};
+    private String tabTitles[] = new String[]{"新着情報"+" (" +PickUpShop.new_shops_value+")", "店舗"+" ("+PickUpShop.getShopListSize()+")"};
     private Context context;
 
     public PickUpShopFragAdapter(FragmentManager fm, Context context) {
@@ -33,7 +35,7 @@ public class PickUpShopFragAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return PAGE_COUNT;
     }
-    public static PickUpShopFragment NEW = new PickUpShopFragment();
+    public static NewPickUpShopFragment NEW = new NewPickUpShopFragment();
     public static PickUpShopFragment PICK = new PickUpShopFragment();
     @Override
     public Fragment getItem(int position) {

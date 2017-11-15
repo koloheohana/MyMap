@@ -6,6 +6,7 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.map.CsvReader;
 import com.koloheohana.mymap.server.ServerOperator;
+import com.koloheohana.mymap.shop.PickUpShop;
 import com.koloheohana.mymap.sns.ReadFileSns;
 
 /**
@@ -14,10 +15,10 @@ import com.koloheohana.mymap.sns.ReadFileSns;
 public class ReadDate {
     static boolean user = true;
     static boolean clear = true;
-    static boolean map = false;
+    static boolean map = true;
 
     public static void read(final Context context) {
-
+        PickUpShop.fileLoad(context);
         if (clear) {
             MainActivity.ME.handler_2.post(new Runnable() {
                 @Override

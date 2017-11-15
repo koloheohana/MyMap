@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -72,6 +73,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        ShopSearch.setFirst();
         ShopSearch.setAdapter();
         mapFragment.getMapAsync(this);
         if (isLocationEnabled()) {
@@ -84,7 +86,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         ArrayList<ShopDate> list = ShopSearch.getSearchRange(2);
         MapsActivity.MAP_ME.setMarker(list, true);
     }
-
     public static final String TAG = "LocationService";
 
     //protected LocationClient mLocationClient;
@@ -413,11 +414,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MemoCustomDialog mcd = new MemoCustomDialog(this);
         mcd.show();
     }
-    public void myTomo(View view) {
+    public void categoryButton(View view){
+        ShopSearch.setCategory();
 
-/*
+    }
+    public void rangeButton(View view){
+        ShopSearch.setRange();
+    }
+    public void myTomo(View view) {
         zoomMap(now_lati, now_long);
-*/
+
     }
     public void mapSearchButton(View view){
         ShopSearch.searchShop(view);

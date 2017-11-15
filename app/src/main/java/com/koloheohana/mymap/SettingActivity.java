@@ -41,6 +41,7 @@ public class SettingActivity extends AppCompatActivity{
         Intent intent = getIntent();
         com.koloheohana.mymap.util.Scene.set(this);
         ME = this;
+
         int layout = R.layout.activity_setting;
         switch(Scene){
             case SettingSelectActivity.MyProfSetting:

@@ -2,6 +2,7 @@ package com.koloheohana.mymap.date;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -55,6 +56,23 @@ public class SaveDateController {
             writer.close();
         }catch (IOException e){
             e.printStackTrace();
+        }
+    }
+    public static ArrayList<String> readCsv(Context context ,int file_name){
+        ArrayList<String> list = new ArrayList<String>();
+        try{
+            Resources res = context.getResources();
+            InputStream in = res.openRawResource(file_name);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
+            String s;
+            while((s = reader.readLine()) != null){
+                System.out.println(s);
+                list.add(s);
+            }
+            reader.close();
+            return list;
+        }catch (IOException e){
+            return list;
         }
     }
     public static ArrayList<String> read(String file_name){

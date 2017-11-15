@@ -15,15 +15,13 @@ import android.widget.TextView;
 
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
+import com.koloheohana.mymap.PickUpShopActivity;
 import com.koloheohana.mymap.R;
-import com.koloheohana.mymap.SettingActivity;
 import com.koloheohana.mymap.SettingSelectActivity;
-import com.koloheohana.mymap.TrimActivity;
 import com.koloheohana.mymap.data_base.OrmaMyData;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.me.MyUser;
 import com.koloheohana.mymap.server.ServerOperator;
-import com.koloheohana.mymap.util.Patisuro;
 
 
 /**
@@ -44,12 +42,9 @@ public class StartMenuTab extends Fragment {
         GridView gridView = (GridView) view.findViewById(R.id.gridview);
         hue_adapter = new HueAdapter(MainActivity.ME);
         gridView.setAdapter(hue_adapter);
-        /**
-         * クリックリスナー
-         */
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(position);
                 hue_adapter.chengeMenu(position);
             }
         });
@@ -79,21 +74,22 @@ public class StartMenuTab extends Fragment {
                 case 2:
                     MainActivity.ME.mPager.setCurrentItem(2);
                     return;
-/*                case 3:
-                    System.out.println("DBに挿入します");
-                    OrmaOperator.setUser(MainActivity.ME);
-                    return;*/
                 case 3:
+                    Intent shop_intent = new Intent(MainActivity.ME, PickUpShopActivity.class);
+                    startActivity(shop_intent);
+/*
                     MainActivity.ME.openQRreader();
+*/
                     return;
                 case 4:
                     OrmaMyData omd = OrmaOperator.getMyData(MainActivity.ME);
                     ServerOperator.imageUploadAndPush(MainActivity.ME, omd.user_icon, MyUser.ME.getIcon(),1);
-                    /*new Patisuro().start();*/
+
                     return;
                 case 5:
                     Intent setting_intent = new Intent(MainActivity.ME,SettingSelectActivity.class);
-                    startActivity(setting_intent);                    return;
+                    startActivity(setting_intent);
+                    return;
             }
         }
 
@@ -117,16 +113,7 @@ public class StartMenuTab extends Fragment {
             return R.drawable.koloheohana;
         }
 
-        /*    private Integer[] mHueIdArray = {
-                    R.drawable.hue_ff4040,
-                    R.drawable.hue_ffcf40,
-                    R.drawable.hue_9fff40,
-                    R.drawable.hue_40ff6f,
-                    R.drawable.hue_40ffff,
-                    R.drawable.hue_406fff,
-                    R.drawable.hue_9f40ff,
-                    R.drawable.hue_ff40cf,
-            };*/
+
         private class ViewHolder {
             public ImageView hueImageView;
             public TextView hueTextView;

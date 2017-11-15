@@ -2,6 +2,9 @@ package com.koloheohana.mymap.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -76,9 +79,30 @@ public class ShopDialog extends DialogFragment{
         category.setText(SD.getCategoryNames());
         ll.addView(category);
         TextView postal = new TextView(MapsActivity.MAP_ME);
-        postal.setText(SD.getPOSTAL());
+        postal.setText("〒"+SD.getPOSTAL());
+        postal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         ll.addView(postal);
-        TextView adrres = new TextView(MapsActivity.MAP_ME);
+        final TextView adrres = new TextView(MapsActivity.MAP_ME);
+
+        adrres.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String[] mimeType = new String[1];
+                mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
+                ClipData.Item clip = new ClipData.Item(adrres.getText().toString());
+                ClipData cd = new ClipData(new ClipDescription("text_data", mimeType), clip);
+                ClipboardManager clipboardManager = (ClipboardManager)MapsActivity.MAP_ME.getSystemService(Context.CLIPBOARD_SERVICE) ;
+                clipboardManager.setPrimaryClip(cd);
+                System.out.println("Push!!!");
+
+
+            }
+        });
         adrres.setText(SD.getADDRRES());
         ll.addView(adrres);
         if(!SD.getTEL().isEmpty()){

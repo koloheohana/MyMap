@@ -3,206 +3,223 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation= "vertical"
+    android:orientation="vertical"
     tools:context="com.koloheohana.mymap.MapsActivity">
+
     <LinearLayout
-        android:background="#222222"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#222222"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <EditText
-                android:layout_weight="3"
-                android:textColor="#FFFFFF"
+                android:id="@+id/search_map"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/wallet_bright_foreground_disabled_holo_light"
-                android:hint="店舗検索"
-                android:id="@+id/search_map"
-                android:layout_marginTop="7dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="7dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="15dp"/>
+                android:layout_marginTop="7dp"
+                android:layout_weight="3"
+                android:hint="店舗検索"
+                android:textColor="#FFFFFF"
+                android:textColorHint="@color/wallet_bright_foreground_disabled_holo_light"
+                android:textSize="15dp" />
+
             <ImageButton
-                android:layout_weight="1"
+                android:id="@+id/search_map_button"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
-                android:src="@mipmap/go"
-                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:background="#00000000"
 
-                android:id="@+id/search_map_button"
-                android:onClick="mapSearchButton"/>
+                android:onClick="mapSearchButton"
+                android:src="@mipmap/go" />
+
             <ImageButton
-                android:layout_weight="2"
-                android:textColor="#FFFFFF"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:onClick="myTomo"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
+                android:layout_weight="2"
                 android:background="#00000000"
+                android:onClick="myTomo"
 
                 android:src="@mipmap/map"
-                android:layout_gravity="center_vertical"
-              />
-            <ImageButton
-                android:layout_weight="1"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:onClick="memoButton"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:src="@mipmap/memo"
-                android:background="#00000000"
+                android:textColor="#FFFFFF" />
 
-                android:layout_gravity="center_vertical"
-            />
             <ImageButton
-                android:layout_weight="1"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:onClick="bookmarkButton"
+                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
+                android:layout_weight="1"
                 android:background="#00000000"
+                android:onClick="memoButton"
+
+                android:src="@mipmap/memo" />
+
+            <ImageButton
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:onClick="bookmarkButton"
                 android:src="@mipmap/tripleicon" />
 
-<!--            <Button
-                android:layout_weight="1"
-                android:textColor="#FFFFFF"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:text="☆"
-                android:onClick="bookmarkButton"
-                android:layout_marginTop="7dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginBottom="10dp"
-                android:textSize="15dp"/>-->
+            <!--            <Button
+                            android:layout_weight="1"
+                            android:textColor="#FFFFFF"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:text="☆"
+                            android:onClick="bookmarkButton"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginLeft="7dp"
+                            android:layout_marginRight="7dp"
+                            android:layout_marginBottom="10dp"
+                            android:textSize="15dp"/>-->
 
 
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-        <Spinner android:id="@+id/spinner"
-            android:layout_width="wrap_content"
+
+
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
-        <Spinner android:id="@+id/spinner2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
-<!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:orientation="horizontal">
 
-        <Button
-            android:background="#222222"
-            android:textColor="#FFFFFF"
-            android:layout_weight = "1"
-            android:layout_width="wrap_content"
-            android:layout_height ="wrap_content"
-            android:text="@string/friend"
-            android:onClick="myFriend"
-            android:id="@+id/myflend"
-            />
-        <Button
-            android:background="#222222"
-            android:textColor="#FFFFFF"
-            android:layout_weight = "1"
-            android:layout_width="wrap_content"
-            android:layout_height ="wrap_content"
-            android:text="@string/group"
-            android:onClick="myGroup"
-            android:id="@+id/mygroup"
-            />
+            <Button
+                android:background="#222222"
+                android:textColor="#FFFFFF"
+                android:layout_weight = "1"
+                android:layout_width="wrap_content"
+                android:layout_height ="wrap_content"
+                android:text="@string/friend"
+                android:onClick="myFriend"
+                android:id="@+id/myflend"
+                />
+            <Button
+                android:background="#222222"
+                android:textColor="#FFFFFF"
+                android:layout_weight = "1"
+                android:layout_width="wrap_content"
+                android:layout_height ="wrap_content"
+                android:text="@string/group"
+                android:onClick="myGroup"
+                android:id="@+id/mygroup"
+                />
 
-        <Button
-            android:background="#222222"
-            android:textColor="#FFFFFF"
-            android:layout_weight = "1"
-            android:layout_width="wrap_content"
-            android:layout_height ="wrap_content"
-            android:text="@string/map"
-            android:onClick="myMap"
-            android:id="@+id/mymap"
-            />
-        <Button
-            android:background="#222222"
-            android:textColor="#FFFFFF"
-            android:layout_weight = "1"
-            android:layout_width="wrap_content"
-            android:layout_height ="wrap_content"
-            android:text="@string/setting"
-            android:onClick="mySetting"
-            android:id="@+id/mysetting"
-            />
-    </LinearLayout>
--->
+            <Button
+                android:background="#222222"
+                android:textColor="#FFFFFF"
+                android:layout_weight = "1"
+                android:layout_width="wrap_content"
+                android:layout_height ="wrap_content"
+                android:text="@string/map"
+                android:onClick="myMap"
+                android:id="@+id/mymap"
+                />
+            <Button
+                android:background="#222222"
+                android:textColor="#FFFFFF"
+                android:layout_weight = "1"
+                android:layout_width="wrap_content"
+                android:layout_height ="wrap_content"
+                android:text="@string/setting"
+                android:onClick="mySetting"
+                android:id="@+id/mysetting"
+                />
+        </LinearLayout>
+    -->
 
-<!--    <android.support.v4.app.FragmentTabHost
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@android:id/tabhost"
+    <!--    <android.support.v4.app.FragmentTabHost
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@android:id/tabhost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                &lt;!&ndash; tab部分 &ndash;&gt;
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal" />
+                &lt;!&ndash; contents &ndash;&gt;
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_above="@android:id/tabs" />
+                &lt;!&ndash; contents &ndash;&gt;
+                <FrameLayout
+                    android:id="@+id/container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@android:id/tabs" />
+            </RelativeLayout>
+        </android.support.v4.app.FragmentTabHost>-->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <Button
+            android:layout_width="wrap_content"
+            android:background="@drawable/map_button"
+            android:layout_height="wrap_content"
+            android:id="@+id/category_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:onClick="categoryButton"
+            android:text="ジャンル"
+            />
+        <Button
+            android:background="@drawable/map_button"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/range_button"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="120dp"
+            android:onClick="rangeButton"
+            android:text = "範囲"
+            />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
+
             android:layout_height="match_parent"
-            android:orientation="vertical">
-            &lt;!&ndash; tab部分 &ndash;&gt;
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal" />
-            &lt;!&ndash; contents &ndash;&gt;
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_above="@android:id/tabs" />
-            &lt;!&ndash; contents &ndash;&gt;
-            <FrameLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@android:id/tabs" />
-        </RelativeLayout>
-    </android.support.v4.app.FragmentTabHost>-->
-
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        tools:context="com.koloheohana.mymap.MapsActivity"
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+            tools:context="com.koloheohana.mymap.MapsActivity"
 
 
-        />
-
+            />
+    </RelativeLayout>
 </LinearLayout>
 
 

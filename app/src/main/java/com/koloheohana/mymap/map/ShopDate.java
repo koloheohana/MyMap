@@ -185,7 +185,7 @@ public class ShopDate implements Serializable {
         StringBuffer sb = new StringBuffer();
         for (String _name : CATEGORY) {
             if (sb.length() != 0) {
-                sb.append("|");
+                sb.append(" ");
             }
             sb.append(_name);
         }

@@ -1,11 +1,14 @@
 package com.koloheohana.mymap.map;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.provider.Settings;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
@@ -32,10 +35,17 @@ public class ShopSearch {
     public static MapsActivity ME = MapsActivity.MAP_ME;
     public static int POSITION = 0;
     private static double KM[] = {3, 1, 0.5, 0.1};
+    public static String search_category = ShopDate.SHOP_CATEGORY.飲み屋.name();
+    public static int search_range = 0;
 
     public static void setAdapter() {
+
+/*
         setCategorySpinner();
+*/
+/*
         setSearchRange();
+*/
     }
 
     public static void searchShop(View view) {
@@ -61,7 +71,7 @@ public class ShopSearch {
         pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ShopDate S_D = ShopSearch.getShopDate(item.getTitle().toString(),item.getTitleCondensed().toString());
+                ShopDate S_D = ShopSearch.getShopDate(item.getTitle().toString(), item.getTitleCondensed().toString());
                 MapsActivity.MAP_ME.setMarker(S_D, true);
                 ShopDialog sd = new ShopDialog(S_D);
                 sd.show(MapsActivity.MAP_ME.getSupportFragmentManager(), S_D.getShopName());
@@ -72,7 +82,7 @@ public class ShopSearch {
     }
 
     public static ShopDate getShopDate(String name, String addrres) {
-        return new ShopDate(OrmaOperator.getOrmaShopData(MapsActivity.MAP_ME,name,addrres));
+        return new ShopDate(OrmaOperator.getOrmaShopData(MapsActivity.MAP_ME, name, addrres));
     }
 
     public static ShopDate getShopDate(int ID) {
@@ -81,14 +91,99 @@ public class ShopSearch {
 
     public static ArrayList<ShopDate> getSearchShopList(String str) {
         ArrayList<ShopDate> list = new ArrayList<ShopDate>();
-        OrmaShopData_Selector osd = OrmaOperator.getSelectorShopNameInclude(MapsActivity.MAP_ME,str,"OrmaShopData");
-        for(OrmaShopData sd:osd){
+        OrmaShopData_Selector osd = OrmaOperator.getSelectorShopNameInclude(MapsActivity.MAP_ME, str, "OrmaShopData");
+        for (OrmaShopData sd : osd) {
             list.add(new ShopDate(sd));
         }
         return list;
     }
 
-    private static void setSearchRange() {
+    public static boolean[] category_is_check;
+    public static Button CATEGORY_BUTTON= (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
+    public static Button RANGE_BUTTON =  (Button) MapsActivity.MAP_ME.findViewById(R.id.range_button);
+    public static void setFirst() {
+        category_is_check = new boolean[ShopDate.SHOP_CATEGORY.getCategoryNameList().size()];
+        for (int i = 0; i < ShopDate.SHOP_CATEGORY.getCategoryNameList().size(); i++) {
+            category_is_check[i] = false;
+        }
+        category_is_check[0] = true;
+        setButton();
+        RANGE_BUTTON.setText(ranges[checking]+"キロ");
+        CATEGORY_BUTTON.setText(getCategory().get(0));
+    }
+    private static void setButton(){
+        RANGE_BUTTON = (Button) MapsActivity.MAP_ME.findViewById(R.id.range_button);
+        CATEGORY_BUTTON = (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
+    }
+    public static ArrayList<String> getCategory() {
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < category_is_check.length; i++) {
+            if (category_is_check[i] == true) {
+                list.add(ShopDate.SHOP_CATEGORY.getCategoryNameList().get(i));
+            }
+        }
+        if(list.isEmpty()){
+            list.add(ShopDate.SHOP_CATEGORY.getCategoryNameList().get(0));
+        }
+        return list;
+    }
+
+    public static void setCategory() {
+        ArrayList<String> list = ShopDate.SHOP_CATEGORY.getCategoryNameList();
+        final String[] category_item = list.toArray(new String[list.size()]);
+        category_is_check = new boolean[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            category_is_check[i] = false;
+        }
+        new AlertDialog.Builder(MapsActivity.MAP_ME)
+                .setTitle("ジャンル選択")
+                .setMultiChoiceItems(category_item, category_is_check,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which,
+                                                boolean isChecked) {
+                                search_category = category_item[which];
+                                category_is_check[which] = isChecked;
+                            }
+                        })
+                .setNegativeButton("検索", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ME.setMarker(getCategorysList(getSearchRange(search_range), getCategory()), true);
+                        setButton();
+                        CATEGORY_BUTTON.setText(getCategory().get(0));
+                        dialog.cancel();
+                    }
+                })
+                .show();
+
+    }
+
+    public static String[] ranges = {"3", "1", "0.5", "0.1"};
+    public static int checking = 1;
+    public static int checked = 0;
+
+    public static void setRange() {
+        new AlertDialog.Builder(MapsActivity.MAP_ME)
+                .setTitle("範囲選択")
+                .setSingleChoiceItems(ranges, checking, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
+                        checking = item;
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        checked = checking;
+                        setButton();
+                        RANGE_BUTTON.setText(String.valueOf(ranges[checked])+"キロ");
+                        ME.setMarker(getCategorysList(getSearchRange(checking),getCategory()), true);
+
+                    }
+                })
+                .setNegativeButton("キャンセル", null)
+                .show();
+    }
+
+/*    private static void setSearchRange() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ME, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapter.add("範囲選択");
@@ -117,7 +212,8 @@ public class ShopSearch {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-    }
+    }*/
+
     public static ArrayList<ShopDate> getSearchRange(int position) {
         LatLng lan = MapsActivity.MAP_ME.getLatLngNow();
         Double[] RANGE = Calculation.rangeCal(lan, KM[position]);
@@ -127,14 +223,13 @@ public class ShopSearch {
         osd.coordinate_xLe(RANGE[1]);
         osd.coordinate_yGe(RANGE[2]);
         osd.coordinate_yLe(RANGE[3]);
-        System.out.println("範囲内のショップ数"+osd.count());
-        for(OrmaShopData sd:osd){
+        System.out.println("範囲内のショップ数" + osd.count());
+        for (OrmaShopData sd : osd) {
             System.out.println(sd.shop_name);
             shop_list.add(new ShopDate(sd));
         }
         return shop_list;
     }
-
 
 
     /*    private static void setBookmarkSpinner(){
@@ -170,13 +265,13 @@ public class ShopSearch {
     private static void setCategorySpinner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ME, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        System.out.println("test");
         // カテゴリアイテムを追加します
         adapter.add("ジャンル選択");
         for (String str : ShopDate.SHOP_CATEGORY.getCategoryNameList()) {
             adapter.add(str);
         }
         Spinner spinner = (Spinner) ME.findViewById(R.id.spinner);
+
         // アダプターを設定します
         spinner.setAdapter(adapter);
         // スピナーのアイテムが選択された時に呼び出されるコールバックリスナーを登録します
@@ -215,7 +310,30 @@ public class ShopSearch {
         return list;
     }
 
-    public static ArrayList<ShopDate> getsearchList(ArrayList<ShopDate> _list, String str) {
+    public static ArrayList<ShopDate> getCategorysList(ArrayList<ShopDate> _list, ArrayList<String> str_list) {
+        boolean check = false;
+        ArrayList<ShopDate> list = new ArrayList<ShopDate>();
+        for (int i = 0; i < _list.size(); i++) {
+            ShopDate _sd = _list.get(i);
+
+            for (String _cate_name : _sd.CATEGORY) {
+                if (str_list.contains(_cate_name)) {
+                    check = true;
+                } else {
+                    check = false;
+                }
+                if (!check) {
+                    break;
+                }
+            }
+            if (check) {
+                list.add(_sd);
+            }
+        }
+        return list;
+    }
+
+    public static ArrayList<ShopDate> getSearchList(ArrayList<ShopDate> _list, String str) {
         ArrayList<ShopDate> list = new ArrayList<ShopDate>();
         for (int i = 0; i < _list.size(); i++) {
             ShopDate _sd = _list.get(i);

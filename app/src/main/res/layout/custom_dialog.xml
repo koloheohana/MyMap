@@ -53,8 +53,7 @@
             android:layout_marginTop="6dp"
             android:background="@drawable/bt_dialog_positive"
             android:text="トーク"
-            android:textColor="@android:color/white"
-            />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

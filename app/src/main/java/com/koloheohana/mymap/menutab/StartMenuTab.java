@@ -101,8 +101,6 @@ public class StartMenuTab extends Fragment {
                     return R.drawable.couplemanwoman48;
                 case 2:
                     return R.drawable.thinking48;
-/*                case 3:
-                    return R.drawable.plus48;*/
                 case 3:
                     return R.drawable.cafe48;
                 case 4:

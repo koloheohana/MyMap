@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.AsyncTask;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.koloheohana.mymap.LoadingActivity;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.data_base.OrmaOperator;
@@ -113,7 +114,7 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        OrmaOperator.createShopData(MainActivity.ME,list);
+        OrmaOperator.createShopData(LoadingActivity.ME,list);
     }
     public static String split_double(String s){
         String[] str = s.split("\"");
@@ -144,7 +145,7 @@ public class CsvReader extends AsyncTask<Void, Void, Void> {
     }
     @Override
     protected  void onPreExecute(){
-        parse(MainActivity.ME);
+        parse(LoadingActivity.ME);
         super.onPreExecute();
     }
 

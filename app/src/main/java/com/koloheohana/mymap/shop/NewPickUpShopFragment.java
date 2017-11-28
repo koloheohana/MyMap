@@ -19,6 +19,7 @@ import com.koloheohana.mymap.LoginActivity;
 import com.koloheohana.mymap.PickUpShopActivity;
 import com.koloheohana.mymap.R;
 import com.koloheohana.mymap.SettingSelectActivity;
+import com.koloheohana.mymap.adapter.PicturePagerAdapter;
 import com.koloheohana.mymap.dialog.SpShopDialog;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.setting.AddrresChangeDialog;
@@ -62,7 +63,7 @@ public class NewPickUpShopFragment extends Fragment {
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new SpShopDialog(PickUpShop.new_list.get(position)).show(PickUpShopActivity.ME.getSupportFragmentManager(),"PICK_UP");
+                new SpShopDialog(PickUpShop.new_list.get(position), PickUpShopActivity.ME).show(PickUpShopActivity.ME.getSupportFragmentManager(),"PICK_UP");
             }
         });
 

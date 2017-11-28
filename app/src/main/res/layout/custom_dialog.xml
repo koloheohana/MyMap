@@ -66,7 +66,7 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/bt_dialog_close"
         android:text="×"
-        android:textColor="#9acd32"
+        android:textColor="#915007"
         />
 
 </RelativeLayout>

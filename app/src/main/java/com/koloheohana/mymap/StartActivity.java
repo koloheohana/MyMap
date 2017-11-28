@@ -20,7 +20,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle save){
         super.onCreate(save);
         Scene.set(this);
-
+        setContentView(R.layout.loading_activity);
         OrmaOperator.setFirstConfig(this);
         ServerOperator.setServer(this);
         if(ServerOperator.setPush(this)){
@@ -36,7 +36,7 @@ public class StartActivity extends AppCompatActivity {
         //サーバーデータを作成
     }
     public static void mainStartActivity(Context context){
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, LoadingActivity.class);
         context.startActivity(intent);
 /*
         Intent intent = new Intent(context,MainActivity.class);

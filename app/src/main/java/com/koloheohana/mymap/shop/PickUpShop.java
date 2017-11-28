@@ -30,8 +30,8 @@ public class PickUpShop {
         for(String shop:string_list){
             String[] str = shop.split(",");
             if(str[0].matches("新規")){
-                ShopDate sd = new ShopDate(50000,str[3],str[4],str[2],str[3],str[5],Double.valueOf(str[6]),Double.valueOf(str[7]));
-                sd.setPlusData(Integer.valueOf(str[9]),str[11],str[8],str[12],str[13],str[10]);
+                ShopDate sd = new ShopDate(50000,str[3],str[4],str[2],str[14],str[5],Double.valueOf(str[6]),Double.valueOf(str[7]));
+                sd.setPlusData(Integer.valueOf(str[9]),str[11],str[8],str[13],str[12],str[10]);
                 new_list.add(sd);
                 addList(sd);
             }else if (str[0].matches("更新")){

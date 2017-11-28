@@ -62,7 +62,7 @@ public class PickUpShopFragment extends Fragment {
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new SpShopDialog(PickUpShop.shop_list.get(position)).show(PickUpShopActivity.ME.getSupportFragmentManager(),"PICK_UP");
+                new SpShopDialog(PickUpShop.shop_list.get(position),PickUpShopActivity.ME).show(PickUpShopActivity.ME.getSupportFragmentManager(),"PICK_UP");
             }
         });
 

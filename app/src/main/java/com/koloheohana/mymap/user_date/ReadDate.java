@@ -2,6 +2,7 @@ package com.koloheohana.mymap.user_date;
 
 import android.content.Context;
 
+import com.koloheohana.mymap.LoadingActivity;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.map.CsvReader;
@@ -20,22 +21,20 @@ public class ReadDate {
     public static void read(final Context context) {
         PickUpShop.fileLoad(context);
         if (clear) {
-            MainActivity.ME.handler_2.post(new Runnable() {
+            LoadingActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.ME.progressDialog.setMessage("初期化中");
+                    LoadingActivity.ME.progressDialog.setMessage("初期化中");
                 }
             });
             ReadFileSns.fileClear();
-/*
             ReadFileSns.testCreate();
-*/
         }
         if (user) {
-            MainActivity.ME.handler_2.post(new Runnable() {
+            LoadingActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.ME.progressDialog.setMessage("データベース初期化中");
+                    LoadingActivity.ME.progressDialog.setMessage("データベース初期化中");
                 }
             });
             OrmaOperator.remove(context, OrmaOperator.TORK_NUMBER);
@@ -48,10 +47,10 @@ public class ReadDate {
             //クリエイト
         }
         if (map) {
-            MainActivity.ME.handler_2.post(new Runnable() {
+            LoadingActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.ME.progressDialog.setMessage("地図データ作成中");
+                    LoadingActivity.ME.progressDialog.setMessage("地図データ作成中");
                 }
             });
 
@@ -59,10 +58,10 @@ public class ReadDate {
             read.execute();
         }
         if (user) {
-            MainActivity.ME.handler_2.post(new Runnable() {
+            LoadingActivity.ME.handler_2.post(new Runnable() {
                 @Override
                 public void run() {
-                    MainActivity.ME.progressDialog.setMessage("ユーザーデータベース作成中");
+                    LoadingActivity.ME.progressDialog.setMessage("ユーザーデータベース作成中");
                 }
             });
 /*
@@ -82,10 +81,10 @@ public class ReadDate {
 
         }
 */
-        MainActivity.ME.handler_2.post(new Runnable() {
+        LoadingActivity.ME.handler_2.post(new Runnable() {
             @Override
             public void run() {
-                MainActivity.ME.progressDialog.setMessage("アプリ準備中");
+                LoadingActivity.ME.progressDialog.setMessage("アプリ準備中");
             }
         });
 

@@ -27,12 +27,21 @@
             android:textSize="18sp" />
 
         <!-- メッセージ -->
+        <android.support.v4.view.ViewPager
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/view_pager"
+            android:layout_width="190dp"
+            android:layout_height="160dp"
+            android:layout_margin="16dp"
+            />
+<!--
         <ImageView
             android:id="@+id/shop_image_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:src="@mipmap/ic_launcher" />
+-->
 
         <LinearLayout
             android:id="@+id/shop_date_text"
@@ -80,6 +89,6 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/bt_dialog_close"
         android:text="×"
-        android:textColor="#9acd32" />
+        android:textColor="#915007" />
 
 </RelativeLayout>

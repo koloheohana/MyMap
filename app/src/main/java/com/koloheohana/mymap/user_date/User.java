@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import com.koloheohana.mymap.LoadingActivity;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.data_base.OrmaOperator;
 import com.koloheohana.mymap.data_base.OrmaTork;
@@ -36,14 +37,14 @@ public class User {
             System.out.println("アイコン:"+_icon);
         }
         if(_icon.startsWith("file")) {
-            setIcon(BitmapReader.getBitmap(MainActivity.ME,SaveDateController.getUri(_icon),false));
+            setIcon(BitmapReader.getBitmap(LoadingActivity.ME,SaveDateController.getUri(_icon),false));
         }else {
-            setIcon(BitmapFactory.decodeResource(MainActivity.ME.getResources(), Integer.valueOf(_icon)));
+            setIcon(BitmapFactory.decodeResource(LoadingActivity.ME.getResources(), Integer.valueOf(_icon)));
         }
         setComment("コメント");
         setName(name);
         setLoc(mutter);
-        readTorkFile(MainActivity.ME);
+        readTorkFile(LoadingActivity.ME);
     }
     public User(Context context,OrmaUser ormaUser){
         id = ormaUser.id;
@@ -61,7 +62,7 @@ public class User {
         comment = _comment;
     }
     public void readTorkFile(Context context){
-        for(OrmaTork ot: OrmaOperator.getOrmaTorkSelector(MainActivity.ME).user_idEq(id).orderByIdAsc()){
+        for(OrmaTork ot: OrmaOperator.getOrmaTorkSelector(LoadingActivity.ME).user_idEq(id).orderByIdAsc()){
             TORK.add(new OneTork(context,ot));
         }
     }

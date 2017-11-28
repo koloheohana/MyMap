@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
 
+import com.koloheohana.mymap.LoadingActivity;
 import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.map.ShopDate;
@@ -49,7 +50,7 @@ public class SaveDateController {
     }
     public static void newFile(String file_name,String str){
         try {
-            OutputStream out = MainActivity.ME.openFileOutput(file_name,MainActivity.ME.MODE_PRIVATE);
+            OutputStream out = LoadingActivity.ME.openFileOutput(file_name,LoadingActivity.ME.MODE_PRIVATE);
             PrintWriter writer = new PrintWriter(new OutputStreamWriter(out,"UTF-8"));
             writer.write(str);
             writer.flush();
@@ -78,7 +79,7 @@ public class SaveDateController {
     public static ArrayList<String> read(String file_name){
         ArrayList<String> list = new ArrayList<String>();
         try{
-            InputStream in = MainActivity.ME.openFileInput(file_name);
+            InputStream in =LoadingActivity.ME.openFileInput(file_name);
             BufferedReader reader = new BufferedReader(new InputStreamReader(in,"UTF-8"));
             String s;
             while((s = reader.readLine()) != null){

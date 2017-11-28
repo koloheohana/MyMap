@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -72,7 +73,24 @@ public class ShopDialog extends DialogFragment{
                 new ImageClickDialog(MapsActivity.MAP_ME).show();
             }
         });
-
+        //ブックマーク画像設置
+        final ImageView image = (ImageView)dialog.findViewById(R.id.bookmark_star);
+        if(SD.BOOKMARK){
+            image.setImageResource(R.mipmap.star_yerrow);
+        }else {
+            image.setImageResource(R.mipmap.star_white2);
+        }
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SD.BOOKMARK = !SD.BOOKMARK;
+                if(SD.BOOKMARK){
+                    image.setImageResource(R.mipmap.star_yerrow);
+                }else {
+                    image.setImageResource(R.mipmap.star_white2);
+                }
+            }
+        });
         //テキストの設置
         LinearLayout ll = (LinearLayout)dialog.findViewById(R.id.shop_date_text);
         TextView category = new TextView(MapsActivity.MAP_ME);

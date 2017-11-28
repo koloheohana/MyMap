@@ -11,6 +11,6 @@ import android.content.Intent;
 public class MyBroadCastReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        System.out.println("Log+test");
     }
 }

@@ -42,7 +42,7 @@ import java.io.PrintWriter;
 
 
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity /*implements Runnable*/{
     public ViewPager mPager;
     public static MainActivity ME = new MainActivity();
     public MainActivity me;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         setContentView(R.layout.activity_main);
         Scene.set(ME);
         ME = this;
-        progressDialog = new ProgressDialog(ME);
+/*        progressDialog = new ProgressDialog(ME);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("各種データ読み込み中...");
         progressDialog.show();
@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements Runnable{
             //データ読み込みスレッド開始
             thread = new Thread(this);
             thread.start();
-        }
+        }*/
+        setter();
 
     }
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
     public void println(String str){
         System.out.println(str);
     }
-    private Handler handler = new Handler(){
+/*    private Handler handler = new Handler(){
         public void handleMessage(Message message){
             MainActivity.ME.setter();
         }
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         ReadDate.read(ME);
         this.handler.sendEmptyMessage(0);
         progressDialog.dismiss();
-    }
+    }*/
     public void openQRreader(){
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.initiateScan();

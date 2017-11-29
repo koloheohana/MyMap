@@ -1,7 +1,9 @@
 package com.koloheohana.mymap.dialog;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -13,7 +15,9 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +49,11 @@ import java.util.List;
  */
 public class ShopDialog extends DialogFragment{
     private final ShopDate SD;
+    private final FragmentActivity CONTEXT;
     private final boolean TEST_SWITCH = false;
     private int ENABLE_FALSE_COLOR = 0xaa808080;
-    public ShopDialog(ShopDate sd){
+    public ShopDialog(ShopDate sd,FragmentActivity context){
+        CONTEXT = context;
         SD = sd;
     }
     @Override
@@ -70,7 +76,7 @@ public class ShopDialog extends DialogFragment{
         shopImageView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                new ImageClickDialog(MapsActivity.MAP_ME).show();
+                new ImageClickDialog(CONTEXT).show();
             }
         });
         //ブックマーク画像設置
@@ -93,10 +99,10 @@ public class ShopDialog extends DialogFragment{
         });
         //テキストの設置
         LinearLayout ll = (LinearLayout)dialog.findViewById(R.id.shop_date_text);
-        TextView category = new TextView(MapsActivity.MAP_ME);
+        TextView category = new TextView(CONTEXT);
         category.setText(SD.getCategoryNames());
         ll.addView(category);
-        TextView postal = new TextView(MapsActivity.MAP_ME);
+        TextView postal = new TextView(CONTEXT);
         postal.setText("〒"+SD.getPOSTAL());
         postal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +111,7 @@ public class ShopDialog extends DialogFragment{
             }
         });
         ll.addView(postal);
-        final TextView adrres = new TextView(MapsActivity.MAP_ME);
+        final TextView adrres = new TextView(CONTEXT);
 
         adrres.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +120,7 @@ public class ShopDialog extends DialogFragment{
                 mimeType[0] = ClipDescription.MIMETYPE_TEXT_URILIST;
                 ClipData.Item clip = new ClipData.Item(adrres.getText().toString());
                 ClipData cd = new ClipData(new ClipDescription("text_data", mimeType), clip);
-                ClipboardManager clipboardManager = (ClipboardManager)MapsActivity.MAP_ME.getSystemService(Context.CLIPBOARD_SERVICE) ;
+                ClipboardManager clipboardManager = (ClipboardManager)CONTEXT.getSystemService(Context.CLIPBOARD_SERVICE) ;
                 clipboardManager.setPrimaryClip(cd);
                 System.out.println("Push!!!");
 
@@ -124,7 +130,7 @@ public class ShopDialog extends DialogFragment{
         adrres.setText(SD.getADDRRES());
         ll.addView(adrres);
         if(!SD.getTEL().isEmpty()){
-            TextView tel = new TextView(MapsActivity.MAP_ME);
+            TextView tel = new TextView(CONTEXT);
             tel.setText(SD.getTEL());
             ll.addView(tel);
         }
@@ -142,11 +148,11 @@ public class ShopDialog extends DialogFragment{
             public void onClick(View v) {
                 if(MyBookmark.getList().contains(SD)){
                     MyBookmark.release(SD);
-                    Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入りを解除しました",Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(CONTEXT,"お気に入りを解除しました",Toast.LENGTH_SHORT);
                     toast.show();
                 }else {
-                    MyBookmark.set(MapsActivity.MAP_ME,SD);
-                    Toast toast = Toast.makeText(MapsActivity.MAP_ME,"お気に入り登録しました",Toast.LENGTH_SHORT);
+                    MyBookmark.set(CONTEXT,SD);
+                    Toast toast = Toast.makeText(CONTEXT,"お気に入り登録しました",Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
@@ -188,7 +194,7 @@ public class ShopDialog extends DialogFragment{
             @Override
             public void onClick(View v) {
                 ShareDialog shareDialog = new ShareDialog(SD);
-                shareDialog.show(MapsActivity.MAP_ME.getSupportFragmentManager(),"共有");
+                shareDialog.show(CONTEXT.getSupportFragmentManager(),"共有");
 
 
             }
@@ -219,7 +225,7 @@ public class ShopDialog extends DialogFragment{
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     switch (position){
                         case 0:
-                            Intent intent = new Intent(MapsActivity.MAP_ME,MapStreetView.class);
+                            Intent intent = new Intent(CONTEXT,MapStreetView.class);
                             intent.putExtra("latitude",SD.getLATLNG().latitude);
                             intent.putExtra("longitude",SD.getLATLNG().longitude);
                             startActivity(intent);

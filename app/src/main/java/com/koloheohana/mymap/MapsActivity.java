@@ -363,7 +363,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(S_D ==null){
                     return;
                 }
-                ShopDialog sd = new ShopDialog(S_D);
+                ShopDialog sd = new ShopDialog(S_D,MAP_ME);
                 sd.show(getSupportFragmentManager(),S_D.getShopName());
             }
         });

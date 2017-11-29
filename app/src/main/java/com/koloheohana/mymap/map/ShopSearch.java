@@ -3,6 +3,7 @@ package com.koloheohana.mymap.map;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.provider.Settings;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,7 +74,7 @@ public class ShopSearch {
             public boolean onMenuItemClick(MenuItem item) {
                 ShopDate S_D = ShopSearch.getShopDate(item.getTitle().toString(), item.getTitleCondensed().toString());
                 MapsActivity.MAP_ME.setMarker(S_D, true);
-                ShopDialog sd = new ShopDialog(S_D);
+                ShopDialog sd = new ShopDialog(S_D,MapsActivity.MAP_ME);
                 sd.show(MapsActivity.MAP_ME.getSupportFragmentManager(), S_D.getShopName());
                 return false;
             }

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.android.gms.vision.text.Line;
 import com.google.android.gms.vision.text.Text;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.adapter.PagePagerAdapter;
 import com.koloheohana.mymap.adapter.PicturePagerAdapter;
 import com.koloheohana.mymap.map.ShopDate;
 import com.koloheohana.mymap.qrCode.QrCord;
@@ -72,8 +73,30 @@ public class SpShopDialog extends DialogFragment {
     }
 
     private void setShopData(Dialog dialog) {
+        ViewPager pager2 = (ViewPager)dialog.findViewById(R.id.view_pager2);
+        PagePagerAdapter adapter2 = new PagePagerAdapter(THIS);
+        LinearLayout layout = new LinearLayout(THIS);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(10,10,0,0);
+        layout.setBackgroundResource(R.drawable.bg_dialog);
+        TextView textView = new TextView(THIS);
+        textView.setText("test1");
+        layout.addView(textView);
+        LinearLayout _layout2 = new LinearLayout(THIS);
+        _layout2.setOrientation(LinearLayout.VERTICAL);
+        _layout2.setBackgroundResource(R.drawable.bg_dialog);
 
-        LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.construct);
+        TextView textView1 = new TextView(THIS);
+        textView1.setText("test2");
+        _layout2.addView(textView1);
+        adapter2.add(layout);
+        adapter2.add(_layout2);
+        pager2.setPageMargin(getResources().getDisplayMetrics().widthPixels / 10);
+
+        pager2.setAdapter(adapter2);
+
+
+
         PicturePagerAdapter adapter = new PicturePagerAdapter(THIS);
         adapter.add(R.mipmap.ic_launcher);
         adapter.add(R.mipmap.ic_launcher);
@@ -127,9 +150,9 @@ public class SpShopDialog extends DialogFragment {
             });
 
 
-/*
+
             layout.addView(ll);
-*/
+
             layout.addView(_text3);
             layout.addView(_text4);
         }

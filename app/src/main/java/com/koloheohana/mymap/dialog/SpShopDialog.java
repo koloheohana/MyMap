@@ -77,7 +77,7 @@ public class SpShopDialog extends DialogFragment {
         PagePagerAdapter adapter2 = new PagePagerAdapter(THIS);
         LinearLayout layout = new LinearLayout(THIS);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10,10,0,0);
+        layout.setPadding(15,10,0,0);
         layout.setBackgroundResource(R.drawable.bg_dialog);
         TextView textView = new TextView(THIS);
         textView.setText("test1");

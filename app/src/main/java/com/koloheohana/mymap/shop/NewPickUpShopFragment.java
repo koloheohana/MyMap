@@ -2,6 +2,7 @@ package com.koloheohana.mymap.shop;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,8 @@ import com.koloheohana.mymap.setting.NameChangeDialog;
 import com.koloheohana.mymap.setting.PictureChangeDialog;
 import com.koloheohana.mymap.setting.ProfSettingFragment;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /**
  * Created by User on 2017/11/14.
  */
@@ -40,12 +43,13 @@ public class NewPickUpShopFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view;
         view = inflater.inflate(R.layout.fragment_page_list, container, false);
-        ListView lv= create(view);
+        ListView lv = create(view);
         /**
          * コンテキストメニュー作成
          */
@@ -55,15 +59,18 @@ public class NewPickUpShopFragment extends Fragment {
 
     public static ListView create(View view) {
         ListView myList = (ListView) view.findViewById(R.id.myListView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(PickUpShopActivity.ME,R.layout.list);
-        for(ShopDate _sd: PickUpShop.new_list){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(PickUpShopActivity.ME, R.layout.list);
+        for (ShopDate _sd : PickUpShop.new_list) {
             adapter.add(_sd.getShopName());
         }
 
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new SpShopDialog(PickUpShop.new_list.get(position), PickUpShopActivity.ME).show(PickUpShopActivity.ME.getSupportFragmentManager(),"PICK_UP");
+                final SpShopDialog dialog =
+                        new SpShopDialog(PickUpShop.new_list.get(position), PickUpShopActivity.ME);
+
+                dialog.show(PickUpShopActivity.ME.getSupportFragmentManager(), "PICK_UP");
             }
         });
 

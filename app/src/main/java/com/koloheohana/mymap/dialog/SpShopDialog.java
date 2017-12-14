@@ -82,7 +82,7 @@ public class SpShopDialog extends DialogFragment {
         TextView textView = new TextView(THIS);
         textView.setText("test1");
         layout.addView(textView);
-        LinearLayout _layout2 = new LinearLayout(THIS);
+        LinearLayout _layout2 = new LinearLayout(THIS);;
         _layout2.setOrientation(LinearLayout.VERTICAL);
         _layout2.setBackgroundResource(R.drawable.bg_dialog);
 
@@ -92,7 +92,6 @@ public class SpShopDialog extends DialogFragment {
         adapter2.add(layout);
         adapter2.add(_layout2);
         pager2.setPageMargin(getResources().getDisplayMetrics().widthPixels / 10);
-
         pager2.setAdapter(adapter2);
 
 
@@ -149,10 +148,7 @@ public class SpShopDialog extends DialogFragment {
                 }
             });
 
-
-
             layout.addView(ll);
-
             layout.addView(_text3);
             layout.addView(_text4);
         }
@@ -166,5 +162,11 @@ public class SpShopDialog extends DialogFragment {
         TextView _text3 = new TextView(dialog.getContext());
         _text3.setText("TEL:" + SD.getTEL());
         layout.addView(_text3);
+
+        //2ページ目
+
+
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimetion;
     }
 }

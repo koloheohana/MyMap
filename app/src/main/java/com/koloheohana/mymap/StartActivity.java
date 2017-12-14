@@ -11,16 +11,24 @@ import com.koloheohana.mymap.server.ServerOperator;
 import com.koloheohana.mymap.util.Scene;
 import com.nifty.cloud.mb.core.NCMB;
 
+import junit.framework.Test;
+
 /**
  * Created by User on 2017/07/20.
  */
 
 public class StartActivity extends AppCompatActivity {
+    private boolean test_page =false;
     @Override
     protected void onCreate(Bundle save){
         super.onCreate(save);
         Scene.set(this);
         setContentView(R.layout.loading_activity);
+        if(test_page){
+            Intent intent = new Intent(this, TestActivity.class);
+            this.startActivity(intent);
+            return;
+        }
         OrmaOperator.setFirstConfig(this);
         ServerOperator.setServer(this);
         if(ServerOperator.setPush(this)){

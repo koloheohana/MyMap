@@ -24,8 +24,6 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
-
-
     }
     public String getTitle(int i){
         return tabTitles[i];

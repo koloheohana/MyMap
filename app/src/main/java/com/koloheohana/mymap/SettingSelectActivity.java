@@ -6,15 +6,23 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.florent37.awesomebar.ActionItem;
+import com.github.florent37.awesomebar.AwesomeBar;
 import com.koloheohana.mymap.adapter.SettingFragAdapter;
 import com.koloheohana.mymap.date.SaveDateController;
 import com.koloheohana.mymap.me.MyUser;
@@ -22,6 +30,7 @@ import com.koloheohana.mymap.util.BitmapReader;
 import com.koloheohana.mymap.util.Clocks;
 import com.koloheohana.mymap.util.Scene;
 import com.koloheohana.mymap.util.Window;
+import com.rom4ek.arcnavigationview.ArcNavigationView;
 
 /**
  * Created by User on 2017/07/27.
@@ -72,6 +81,56 @@ public class SettingSelectActivity extends AppCompatActivity{
         // 上部にタブをセットする
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mPager);
+
+        final DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+/*        bar.addAction(R.drawable.awsb_ic_edit_animated,"test");
+        bar.setActionItemClickListener(new AwesomeBar.ActionItemClickListener() {
+            @Override
+            public void onActionItemClicked(int position, ActionItem actionItem) {
+                Toast.makeText(getBaseContext(),actionItem.getText()+"clicks",Toast.LENGTH_LONG).show();
+            }
+        });*/
+        AwesomeBar bar = (AwesomeBar)findViewById(R.id.bar);
+        bar.setOnMenuClickedListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(Gravity.START);
+            }
+        });
+
+
+        final ArcNavigationView navigationView = (ArcNavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent intent;
+                switch (item.getItemId()){
+                    case R.id.menu_home:
+                        intent = new Intent(SettingSelectActivity.ME,MainActivity.class);
+                        MainActivity.ME.ME.startActivity(intent);                        return true;
+                    case R.id.new_post:
+                        intent = new Intent(SettingSelectActivity.ME,PickUpShopActivity.class);
+                        MainActivity.ME.startActivity(intent);
+                        return true;
+                    case R.id.menu_bookmark:
+                        intent = new Intent(SettingSelectActivity.ME,PickUpShopActivity.class);
+                        MainActivity.ME.startActivity(intent);
+                        return true;
+                    case R.id.menu_search
+                            :return  true;
+                    case R.id.app_news:
+                        return true;
+                    case R.id.this_app:
+                        return true;
+                    case R.id.menu_setting:
+                        intent = new Intent(PickUpShopActivity.ME,SettingSelectActivity.class);
+                        PickUpShopActivity.ME.startActivity(intent);
+                        return true;
+                }
+                return false;
+            }
+        });
+
     }
     private void setListView(){
         ListView listView = (ListView)findViewById(R.id.settingListView);

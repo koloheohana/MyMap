@@ -18,7 +18,7 @@ import junit.framework.Test;
  */
 
 public class StartActivity extends AppCompatActivity {
-    private boolean test_page =false;
+    private boolean test_page =true;
     @Override
     protected void onCreate(Bundle save){
         super.onCreate(save);

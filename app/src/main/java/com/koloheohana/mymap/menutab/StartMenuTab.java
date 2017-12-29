@@ -17,6 +17,7 @@ import com.koloheohana.mymap.MainActivity;
 import com.koloheohana.mymap.MapsActivity;
 import com.koloheohana.mymap.PickUpShopActivity;
 import com.koloheohana.mymap.R;
+import com.koloheohana.mymap.SearchActivity;
 import com.koloheohana.mymap.SettingSelectActivity;
 import com.koloheohana.mymap.data_base.OrmaMyData;
 import com.koloheohana.mymap.data_base.OrmaOperator;
@@ -57,7 +58,7 @@ public class StartMenuTab extends Fragment {
         private Context mContext;
         private LayoutInflater mLayoutInflater;
         private String[] mHueArray = {
-                "地図", "グループ", "トーク",
+                "地図", "店舗検索","グループ", "トーク",
                 "店情報", "お気に入り", "設定"
         };
 
@@ -69,24 +70,27 @@ public class StartMenuTab extends Fragment {
                     startActivity(intent);
                     return;
                 case 1:
+                    Intent search_intent = new Intent(MainActivity.ME, SearchActivity.class);
+                    startActivity(search_intent);                    return;
+                case 2:
                     MainActivity.ME.mPager.setCurrentItem(1);
                     return;
-                case 2:
+                case 3:
                     MainActivity.ME.mPager.setCurrentItem(2);
                     return;
-                case 3:
+                case 4:
                     Intent shop_intent = new Intent(MainActivity.ME, PickUpShopActivity.class);
                     startActivity(shop_intent);
 /*
                     MainActivity.ME.openQRreader();
 */
                     return;
-                case 4:
+                case 5:
                     OrmaMyData omd = OrmaOperator.getMyData(MainActivity.ME);
                     ServerOperator.imageUploadAndPush(MainActivity.ME, omd.user_icon, MyUser.ME.getIcon(),1);
 
                     return;
-                case 5:
+                case 6:
                     Intent setting_intent = new Intent(MainActivity.ME,SettingSelectActivity.class);
                     startActivity(setting_intent);
                     return;
@@ -98,14 +102,16 @@ public class StartMenuTab extends Fragment {
                 case 0:
                     return R.drawable.worldmap48;
                 case 1:
-                    return R.drawable.couplemanwoman48;
+                    return R.mipmap.search;
                 case 2:
-                    return R.drawable.thinking48;
+                    return R.drawable.couplemanwoman48;
                 case 3:
-                    return R.drawable.cafe48;
+                    return R.drawable.thinking48;
                 case 4:
-                    return R.drawable.likeoutline48;
+                    return R.drawable.cafe48;
                 case 5:
+                    return R.drawable.likeoutline48;
+                case 6:
                     return R.drawable.settings348;
             }
             return R.drawable.koloheohana;

@@ -1,6 +1,7 @@
 package com.koloheohana.mymap.data_base;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.TransactionTooLargeException;
 import android.support.annotation.NonNull;
@@ -363,8 +364,7 @@ public class OrmaOperator {
 
     public static OrmaShopData_Selector getSelectorShopNameInclude(Context context, String name, String table) {
         OrmaDatabase orma = getOrmaDataBase(context, table);
-        OrmaShopData_Selector osd = orma.selectFromOrmaShopData().where("shop_name LIKE ?", "%" + name).orderByShop_nameDesc();
-
+        @SuppressLint("RestrictedApi") OrmaShopData_Selector osd = orma.selectFromOrmaShopData().where("shop_name LIKE ?", "%" + name).orderByShop_nameDesc();
         return osd;
     }
 

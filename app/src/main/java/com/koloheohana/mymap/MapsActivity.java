@@ -426,6 +426,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
     public void mapSearchButton(View view){
-        ShopSearch.searchShop(view);
+        ShopSearch.searchShop(this,view);
     }
 }

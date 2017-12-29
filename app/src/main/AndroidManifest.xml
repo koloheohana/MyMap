@@ -94,6 +94,7 @@
         <activity android:name=".PickUpShopActivity"/>
         <activity android:name=".TrimActivity"/>
         <activity android:name=".SettingActivity"/>
+        <activity android:name=".SearchActivity"/>
 
 
         <activity

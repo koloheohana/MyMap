@@ -1,6 +1,7 @@
 package com.koloheohana.mymap.map;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -48,16 +49,24 @@ public class ShopSearch {
         setSearchRange();
 */
     }
-
-    public static void searchShop(View view) {
+    public static ArrayList<ShopDate> search(String s,ArrayList<ShopDate> list){
+        ArrayList<ShopDate> _list = new ArrayList<ShopDate>();
+        for(ShopDate sd : list){
+            if(sd.getShopName().indexOf(s) != -1){
+                _list.add(sd);
+            }
+        }
+        return _list;
+    }
+    public static void searchShop(Context context,View view) {
         String str;
         EditText et = (EditText) ME.findViewById(R.id.search_map);
         str = et.getText().toString();
-        searchShop(str, view);
+        searchShop(context,str, view);
     }
 
-    private static void searchShop(String shop_name, View view) {
-        ArrayList<ShopDate> list = ShopSearch.getSearchShopList(shop_name);
+    private static void searchShop(Context context,String shop_name, View view) {
+        ArrayList<ShopDate> list = ShopSearch.getSearchShopList(context,shop_name);
         if (list.isEmpty()) {
             return;
         }
@@ -90,9 +99,10 @@ public class ShopSearch {
         return getShopDate(1);
     }
 
-    public static ArrayList<ShopDate> getSearchShopList(String str) {
+    public static ArrayList<ShopDate> getSearchShopList(Context content, String str) {
         ArrayList<ShopDate> list = new ArrayList<ShopDate>();
-        OrmaShopData_Selector osd = OrmaOperator.getSelectorShopNameInclude(MapsActivity.MAP_ME, str, "OrmaShopData");
+        OrmaShopData_Selector osd = OrmaOperator.getSelectorShopNameInclude(content, str, "OrmaShopData");
+        int i = 0;
         for (OrmaShopData sd : osd) {
             list.add(new ShopDate(sd));
         }
@@ -100,8 +110,8 @@ public class ShopSearch {
     }
 
     public static boolean[] category_is_check;
-    public static Button CATEGORY_BUTTON= (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
-    public static Button RANGE_BUTTON =  (Button) MapsActivity.MAP_ME.findViewById(R.id.range_button);
+    public static Button CATEGORY_BUTTON;
+    public static Button RANGE_BUTTON;
     public static void setFirst() {
         category_is_check = new boolean[ShopDate.SHOP_CATEGORY.getCategoryNameList().size()];
         for (int i = 0; i < ShopDate.SHOP_CATEGORY.getCategoryNameList().size(); i++) {
@@ -109,10 +119,13 @@ public class ShopSearch {
         }
         category_is_check[0] = true;
         setButton();
+        Button CATEGORY_BUTTON= (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
+
         RANGE_BUTTON.setText(ranges[checking]+"キロ");
         CATEGORY_BUTTON.setText(getCategory().get(0));
     }
     private static void setButton(){
+        Button CATEGORY_BUTTON= (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
         RANGE_BUTTON = (Button) MapsActivity.MAP_ME.findViewById(R.id.range_button);
         CATEGORY_BUTTON = (Button) MapsActivity.MAP_ME.findViewById(R.id.category_button);
     }

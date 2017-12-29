@@ -139,8 +139,10 @@ public class MainActivity extends AppCompatActivity /*implements Runnable*/{
                         intent = new Intent(MainActivity.ME,PickUpShopActivity.class);
                         MainActivity.ME.startActivity(intent);
                         return true;
-                    case R.id.menu_search
-                            :return  true;
+                    case R.id.menu_search:
+                        intent = new Intent(MainActivity.ME,SearchActivity.class);
+                        MainActivity.ME.startActivity(intent);
+                        return  true;
                     case R.id.app_news:
                         return true;
                     case R.id.this_app:

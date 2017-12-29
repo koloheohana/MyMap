@@ -18,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 repositories {
 
@@ -25,10 +30,9 @@ repositories {
     google()
 }
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(include: '*.jar', dir: 'libs')
     compile files('libs/NCMB.jar')
     compile 'com.tomer:fadingtextview:2.5'
-
     compile 'com.rom4ek:arcnavigationview:1.0.3'
     compile 'com.github.bassaer:chatmessageview:1.6.1'
     compile 'com.github.florent37:awesomebar:1.0.3'
